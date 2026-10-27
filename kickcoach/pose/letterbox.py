@@ -45,3 +45,52 @@ class Letterbox:
         """Source pixels (..., 2) as (x, y) -> coordinates normalised to the square input."""
         xy_src = np.asarray(xy_src, dtype=np.float64)
         return (xy_src * self.scale + self.pad) / self.size
+
+
+@dataclass(frozen=True)
+class PixelLetterbox:
+    """The letterbox an actual image resize produces: whole-pixel resized size and offsets.
+
+    ``Letterbox`` is the ideal geometry; a real resize rounds the scaled size to integers
+    (e.g. 640x352 -> 192x106, not 192x105.6), so the inverse must use these exact numbers.
+    """
+
+    width: int
+    height: int
+    size: int
+    new_w: int
+    new_h: int
+    pad_x: int
+    pad_y: int
+
+    @classmethod
+    def fit(cls, width: int, height: int, size: int) -> PixelLetterbox:
+        scale = size / max(width, height)
+        new_w, new_h = max(1, round(width * scale)), max(1, round(height * scale))
+        return cls(width, height, size, new_w, new_h, (size - new_w) // 2, (size - new_h) // 2)
+
+    def to_source(self, xy_norm: np.ndarray) -> np.ndarray:
+        """Coordinates normalised to the square input, (..., 2) as (x, y) -> source pixels."""
+        xy_sq = np.asarray(xy_norm, dtype=np.float64) * self.size
+        return (xy_sq - [self.pad_x, self.pad_y]) * [
+            self.width / self.new_w,
+            self.height / self.new_h,
+        ]
+
+    def to_square_norm(self, xy_src: np.ndarray) -> np.ndarray:
+        xy_src = np.asarray(xy_src, dtype=np.float64)
+        sq = xy_src * [self.new_w / self.width, self.new_h / self.height] + [self.pad_x, self.pad_y]
+        return sq / self.size
+
+    def apply(self, img: np.ndarray) -> np.ndarray:
+        """Resize ``img`` [H, W, C] into a zero-padded ``size`` x ``size`` square."""
+        import cv2  # only needed when running a model
+
+        if img.shape[:2] != (self.height, self.width):
+            raise ValueError(
+                f"expected {self.width}x{self.height}, got {img.shape[1]}x{img.shape[0]}"
+            )
+        out = np.zeros((self.size, self.size, img.shape[2]), dtype=img.dtype)
+        resized = cv2.resize(img, (self.new_w, self.new_h), interpolation=cv2.INTER_AREA)
+        out[self.pad_y : self.pad_y + self.new_h, self.pad_x : self.pad_x + self.new_w] = resized
+        return out
