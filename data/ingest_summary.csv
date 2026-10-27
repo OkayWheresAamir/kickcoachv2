@@ -1,0 +1,27 @@
+clip_id,codec,width,height,r_frame_rate,avg_frame_rate,playback_fps,n_frames,constant_frame_rate,repeated_frame_ratio,fps_trusted,fps_reason
+c01,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c02,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c03,h264,640,480,29.970,29.970,29.97,135,True,0.000,False,slow motion with unknown capture rate
+c04,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c05,h264,480,360,29.970,29.970,29.97,149,True,0.000,False,slow motion with unknown capture rate
+c06,h264,640,480,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c07,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c08,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c09,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c10,h264,1440,1080,29.970,29.970,29.97,135,True,0.000,False,slow motion with unknown capture rate
+c11,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c12,h264,480,360,29.970,29.970,29.97,135,True,0.000,False,slow motion with unknown capture rate
+c13,h264,448,336,29.970,29.970,29.97,165,True,0.000,True,capture rate stated by source: 300 fps
+c14,h264,480,360,29.970,30.004,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c15,h264,480,360,29.970,29.970,29.97,165,True,0.000,False,slow motion with unknown capture rate
+c16,h264,480,360,29.970,29.970,29.97,165,True,0.000,False,slow motion with unknown capture rate
+c17,h264,480,360,29.970,29.970,29.97,150,True,0.000,False,slow motion with unknown capture rate
+c18,h264,600,480,25.000,25.000,25,175,True,0.000,False,slow motion with unknown capture rate
+c19,h264,480,360,29.970,29.970,29.97,180,True,0.000,True,capture rate stated by source: 240 fps
+c20,h264,1280,720,29.970,29.970,29.97,330,True,0.000,False,slow motion with unknown capture rate
+c23,h264,1920,1080,23.976,23.976,23.976,60,True,0.000,False,unknown whether the clip is slowed down
+c24,h264,1920,1080,23.976,23.976,23.976,228,True,0.000,False,unknown whether the clip is slowed down
+c25,h264,640,352,30.000,30.000,30,195,True,0.000,True,real-time clip: playback 30 fps
+c26,h264,480,360,29.970,29.970,29.97,120,True,0.000,False,slow motion with unknown capture rate
+c27,h264,480,360,29.970,29.970,29.97,120,True,0.000,False,slow motion with unknown capture rate
+c28,h264,480,360,29.970,29.970,29.97,135,True,0.000,False,slow motion with unknown capture rate

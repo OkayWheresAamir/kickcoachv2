@@ -1,0 +1,63 @@
+cand_id,video_id,start_s,end_s,group,source,capture_fps_stated,slow_motion,level_guess,notes
+c01,WmsaKPhKSCU,9.5,14.5,side_on,seed,,y,amateur,"Lateral view, indoor lab, slow motion. Rear twin: c26. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c02,VxSRFPOsljM,11,16,side_on,search,,y,amateur,"Side view, indoor lab; description says slow motion. Rear twin: c27. slow_motion=y: description says slow motion."
+c03,s149XTezTSA,8,12.5,side_on,search,,y,amateur,"Side view of a maximal instep kick, indoor lab, 480p. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c04,SlSCxpT_KP8,6,11,side_on,search,,y,amateur,"Side view, indoor lab. Same kicker as c05. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c05,Z7msK4UCzQM,31.5,36.5,side_on,search,,y,amateur,"Side view, indoor lab. Same kicker as c04 (second trial). slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c06,yFIqdNKurok,8,13,side_on,search,,y,amateur,"Lateral view of a maximal instep kick; player small in frame. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c07,xKpa1LNqrUg,12.5,17.5,side_on,search,,y,amateur,"Side view, indoor. Rear twin: c28. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c08,wlUn2q4InbI,5.5,10.5,side_on,search,,y,amateur,"Side view, University of Lincoln assignment; backlit. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c09,myAUH7Pxw-M,13,18,side_on,search,,y,amateur,"Outdoor court; slightly oblique; kicks toward image left. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c10,-aOaMzh93tM,7.5,12,side_on,search,,y,amateur,"Lateral view, plain backdrop, 1080p. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c11,gmlwfhqiBTA,14,19,side_on,search,,y,amateur,"Side view; same hall and kit as c12 (possibly a different kicker). slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c12,uZ1TfhF50Ug,11.5,16,side_on,search,,y,amateur,"Lateral view; same hall as c11. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c13,3DajBJBm5PU,20,25.5,side_on,search,300,y,amateur,Sagittal view of an instep penalty kick; description states 300 fps. Player far from camera. slow_motion=y: stated 300 fps capture on 30 fps playback.
+c14,UgdQ8B-OGrk,14.5,19.5,side_on,search,,y,amateur,"Side view; player small in frame. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c15,5vJu6tlsYis,11,16.5,side_on,search,,y,amateur,"Side view, recorded with Quintic (capture rate not stated). slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c16,iOxJuDMnRlk,23,28.5,side_on,search,,y,amateur,"Side view, underexposed (near-silhouette): a hard case for pose models. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c17,6IvoCirzoTs,13,18,side_on,search,,y,amateur,"Side view; kicks toward image left. slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c18,lBMA2wWuqh8,17,24,side_on,seed,,y,amateur,Manchester Metropolitan University high-speed video of a free kick; black backdrop; capture rate not stated. slow_motion=y: description says high-speed video.
+c19,kRxk9xinbSM,2.5,8.5,side_on,seed,240,y,pro,Cristiano Ronaldo knuckleball free kick; description states 240 fps (Quintic). Body markers visible. slow_motion=y: stated 240 fps capture on 30 fps playback.
+c20,e5AQnlci1C8,88,99,side_on,seed,,y,pro,Ronaldo segment of a super-slow-motion edit; dark backdrop; capture rate not stated. slow_motion=y: title says super slow motion.
+c21,aJjv8tWbj4c,56,64,dropped,search,,,amateur,"University of Hertfordshire free-kick analysis, left lateral camera, before the drawn overlays start. Same kick or session as c22 and c29. Dropped after download: every camera of this video freezes into a drawn skeleton overlay at the backswing, so ball contact is only visible under the overlay (would leak joint positions)."
+c22,aJjv8tWbj4c,79,90,dropped,search,,,amateur,"Same video, right lateral camera, before overlays. Dropped after download: every camera of this video freezes into a drawn skeleton overlay at the backswing, so ball contact is only visible under the overlay (would leak joint positions)."
+c23,flYctEt1OLY,53.2,55.7,side_on,seed,,,amateur,"Unisport tutorial (wide shot between cuts to close-ups): outdoor demo of a beginner mistake (wrong contact area). slow_motion unknown: the swing spans ~5 frames at 24 fps, could be real time or mildly slowed."
+c24,flYctEt1OLY,140.5,150,side_on,seed,,,amateur,"Unisport tutorial: outdoor demo of a beginner mistake (leaning back too much). slow_motion unknown: real time or mildly slowed; no evidence either way."
+c25,vWGI2QtPqb0,3,9.5,side_on,search,,n,amateur,"Outdoor real-world footage with camcorder overlay; slightly oblique; the camera zooms out just after contact. slow_motion=n: the burned-in camcorder timecode advances 1 frame per video frame and 1 s per 30 frames (checked at source times 5.67-5.77 s, 6.67 s, 7.67 s and 8.67 s)."
+c26,N1jEPOtoC14,10,14,view_negative,search,,y,amateur,"Posterior (rear-oblique) view; same uploader and hall as c01. For the quality gate (E8). slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c27,1eJgEMlGBD0,11,15,view_negative,search,,y,amateur,"Rear view of the c02 kicker. For the quality gate (E8). slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c28,-D7jgJ5lrhU,14.5,19,view_negative,search,,y,amateur,"Back view of the c07 kicker. For the quality gate (E8). slow_motion=y: Claude, visual (run-up and leg swing visibly slowed)."
+c29,aJjv8tWbj4c,8,19,dropped,search,,,amateur,"Anterior (front) view from the c21/c22 video. For the quality gate (E8). Dropped after download: every camera of this video freezes into a drawn skeleton overlay at the backswing, so ball contact is only visible under the overlay (would leak joint positions)."
+x01,LeaV-gfLz5U,,,excluded,seed,,,pro,"Broadcast free kick (Messi vs Liverpool): camera cuts, crowd shots, no side-on full body."
+x02,HnHF-si5rdk,,,excluded,seed,,,pro,"Messi training free kick: far, rear-oblique, curled inside-foot kick (not an instep drive)."
+x03,OgGhlWcBEEo,,,excluded,seed,,,pro,Broadcast free-kick compilation: behind-the-kicker TV angles.
+x04,OafcIPFrjfU,,,excluded,seed,,,pro,"Premier League goals compilation: broadcast angles, many players."
+x05,RQu9EeGwjZg,,,excluded,seed,,,pro,"Messi free-kick practice: 360p handheld night footage, rear-oblique, curled kicks."
+x06,P01wGN5sxpI,,,excluded,seed,,,amateur,Tamil tutorial: mostly talking head and close-ups; no clean full-body side-on kick found.
+x07,gKiQIchQcJ4,,,excluded,seed,,,amateur,"Tutorial on chipping the ball high: talking head plus lofted chips, not driven instep kicks."
+x08,kgDkKiRR2oE,,,excluded,search,,,unknown,Close-up of the feet only.
+x09,0OSbwufMa4g,,,excluded,search,,,novice,Novice kicker but legs-only close-ups and title cards between trials.
+x10,icUbHFzw_5M,,,excluded,search,,,amateur,Front-oblique view with freeze frames and annotation arrows.
+x11,arXiems4Zsc,,,excluded,search,,,amateur,"Rear-oblique, pillarboxed, with text overlay."
+x12,DTIJ-m-Czb4,,,excluded,search,,,amateur,Corner kick with text-box overlays; front-oblique.
+x13,-ZjnkJDuoqo,,,excluded,search,,,unknown,Head-mounted GoPro POV.
+x14,xPHZVaVcHSU,,,excluded,search,,,unknown,Front view; camera moves to close-ups.
+x15,NiINVlWpH-8,,,excluded,search,,,amateur,Filmed screen of Kinovea with drawn angle overlays (would leak angles to models).
+x16,TYYDPiJkTCk,,,excluded,search,,,novice,Filmed screen of Kinovea with drawn angle overlays.
+x17,6Z3oJ9r42Rc,,,excluded,search,,,unknown,"10,000 fps close-up of the foot only."
+x18,Ry-4YbOuCjo,,,excluded,search,,,pro,1000 fps close-up of the foot only.
+x19,lmr9FXpKgBI,,,excluded,search,,,pro,Re-upload of the same footage as c19.
+x20,7quxUIB78FM,,,excluded,search,,,pro,"Curled (inside-foot) free kick, dark; not an instep drive."
+x21,oY_oUGPYOYQ,,,excluded,search,,,unknown,Kicker mostly out of frame.
+x22,aQev1872Zio,,,excluded,search,,,amateur,Filmed along the kick direction (not side-on); player tiny.
+x23,FL_qZM8Zxjk,,,excluded,search,,,unknown,American football place kick.
+x24,V0clDyG9A1Q,,,excluded,search,,,unknown,"American football place kick, 10 fps."
+x25,O-OsrAv5yks,,,excluded,search,,,amateur,96p maximum resolution.
+x26,fJmd5B8ta2s,,,excluded,search,,,unknown,"Feet-only close-up, 160p."
+x27,h6BOkWTvHj4,,,excluded,search,,,unknown,Low-angle oblique; head out of frame.
+x28,q-8nF2LWPEs,,,excluded,search,,,novice,"Front-oblique barefoot kick, 288p."
+x29,7QlaJMwxHe8,,,excluded,search,,,unknown,Rear view in a crowded court.
+x30,GiK7nnDzNsY,,,excluded,search,,,unknown,240p; no kicker visible in the preview.
+x31,nxJUpupJPqE,,,excluded,search,,,unknown,Ball close-up.
+x32,t-TBrgucYQ8,,,excluded,search,,,unknown,Ball close-up.
+x33,xNGrViSzcQE,,,excluded,search,,,unknown,"Ball and foot close-up, 240p."
