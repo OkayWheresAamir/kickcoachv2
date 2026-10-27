@@ -13,3 +13,19 @@ uv sync                 # create .venv and install
 uv run pytest           # tests
 uv run ruff check .     # lint
 ```
+
+### Rebuilding the clip data (Phase 1)
+
+Video and frames are never committed; these rebuild them from `data/manifest.csv`.
+
+```bash
+uv run python tools/fetch_clips.py      # download sources to data/raw/src/ (YouTube, needs node)
+uv run python tools/ingest_clips.py     # trim, extract frames + metadata, decide fps_trusted
+uv run python tools/run_pose.py         # MoveNet, RTMPose, MediaPipe -> data/cache/pose/
+```
+
+Model weights (gitignored, see `docs/DECISIONS.md` DEC-011):
+- MoveNet: the hackathon's `3.tflite`, copied to `models/movenet/v1_3.tflite`.
+- RTMPose: rtmlib downloads its ONNX files to `~/.cache/rtmlib` on first use.
+- MediaPipe: `curl -L -o models/mediapipe/pose_landmarker_heavy.task https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task`
+
