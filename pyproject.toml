@@ -6,13 +6,24 @@ readme = "README.md"
 requires-python = ">=3.12,<3.13"
 # Runtime deps are added by the phase that first needs them (see docs/PLAN.md).
 dependencies = [
+    "ai-edge-litert>=2.3",
+    "av>=14",
+    "google-genai>=1",
+    "mediapipe>=1.1",
     "numpy>=2.0",
+    "onnxruntime>=1.31",
+    "pillow>=11",
+    "python-dotenv>=1",
+    "rtmlib>=0.0.16",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=8.0",
     "ruff>=0.6",
+]
+tools = [
+    "yt-dlp[default]>=2026.10.21",
 ]
 
 [build-system]
