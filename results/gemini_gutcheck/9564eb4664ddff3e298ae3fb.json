@@ -1,0 +1,128 @@
+{
+ "key": "9564eb4664ddff3e298ae3fb",
+ "tag": "gutcheck c19 e4-v1",
+ "model": "gemini-3.8-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "kicking_leg": {
+     "type": "string",
+     "enum": [
+      "left",
+      "right",
+      "cannot_determine"
+     ]
+    },
+    "contact_time_s": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "knee_angle_contact_deg": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "trunk_lean_contact_deg": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "cannot_determine_reason": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "notes": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "kicking_leg",
+    "contact_time_s",
+    "knee_angle_contact_deg",
+    "trunk_lean_contact_deg",
+    "cannot_determine_reason",
+    "notes"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": "41d935a654919214419607c90ca61f5de5d3ff41e69dd993c04f7842c538beb9",
+  "video_fps": 24,
+  "prompt": "This video (6.01 s long) shows one football (soccer) player taking an instep\nkick, filmed roughly side-on. Identify which leg kicks the ball (left or right, from the player's perspective).\n\nDefinitions (2D, measured in the image as filmed):\n- Ball contact: the first video frame in which the kicking foot touches the ball.\n- Knee angle at contact: the interior angle at the kicking leg's knee between the thigh\n  (knee to hip joint centre) and the shank (knee to ankle joint centre). 180 degrees is a\n  fully straight leg; smaller means more bent.\n- Trunk lean at contact: the angle between the line from the mid-point of the hips to the\n  mid-point of the shoulders and the image vertical. Positive means the shoulders are ahead\n  of the hips in the direction the ball is kicked (leaning forward); negative means leaning\n  back.\n\nReport:\n1. contact_time_s: seconds from the start of this video to ball contact.\n2. knee_angle_contact_deg: the kicking leg's knee angle at contact, in degrees.\n3. trunk_lean_contact_deg: the trunk lean at contact, in degrees.\n\nGive numbers only if you can determine them from the video. If you cannot, set the value to\nnull and say why in cannot_determine_reason. Do not guess.\n"
+ },
+ "text": "{\n  \"kicking_leg\": \"right\",\n  \"contact_time_s\": 3.333,\n  \"knee_angle_contact_deg\": 158.0,\n  \"trunk_lean_contact_deg\": 7.0,\n  \"cannot_determine_reason\": null,\n  \"notes\": \"Ball contact occurs at 00:03.333. The player strikes the ball with his right instep while maintaining a slight forward trunk lean over the ball.\"\n}",
+ "parsed": {
+  "kicking_leg": "right",
+  "contact_time_s": 3.333,
+  "knee_angle_contact_deg": 158.0,
+  "trunk_lean_contact_deg": 7.0,
+  "cannot_determine_reason": null,
+  "notes": "Ball contact occurs at 00:03.333. The player strikes the ball with his right instep while maintaining a slight forward trunk lean over the ball."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 27 Oct 2026 19:08:36 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=130728",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"kicking_leg\": \"right\",\n  \"contact_time_s\": 3.333,\n  \"knee_angle_contact_deg\": 158.0,\n  \"trunk_lean_contact_deg\": 7.0,\n  \"cannot_determine_reason\": null,\n  \"notes\": \"Ball contact occurs at 00:03.333. The player strikes the ball with his right instep while maintaining a slight forward trunk lean over the ball.\"\n}",
+       "thought_signature": "EppdCpddAWkUfROcVftvACRDUDSAYQaHkMcvaYw0-OlaTtaG8NHVKb82P1O4eCNUUAET4SzBLzjVZ7nqcsbGgleB9pcQiURan1GEDMYXm-ZJycl0i9TRNHytuFyQlblsWKkSVDeKnxlZEBOxkODm6nyE0KEddgFfBWAlMZkuy_swqpy7mDwUaz3fFOtY8XCNuo7af6aryRkyalXG006P__xu960tjnIR7EQsQPe5Z5bSY9TYBMS_fGkmkefHvCrIyDwOtcAKU9y7NH7VKG0AlbmW3ElBcSM7WfjVXXbukcjQBY2RaPEWoZRS3Aa7GRPw-qVhytE_flkdq4809A4vH6soHWnZiZkyd-KOxE4hXgKck247nc0sDEJ309ObqJDAqfIbYuid9QprMiBENKwM9eUIKFx9iuz2D55tgTfjwiP11rbU-GljJA760wf-wGV87xGFm0fWCBm9XIHIgTSZyQfqfmsO3e33qwcSfaGJdYFSWLz4aQ5AnM363rlgjHUXkEiJomoR6h9Q9rG3Dqbc87EevjMC8Ns9cJ3J1glT-TilUsfG6pcd_5QisFiTPfrPh4wHxaEhTvBYJd9iYT0ka_rJjxYe7ypozxmNvXpz1sC3SrNwOrWf4aGA6wZRF_fgpjZ1we6c8EEWoxNAIQJhsl6YRoAtE6863kYkJiYdvFxKdDEZlXWlqWPeo1ox1UXTHPCwSMXX_KqTOMtszbF3Zhk7kI7Yen-9CSWMQI5lyiF6k2Lzxgi9YvKdQNuSEgrMHX4uH7Yt0dpGLsjZjD8O_Oeby3v6923JE3FaNDXb_fQ6bFyBh0m4tGiKT90Ie1uuuPh0AENRDBnTeEF1xi3EYMjmfZepvn_j3kTAOC1jdkG4WKqn7bC-fvZz1sIYLB1C3YSinyCXR_yvwtDLFxAWAPdnw94lPe0SR1QxEL0-BwAEdyjqOeKpaJfddQAhtzMOqOjPoMrYb5Mn4WtRXEbB5U68_blh-lHAgPOlcu0ssqUOeTXMxg_SAfyOE3xN-iYHzdAMDm6ArIQOBlaSrNrHW5ph0IG26oBYlDx013bcSdn9GrmA2zvJo72e_HmaL1eSVneDYMMMq3jMroB5tnHEAwyPkuPrjbhCvBH07yn9Ry77wlU8Wdys20IINP8Q7fJZDDnseF5eca2EqQRNj8AL6MhTVPjbkM43eDW-Kz59wFE8yjzsV1IsT81RCR49HDHIy2YXTGsv6w1ICvGqqR-GvFL2aJf0lS6nOc_hWlZXfnUJ38QSAfprKwf-I7CAEqa-jrqV234N-AXB95vWOBToiV0xAMloUqDL4ytWaBFqPQEcDak_KgJfkwifeaRB_oy0EYZ2h14wfopfCCHRHn4R21H9SV1TxPuoR7V9_yf-eaK2KRAzT5g3kJJMRobSwMKr4vu30wxCHSDvJN1I9ceUEzHaPYVj5Pn4Sm_sUi7s_w_48wiDema-ruW3NNImRAhA04Sn1kj8gW4_7m9D-GwKw0sudHn4E6uA4CeOLdfEVkMiYLuHzLBtzz4A3PVlymyHpMuMDYko4nJSA2s6nQAZcWMZii_9ZUfIpn7IObFbxGqDloIfbeLzISPWmjKsfM0Itu4fINOFgv56J1rbQ4o2_RpJCUt4eZ2rW0i3NCYaT5i4REENLFW7dCimCTaMwDiOnoK4xLTFgi8iEs4tU3nvIBQ-lWXL1NEBzP9_86iLBpCv3R86C5dvaVgdTuJFGcloW83jvf9WfNKBF5SaXz5pRm8r8eFztcqXypS_IIunIciGy-2fMrkefHsOcEymH0quTKVYMEpRvTZFc2JsllCU4TxeYMhIAfHOA2TNMv9u0q-YBHFtUlnnPXl1gghoDqZPInpnQ847JsjL765QzQ_tQKBUm3wLaifzgsOQj7konapT5SZPzi_0hWjtaZfmC5FZgRmsRgAchE2Awk9EUBZ0BqYGDEhNvwedTwBwMRn1OqsizJQnAQCzt7pdxmLyaleJj_0fLkT-G6ihnC-lNrZcqsmTn2TGs83LuEUj7qevl2CWFu9sGLBgx_hxNtyCUNRKAZjHeFa1f2X3KdPAu8-to1OSP4tZwUDpGVgvjJYI32jPUrdvTGCn-XrV0wVpTFk5HBlSSvrFIZ4EezQbDSSLTbLbWv84AETCg-YMQCFke3mxiLQO_MviAT7bErd3RuYHQkP7On_x_83eYFCnz9n3F11IEmm3JiY-wPiOt_89W2CYlhsZq3MflmZOUM4GkeoSnjaCjsuDlHhystsl8pLXmVSC1CJN7bqgIqLlpdDeUzJdnBRvWAtw-nAduLjFhJqErM9CyPHxuR5O2sQzUubIa-v9w8VR5U7TIH1BPwXv8t8o_2klbcjtv0S5IJKcOU04O6QZLPaaq5SUg_wxuRJPC4wYuDB4n_2IFC26n-FsteMxxQI5-l9M89PiCbwHKakKR_qGVE_gHm7XdiR3d2nof-zkog-JTOZrF9BaXpB2f3RUpVUxXoqKLUjGP96Qdq9V-0PeXZXO7j1gtXCCoXD49JdTtjWZecLgcvN17wpKXNMacFHF6qsecmvL0GGu8opXsuXdzHmmEO1fqT66zlvDsUX_Ctve5HO38SumwN0JpD5C-Gsg_MuhYPrNYuUpFIYS0NgS0e9Rv6UWaXq2cyG4V6U_rlyOFpfuC9iNBz-P9zE83mDjzmZehz0_BQrlt611z04lBE-hOdpPOg0b3SkFxHdQohJ_2XRgvq70s1c7TZe0q7TSSsxAaW6TU_wtA2J7IC0L0kjp3TSnQ6cFIkm6csmZ9F6DSALkDIvQqK9Ajmh7nhaeZ43sk8OLCxZYqnejpewD_JMjR-WioyOhERZJmgYPHSQbgfDcZdjy0ht6XY5DIugmvOEpYw5WtbWzlrq6UcVhXAoXHBZqubqwVrVPNGLYaXn7ky76eNJwJexDGxFgYcNoozt7NhlVuGGbb9NUlcMSchUDcAKhN0KJBpYdf_-r4QWJ2oZmZDS0gPZ9igHh73TbdpgDSgNSk7dgXG0aoiK0nhrqFtz3kS8V8IDiAQXbQGesyuQLgGRE5A_gh-S46QRDTh2yJT5VlNhpKvRVuuphztJfLAL9Mji7S5cb-Sx5WmFm1EV8Ni9alEVn9QQ8iCzC_qSG_IlfC1doo2Y53rvjLMjgTjwDugVMnwOK0-CoyjBMcLKrW6N86sxQK6dQsOxZmi20UiLqZLri8-7RNV49UATIjUwa0iDShDqjaOWPCGtBlkXTo3aCa9AG1ror17PrEKlolLF88tz04gDF553g5LdOycRFaLRuCg2Hmg3AXIwgf_yllIxkiogJM6vYDoDVr9vb1eBlQAGZoOnh74Y8t3QpLiCyOBtG7OgzhaMOSdcco6S2Tghrk9CDgcnXtGXF7zLqokoY04OxIZVI_GSKhPuFZ7OTxfr15r4sJqwc5YHogBcQIma16RwoLIDpgun2Byel8MpO4YnADumSWisxsU-tyyjIjx43n99tmmOBrxo2DQTfaoe6g8c4VBPVFzhKWE6OZ6PqveYe_eCTcJ62XPWvFsR86czT6A6B4jgmM0YsF9ib3PVAZzoThv293uAMnMZFSvvcJYsU9ZARNYclH4KkGuGvP5GrSyH9wiBgKB6nF0ZjThbCM7S-QNRbOd5LaKB7SOCudiUDyOae7GimX5bShTd1c-l4ysMPR1SVrWHmqGnHqaSwvWCFX1Ff3ylWSqHLz5IVU2eIb7ZI8Xw_1hjP3OCZM8gKRvhkApcNBBcamXquIpc64V4cWuTMUEt1K_FMXt7JXErStDXYpBnunQLjG7YrFz75j9UAzAAFIyu8-Zj30JalRTA011b7Yy5rLlyrXujpwnCJ0Nm2-9CMWJ4bsXHDd6j2snboD3r3ZX-SNYnd4Fs5aaNENrRkA-HZePkLYvXymst_y1X-icG_ZJ91XdifA52rMzFfaVEI6l_ZBQcnGJgkPd3v_KSSAOf00eECH1e1lkjtxFq1ljr2UR3TScc70gupl59DfwKfmudJ7zYrV_7dAdk4ID-CrM0ntjp8ZnL57M9vmTTRn-o7scDF098h1FAFc6nBwU9Xw55Cw8amls-l8odAA9WP4nUwaev2G5cRta-kUFu3vewGAUeMz6vvre_H1RNSZCBD5kInvlGKRX-ctnuoSIK73ZmDJA03Yr9UdXUuWkH8_urxM0lKoQwQBCRZLExMfd64jiLOC--B03NPt8n8HFi3NM0TNYRoaVEueJOabcbk0C4VgtP9Ei0_osOVUBY9gqX0_YUpqtLrbuyHbZ-tZcq71AkRGmflDfHSSmqb-xiDSxLiVsh-DjHPi1NQk41-W14CrApwINhrJDy6oCk8nQvL-jDGOfx3-UDtutuTAefXzgSlNs25cNZJGR4CljnxAIY8l0abWF9zNeoPqqXle5ZQpXuSCI9VREAdIDVh0TPPSouObaq0qV3BciC7Edhyd6JnWQzy0homADNaYRpXicQAe9df68SKyWdb8SGEox0HnYwLk8cJ8futvYAYsqLfjW5EREGXToX2UIOFYuMjIHrHvlRrAhAGZ4mGEYq-Y0xdtQ6B381QXgXeoEaPCqeKgL1crozY9OvJY4LwgjTl1pl-CDjxPCI0JPzKE5Bazx-K1dH6mZ-rsm87Ngpq57IKiHVPf-Cdc1EUmKEWmoBBlnMIERVCbEjwKeS82NabpaolV8WxoodkeUGWgFzpgen-xrbw1hncmV5cMc-SLQLwOXHY6RRrxUIXjZL0_rLehkcKTP_8zYbuF-6ooVU87jrdGTJDJ45dCRp6uNWfL4WO4MMseok-Ka3S9oB9zmoWp_ozel_zmpuar8tHlvmCM_yBxFcAHH8Y7niq7mqVsLm8ksPLNkBUAQ-vH46qjV4aPk_NRAmqD23ciJT-BssmOpDule82fOBkBTS-QxPWLJGmjy_EKW-6gGpEI_SDy-c2hXQIGn28p4afmOn9-T3Cnzp8h-tlonF7m8uIrBOP8MPge0xc9TuntqsC6PLAxfzIgKo4v1rK9KbwjZx6s7iRRg8LxRt18Ow-T5w6RwixTV_gMhrJ-k-9AULbJ2s20mLOn1DjjxnXwEBj5xchT6VzXb0QbbxbiRy80kZwYHO3hkXkLz4WlcuFo2wHdsOGkI66fA0LjXUIyEYAfFPgQ9vIutiQs9KumCVSvAxMun0M2s6jdWiRX68y0bAF8lL-_xqSauM_uJOFKPbSQ3lACE6S9_TQuwVyNkCZvTY90eHvXO_-AWslRkWKpIp4gDH2-9bP517y95GCl0OXz_dOq2qLiFV87paI0dCyZcBn-ETeEwwDkX70P2zBNyq_FwmIm29q5KywolSgt6vqci67bPjs40bl0brKumFGm_N9SFBOXaBmCG93pVuYlTSNztfHiEs9rniQ-Anh7T6MS65byEmvyI6zHqAskK6GvBn0yzyw5GzBo2GtTDNjnTchRSLK2ahSRY5Fsiusnhw5TU5Qk5ph1IALeq-YTKkj8iAgHmuUa7j53wkhFJ042dMwJN5PURlYVPrEBrDa9xNS_NfSDWDT-AjssSd0swWyJNqQyom6sl8lYBkKiWPa9BIAT92LzXWe6wRY3FZDaAK1tQwFk15BgfGYmiXyeK6Hq8-DtFxgNABX6o9AU5t7eB4UaPFLjVWsnE9wBr9rCwklkLyPt6Ko1aJC912Of2bN8D38jfYO9M5I5vDpBsjMICfJtdeZfjes1_4trybxoP42Ea6355awoC8_g-bvU2Sjtr58lxFaa4ijJx1_Pb3DyggVEcOidnXzFbRcnKX1A4Wr5P2Em7e_rlYlU4txWeI0JkVDI366WPYRaYphNaJ1SMHFSZgBGu2db-xf7lqzEK2oJ2-kUO1j9BvzrIy-ZRthHOtnzy17IPi_Wo_BQA66t0YgPqs00dmNulNGtQChYRh9p-Va_0HAejhVJ-_rW0IG98Q2pQ0opIscdHoXGCtzkFS-NfnZIDMgescv9sEae1EWtNUbgyH-s27rdjGQwkBc1P9pcWmmA-Ff_zCJeqbJoZl1e2reT2V0gH-DosVU222nLts-Rf4_nRKUfcSt4TQZcIb-NVuDo8vSaU2Y93X7PPmHNrzoYD-6b9GMlt1xBXUE6kc8WqkFc21mHdmdA_IPGLjnRy-FrdeamErDCCAn3PMoIvZARaNPU60x476QBxQqapgNxchOjNdLT7bLv0LGL0PjtM6cM7Cwyqn8fy1rUY8eKlF9PuGrdAf5t1zzmTZPIFxBRbJz-7Tcey_q1zdpM_fcbfYXUpqNXBZfqIvmTh82sNlFksZXIWhm4l1pLHPYCgvDKRHuyDPNI2M0zeIoGVSlgV8nDTmM435v75QG1nDD2hfxO7Qv3is45q0QOhNI-j7nWqvdDtSo6sopY_K3JpkCgFQaKmanD1PohlmNUK29J2Sw_esQW9tQdR1bKY8Ds9GkklxcrdbzGP93DzBdNIUc5n1uNSnvtsCOzDDrVvkWsIsyX3GCoVUIRaO0fqbi5-ikU2ZsBi7Iogfuf8llranNnrxx2-Vhez16Za68F5MWpiVxeqfr2SMVEpTQUfYuxpgrfTQQ4XhxhPfHm-mqtaTRJ1jIiPcXQ74w4AB8H-yYg3Ca9u0_GIKFJrpGNdOX1Ioynw_GEnHYpjtBQVbV3PoZR6zRbo1XYPBmK3hljssm-GDyNOhLTVjeLALlxMlrkWFbmOeTH0z4n5F7ZTH2hCXk7GcCP_J7uyaZ3alHfkRCMLbpXZ7OcXgIp2pN5ikaeSEveue1_WQs3VdHW3UjrgbHW5PGHow0XAlRVo6RXLdIjf1d-3Fxk2qjebJQ8CnjM2CDiOupvt1vYn3KGEwJ8rlfpFWTKqPHBpVTE-iYvuRWvaGN7cc6ldSrrmRLy5arSqoFiUgI9hPul9T3r_p1ZpV9jHqtLzZyho5Nwsq7iXHTAjcGPJl0p-UKF8Bt3oOQt1iqK2OkEMZ7LtpaehSAYWvGnQY-CTa3kLsZt4s3qEYcbqF26wew5pIQEgoMrqyy5-87MNHdFOHhZIRC_RHK1Z-OkBNUU4_TBEwoxevPN_TEaCPUz0UPwqtN9IzPVox-a0XuWTA5QICvivmIsUbc-My3et7z1L9XvYGQZPL4lMZrlHZzOZogZeieOnKpdbWn8c-2BQXEP3TRry8CBDZCs5mTw7uMmRuuY6AoJT5rpuDVvGg9k4cnEHRqonpHpXKyVpaQMhqzM7kKpYo1C0VDh_C9vqTwos19j_4B_AUcLj34ukWDiLmVH2J4vjsI9oxUC6qyAyuU6C_RE7snKN9grSd5MP-3C4RCW2gXoIfK3MdV7R3pVUVcmpv6hnvU8VLR7JvMU30FPEgA2jmQrkmlS1-oXhqMMgx_DMw5j-uz8NT8eF3TgClJhb99fFSm-_NbQdMSEfu4nn6zOc6z-aS8Czy8nXTt-PI_zjr_Y9UDkcFfW1fnyJFrcIvd_us05pRjfD8mR8U4zgpx5d4NAbKbL63cHTqAtNFf8SUWht9XrMZJU9hiShVbJ8B8HLfz-aj3y8ZPLi_71YyVUoZm5fIQ3wmJ4sF1vFn3c3JBgWkRIIHATTHVpqq7d9vcDvmvfZm9xyv-zL_GBzl-HMAFHpXEVEhRrvfq4TcjWymjyM0DcPOiLsGBnltSkXW3coudeModI2kOYpiKmsX405sP8bewXk4UGGxPqF66xI0f5JI7e55QfscnSWekbh0t7uXhcAKCmKeuttUriR-1UVjr9xIUAbZaz0muDJjODZuZnNtN2C24WCFt_n3ia7Gy1MJRC79mB-_TyU0VEVkY3zr1G9KDB_7X5Te0Fq1adeGYS0twK_tJvUl1htHDjZo0PLa4r0Ltl9zWx17CqQL2-4zV0DbrcNMhn9XCrt0lHmFh3cL6Kn_8Qcr0OPYFnsq6xUUj3F47Ho83OdIAJ54AKn6HqcdGbdwJ0GNEmTSzQewJ7gRMPQ4ewvC56qOQXbKTAEnW-nAs9Ej2PGZAY74zewrEK2Jq9WmksmbwHt8xxnhB1pC_gxqTCy3KI-kRZV1elqoptSMHkeptrj09XTjpUFExTfJERPrU2bpwo-EuWT2EA9FXgFvbRs_vcSQeUrc9co4FYUvkRt1s4h87Ww_IbFp25UKkNoFhYMVBMEPJGpU64stVgIrc7MEIl5QUleVWJxXR8ezCbX9W8ucVcCdKRzrLSpX45Re5qIrlaxNKVQ0KUm-odFGAGFm6X0XrAqZdcB5E05Rd2J1842b8w12XTaAGWAm37nLwf9N_pIbRfJUjro51KVowBD0hTzfrnDPaZik2PVC7tuZX-qHh-yL8YNpWn8G7-WUEovEhrDw44P5Rnbi4aWAoQa0tIkeQlQoKZ8ZP4I_LT99C4t2MbAAlA7LMYOPuzRBeeenlwTClRktmmPfEqNGfTFPk2HUyBealov4UmY1rCdX7mtFdXjE7q-i4sDw1vnFs05isYnzmZv4YCIeKddK17kW2TfiWPbHOtFH77Rz1vQC5a4VZzDW8g-Fl6CAY1lxobPMHrKhQiqhODmVo_NjPBwk-li1m6kFa3z6Z-Dveg-9zqZiM9lWUaxG2xrJ9Mgti4qM3LG2ywjvuzxpV7NC-DTwleNsWNMkHOY6nnPX0uJkvvb0yL8f-ZqSDhgjQwq_p3NB5lfndSZnNGl9Ox5j7hcpJD9hp3bRhdniSsojwET-p6ARMaaPSE3w78QsvWm43YtefCgbnT3bO8cWgFwrrMApRn10FadGhmIhwlrTSoO2_g1urOdPdVUwfIwWKyNpKIvcWyfMJaXaxpHUA9IgPVsh6S46IaPqeFA4QewVCoIm9Qom3UmmVm0CHZ9ZK53Mt69VtFaZgXNOLD4OQqP8uKaTGioGrAMoj7ncOtbdwqGM2TLw3vhaZdJuu-XQZbVHNPKi7gvHe9lCfJ8WZLrVjUMCFMgp0-kbn8HEQaaYhFOAxny4rRZoOeIqpyxx5ExFMfMLSCGL73khTYrw62DpW9A6B3tKCwOO5myHiif7JltWE_AcILKKO90mVTmOYdd-NzV4G08PQ3JMBtUPiX_RLujfCzsd7w4HK7dXcJdCw8uI8LvR45mRYGtvfDvtrr_-I846gbaPT6WyA5IHHkrbsos3GqGDWt3x9wqesPIypneCLaJpBrk4NWfeznSx1nBhezX_feLv-nneCUGa1Ef_l8EBjbAauQ5HuxxtnLg3Xu7XGjtG_WDmF9aJYh1E29-BEFiD879llSKCOXacNR3fsrTuYZE5cSM2OtulGVbpLM481KNMvKPt1jhQqNnbWHSqMSgSiJEKFax8DjJ97iU-xT6DB3krBdQHPBZJwG2PIpLYSEuQWL4uT7Fy_e74S2I-tUEsLWiGoRprpsm46_25nrRVSLuGtmyXFjDafS0segc_0kLBy79S_FsTjMieUYmJmqdweauS-NImliY93u47AQ-Z4-DorLrippZs8Wn7TDYtP17YJ7n9W__LbdzbpEqLP6VzQ503iHXReqeKjVwGVQeHDU2UpG1_zMqzYSSxTzfq7zPeAtUuGNfmC8cqfwhSCVhZn_e2ElX3lTc_7g-3OlXE-laaZXsEL1mMih4MVRBXyBLt13XwdANDG2EYm3E7FwBqu1ijdInxXfda3NOh_IjIzNFlstuCNNVdvzyPAJLjsYf3yNYLXIn8bbIhwKgOvgUPMpGgOjYyCOfuP0Kol2qxRfImrwb0R5m_Ystv_ZpdNshaFCsalbrF_CuSSqSy8o7zE7O7pWvtD_aRJAbGES_WGVT2fXEPd_BC4EInXSPJjOZY-C_YpkaDfPfPl_AK1vSDGQXUx-6S71GCJHpktjCEiv5IWyYh0v_4oUMfcMBvGk-ps-Mpu2EvHM26F5muuqzgc7ZNQodFZV6GbbHyOEFZmIuoawJtGlM_rdCMizji36utoqZs1Np_Qxym0w0OXtDTAugmjgaC-BWuRZZYLQbOErIfHff4FS34ox9WSqIYTpWgX11ZENirDCtc-r4zIv9fx6vRBYylx-TcJwfd1gb5kKQXIs27WZbGTIEC929qsX0rkNku_dJ8iM0_JGyzZhVSQPTL0P05MZ9ok1Sae6JcHVXZR7Gosq1ecxxPlYzsAMnwjqfrPWrnOfbuJPVOFaMzeKgjFOyisPa7x9Z_8vV8qIPb7lnPWJ2xhJD_P1mo6dhWUBfcUMSyYXbLK024N8RYS1H4yyJoTkv8kLWZe6Xs1cCPsF0sMDkdxORmxau5KcjXGC2wQEh11kagR4cXPV17nUCLCmrhRkFmYaoVWabpPtPibSBJyJxUXl5XGm2rCzGhKbsq35G6qb9ueI1R0u1bUvjQxj-IYLmtzn6M6p5ZHXopoGipnjb80Oam63WMmCp8pKCOsYaxFR-6a9HH38HPCubLaj19-I203AeZVzgbCqs3bERmykJXpDjr1UA_JFVeNeVL7Z5u4F3QkGi5SIYC9XUBONLe9tBH_veOIDpwe6m-OGjXGEhW2wcfbbvIg-GaSr1zHTsj9ys6R6H91oJPANeFODyTKlXlbS1kQRxXRJQPfRW8Hq4XlrUKoO-MCdh7AZv0XEA3KSD2PjHqnMyg4YGb2KBVlaGezKFepypooBkOK2Gmik_zI1gLTvfUf3hAqDOZEnN-Kdto6r3aDFg7wH_rTPaHF1vV7bi9KScBX8MK2dSHYtQakAK_4hBf8xL3cZxr7eNAI6nm6If7ZpeoTX8vmNivZxQlYDNUM3KBBz6ZTg_NAb9wK-Kqt-GLy_JO-GP_yKvDWuKYGGtF8s754Q0Fvx3VR8aVisxDD1Cui3UohAlXlr2wL8WaaSTETy1RRHENx0fnYzRZgNtKYNTikokUvqUK92K3_ZnXlj94RF_RTXzRJSnoB4uiRKHdRGbRxZZzKsbLj8JGP8uH-e6fRixIcTFQ4SE220Kw9rqACp2apF3cEYEhVIjwaBqKL-cLvl_OPfM_lpyLbrZ9o-d51eBEtHrBNRgZ33WhBL0JTWZ-pyqwZ77fxt0y8XAR5n5wGTWRILWNwRWU_5GkU3dErXl4i-cjGhwWRXRVOTO-MOdSiP6K5DStTuVhMa7BGMxy39hvXbAnOF2F4bii0u9bYPjDDLDbq74GPkNWp0GlrZ-iMQBKmhVuCaF2KfsRhHlLWwy-L5GBvqm6cXmBhuBv9dj8LKQRDXeTUs2c_wt9jZMBLxEAHRIyj3s0gYM4wkdDAG2eZj2grjtCubvMefgWyInbBZ_BQrsuEAh8Un8AJSU-pNUaSvLA2I-uh1U9E3hOUt-CvFhT4hpvEtMaQrjNJbCdf-gYZt3AIuOugU1UkvAdC0elaKdcr00BGpZ5F4INGreRLT945rozsHZ1KZz7hm6JjCYYpfj7V1gL2Mzj3TzZv0bquOIbLsH3IXFgQkY6_SXGbD5jiBaUJwq_CVfGy0uKMz5G_tHPyE8hVXz5Z-FewKIl0NCVdd_kKumeO_D92SPmPZ5axt67ZMVW9BynydA37VDaiJeidsco6M-s9lDeBP7CN7lgeGQk0Mp4-ODT0D8beeEssT8C4h4W-KdUJrYONhlY_HIp1qHOz9lk23L5ub-cUSCm5zNCl1KKIyxtoZQRw7XElzsdrLZABPdXmpPOCN3UcKJF3pWnvtZxX2LpedSv0s1u2axYyMH0Xt7gHUmjIfrAbIvWHKSIv-NFr-tIaj9nAkEjU8YYqpLzq9nfFMSgDfkPFlR13hoel2xfLZWbLuVsvXhZcGw99OKAt4j9DmGb-5WVKFuBfN7GeDhBhLgGQM9WnCsYz7C0H7P_upJRxaZCPcB7DOcpm11dMiXtdCr-irbVKv9V01s0POXpWmTbvzmEFGbWiDlUDUETK8rC7yuoioiBah1P3N7siK_Jd59_5st9VLEDBotMAtzLk4-5rQLHG21FKOhWxEJ6qNy7AOOCP4JdZVziBWauE_zpaXUI2OscZV0y2K_T58JKqqL-iw7dxrWvjsA526exwmRwrv1SEq6yloXyhXynWr4VeP7Xm9SIRwwzLU2Dm4rYdTEHSeqCIDgZHpvxCbH6lXrn7H95OOlcYhBpLLPnuRmniuHqOgYnZXcpRjWW3pQReuW3GNxTZQuWReVK24LsQHQaozdF4Q9zC-pJl0aV5fEJD3KGZRGBXNIT3fhgM6_GxHsLxEf3DaGUa4waUD6vzfafidr08P4bmvEolGW9cjNMlP6mLlibG8Avy5T6-IfOkcY9pNLMccM5v9jxrUUznlHurMy1gBr4hfkdJnRdp6vxCWjQnjwdqklYK6YBD1KoI-lu5rz6VHO1c3oOaIztQJDoCqSv4pnPH4pTnZWewwj3Ge9GnPB4ofPxVgxodVX_lo7LFDua2I6raqJ90iY69Tz3KBNAfDTugIT7qxCSFwE0q95y9Jayi1cQUSmpsumxzWN5fEeW4J1LfHC8xxdy9YCY_EucNcM86041zCIhZCxd-_owY6lGEg12xfdR_tuFUx33ew_zvGIF6H_wW5xERhsYwOSF-jK_WVktzw7kRXkIuyGM-Bwad_8T-ZQHuqM-O_qVujqhFpS46Ek78Xyjd5V8mYPfkTEzfVZAdGVsmZqdK6bxU5aYjCLyoXCCZPeRq0cyr3ZHUPtUZpxunKPu4Q-EWtrt96UZpSU7HBXPxcyBtPlCU21Ngl9-EHRdswaThQ5lUxY7WSeD6GElIUYBO2brmjzs-H_lL_HXQsPeJooOnMVexxZ1nnGY-nVloWJqXhpi0NtLlMrOEciOpxdCYfD_BDB1ATESJAqY89z-goDT6U3SJqsC15AKjU5nMZrXAj9AjXWbmm0zJLi0Fax5Lj7iUk_5e4jdcOwOQYSypDNcWPgQrfb_gFtUEdLBeBfjB_n3gBA0tH6LfYLlR7kRG00YLM0sxZ9RSkuHgmk01dufCcuKDSMSzTSBsYtnIBFPaZ0sgJtn8Esoad9I24yKIMtMnItw2CyKrDSwUiZsIDaVYWKYyxzrEnzzFg3JC_TOc5BjQqq0m6BVlQYeH7zlEQ56_oFxGms1SySnSnlucmmJqs27DPOz-QsnBrvdLZOiHqGHSy68h6qMmktTzqYHxjFs-I3odGB9mtjfOpTbjuWIVFkrZtWiQ0sIjQ2xyAS0DcTg8GSX-BnUxJvUaTumVW3nr_XC1CEtgAGWeuK8UnFPRyDJptkMY518LqOWolRm1zeZxa_7O5dENup413avWL_oIdjbH6k5nSJ1681dWKd_3OAzCO6RWMj1b_Ba_zq0J41qtvODnZnic1HaasoiP2LrUC_8DzhhpEmXWsG28zvE0ytl5lh6LL5g84NhBSLUhkgJJ2FrHY-uszY52flQDOCvMO-KYiASO7M5I-GZGNcgLXZrwoF2H2cblTHa_UkdnS_Mc3G9DV9H6eMyJLWb0F6OvvzPALY1a9MNCuelL9eDPKrcUeiulhkPMHXQD5L1MmhfxP8vKOjmKfAUy946qpjf3VB9AUg2GLFXWGDoOkz75gK7a5IA5WI2nbOBdJutdp2e3QDOU32VwhVmaJ-ZvDjxSXmKIfo4zNyb9FLy5-u4VWmTsaMDZOHMr-d22oLJ7BL71W7enYVH6Uekwc-DszuNTRXWqeeRgHTmiy6Sxu7mBfqNzF4xLkG1vCsp2VeahOpGcyoUNwO55fxtA-nsQLzWvpszK-MI4jls_BKvK5Bxj3RsB1IwP4coAewawCV2MvjaNwi0oYQoECfq8krmId8AQ5Lv34u7zWahiIXD91Ah5YQfkvrNlrchBL6rRBkfNTu6sELBiB96VPwh9cs21O4ORcliillWemKmlXx_tvDACGn_-anbjpWg9w8ktka1XAQIy1wSuIff0EpkqCA1WfzxTw-XSMVCPVG35pSwfQVT4ZiDBSQbosKswCO-eS72POwVzyW3DUGhxedR0RuXah9e5m1vlLrWNOjnv0mRCeI34zq7qBxtZh77OTtlcPvkjYED_ROlQoDlV-fLHf0diiNU2g3Gu9sTOFOkfetPbANJQr6gE5ofIqFWxgbII907ag_d4O3FOFNEkX04YfcQAq4uKOeGCbF_haTOb2ri3_BclOzQxGbj1oHZ2ROWGMWFj2fklc90liqz2y6VoyppSEVF5u6KfJE-QtN6dCdcQWF6wFsbzWGjAemzrDJoH6c93FQ_S34a4nDKtoGc29HoDam7ufEZf55mpa70yi-C6yvGlL_6cwHOtUy7uTA_sqsWnYJsqN19PBeNXaDWiUklj0QA2ke9_cuviLLlsrvVMWozpzzzA7AJ3pfzm83AmeGZ75AX7lzHvHwXen-2B3ImUtee9c_4tJ6FyiB0_r0-avtTB5IVrlTr4QQYLWEBEeC1HqQsQj2yBCc4oei2MmU-ngF-pNufmpYXGqVnsvF1vw8Ixf8zMqgCd_0_TNpsb6r-47U9Gsk0OtKFPRCGL8-vIbFI72TgQsu1V7-Rg2lh8OAkQU0wBClLznf77o1mEQRdjRXaGBHpn1a8MFyXsyLMvtqkxNm7d08Qx2FJI5DHZaiDScwAU-vePCPj9Z5z8o83AHXsDm1mqbfOpEJp4pY2BanSo7t_1zmQE8Y-y75lI5GQERdr0ytBt90vV-GiE-rftJFgWQO7DKDouDruLPGEe1R956qfdGZpugoUHOPpZFFl6UOjvAGyFjm1NkKSsWyw6In2PTKsjlj9zjDFAFSquMEj6xWZDk26OiSZeJn-tNbyIQH4AN8a8MfnmfYeDQDJyKDXa0vRqoUBjNbS5CASkaIZNo8BJz7EqnspsN3cBD_I6meu5vP_NqQansUnsAlNOAIzEybad0oJoQcTS4t3wpoqHybMPu3rmLhcIBJJFGKjCN6HR_RUnjK_WjsDzjq6vDNJ_lMFOSmiSyxyPVK4fyjN-H3l-_UGceka9U-YkWqsWtL3rhTvEhUDRtgP5CMG2kOr3Y1otitLQDvM-Q1Od98R2SttBsmiis3-q31VFDtX-dQX8bkAwD-VyfX_-lhIBDulfCp_mcJw6DHv5mxw1lt7s29ogtJDfEKICISveNiy8RWedME-TzNoPYvW0QHiyAHtr75MnMhnxlNTJWBnTKhwQEfewk_Q-E0UzJPgjDrvv0dBCBZx9CbgIkiCGQb3-0Ts29-v1bsh__2zkvECdJd92YYzLmNbw4lRJgusN6BpfRBtVKigkZlER3PpIvlEAlYULZDq1G_VXFr95e0x15lvggNj18ZcjoSrS-R8YW_oQvEMeEp1Fbfv8-5N_xMqgb8wjcOGL7gtADWakhUQ2eTDEP9s4rwisvrFBoHT7YUp1NBP29ifi3OoVarAjGSQkzyGrNmlSvXhfsfEINfQ5VvfkFYCaUeDYx1TPLsGF_RejxA3SA5lmjD5PD3uc2044jOCagdRasCLIfoYU0ymj65zeZEaY93bON7jmkpoKP13d5vpgj_cmlVsU9z-m6sjaMPf_3dLB0NmY4Am1ctsVckIIuIdBESibbNKRW3nDIEDQYSqshiyqTBEaQr7j4CW6lLjOFzAPXPBizXOkvk_GFT_Bae4OrG5aYGUi0tXbWIbO5wXzwNDroHRdIQIwVwKYMUYYUVrdwbhhO4NA1iN79YU6sP37l3HL5QLo6jH4U87vwfWoVuR1EHJzvNsZBZUZUDPTHZvJoX5fPlNNtNgoQkuv2VhIFH42cTcdZcEy5cRssoDGvUcoJeV14ZkQHmJbnk3JwWQlylFFpOBG5Tx5ZkAFTVnH8c2y0_gyCyzVeC5NTyYKE1D4LhsftzZUQ7Zy56hH-97qC0KilL5fJ4IHsAM-Qa2AiSFRJahtBOujGk16zw6urFLeg8zwya6FzGwJjRVGrYbVdfoxW5ecZHBjj_lkVOzjxfIcopL-EriNS0gWjdaZBqR9olw1pvgJujnKkSmWTmAosELDORkY8CDOcORuhI_pTvbW8clPZNc8R7lYuMNzwaByyfznQAxM1q7HgqCtP9bFoBEKEaQTARHuw-nsOoTfW_GRYJMlyZBm4S8="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.8-flash",
+  "response_id": "M_bgat3vAcvu694PgZDbiAQ",
+  "usage_metadata": {
+   "candidates_token_count": 117,
+   "prompt_token_count": 9378,
+   "prompt_tokens_details": [
+    {
+     "modality": "VIDEO",
+     "token_count": 9072
+    },
+    {
+     "modality": "TEXT",
+     "token_count": 306
+    }
+   ],
+   "thoughts_token_count": 4567,
+   "total_token_count": 14062
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "kicking_leg": "right",
+   "contact_time_s": 3.333,
+   "knee_angle_contact_deg": 158.0,
+   "trunk_lean_contact_deg": 7.0,
+   "cannot_determine_reason": null,
+   "notes": "Ball contact occurs at 00:03.333. The player strikes the ball with his right instep while maintaining a slight forward trunk lean over the ball."
+  }
+ }
+}

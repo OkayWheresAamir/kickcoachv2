@@ -1,0 +1,7 @@
+clip_id,source,frames,fps,kick_window_frames,as_written_candidates,fallback_frame,fallback_in_kick_window,fixed_order_candidates,fixed_order_frames,cap_reached_before_window_start
+c01,WmsaKPhKSCU.mp4,766,29.970,285-435,0,755,False,10,3 28 41 54 69 83 96 111 124 138,True
+c05,Z7msK4UCzQM.mp4,1560,29.970,944-1094,0,780,False,10,780 793 813 828 841 854 867 880 893 907,True
+c10,-aOaMzh93tM.mp4,750,29.970,225-360,0,259,True,10,1 14 27 40 53 66 79 92 105 118,True
+c19,kRxk9xinbSM.mp4,265,29.970,75-255,0,141,True,10,4 17 30 43 56 69 82 95 108 121,False
+c20,e5AQnlci1C8.mp4,4736,29.970,2637-2967,0,2329,False,10,438 452 465 478 492 505 518 531 544 557,True
+c24,flYctEt1OLY.mp4,10182,23.976,3369-3596,0,4896,False,10,1 12 25 39 50 61 72 83 94 105,True
