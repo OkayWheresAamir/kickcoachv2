@@ -1,0 +1,47 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Video and frames are never committed (copyright and privacy).
+# Only the manifest (URLs + timestamps) and label files (coordinates) are.
+data/raw/
+data/frames/
+*.mp4
+*.mov
+*.webm
+*.mkv
+
+# Regenerable caches and downloaded model weights
+data/cache/
+models/
+*.tflite
+*.onnx
+*.pt
+*.pth
+
+# Source papers for norm extraction: store URLs in knowledge/sources.md, not the PDFs
+knowledge/papers/
+
+# Personal
+Aamir_Hashmi_Resume*.pdf
+CLAUDE.local.md
+
+# Local databases
+*.sqlite3
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
