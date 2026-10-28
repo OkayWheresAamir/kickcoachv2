@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KickCoach labeller</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<aside id="side">
+  <header>
+    <h1>KickCoach labeller</h1>
+    <span id="save-state" class="muted"></span>
+  </header>
+
+  <section id="clip-pick">
+    <label>Clip <select id="clip-select"></select></label>
+    <span id="clip-meta" class="muted"></span>
+  </section>
+
+  <section id="events-panel" hidden>
+    <h2>1 · Clip events</h2>
+    <div class="row"><span>Kicking leg</span>
+      <button data-field="kicking_leg" data-value="left">Left</button>
+      <button data-field="kicking_leg" data-value="right">Right</button></div>
+    <div class="row"><span>Ball travels to</span>
+      <button data-field="kick_direction" data-value="left">← image left</button>
+      <button data-field="kick_direction" data-value="right">image right →</button></div>
+    <div class="row"><span>View OK</span>
+      <button data-field="view_ok_human" data-value="y">Yes</button>
+      <button data-field="view_ok_human" data-value="n">No</button></div>
+    <div class="row eval-only"><span>Max backswing</span><b id="bsw-val">–</b>
+      <button id="set-bsw">Set = this frame <kbd>B</kbd></button>
+      <button id="go-bsw">Go</button></div>
+    <div class="row"><span>Contact</span><b id="contact-val">–</b>
+      <button id="set-contact">Set = this frame <kbd>C</kbd></button>
+      <button id="go-contact">Go</button></div>
+    <label class="checkline"><input type="checkbox" id="between">
+      <span>no frame shows the touch (contact fell between frames)</span></label>
+    <textarea id="notes" rows="4" placeholder="notes (optional)"></textarea>
+    <button id="to-keypoints" class="primary eval-only">2 · Label keypoints → <kbd>Enter</kbd></button>
+  </section>
+
+  <section id="frames-panel" hidden>
+    <h2 id="frames-title">2 · Keypoints</h2>
+    <div id="task-list"></div>
+    <div id="point-list"></div>
+    <div class="row">
+      <button id="confirm" class="primary">Confirm frame <kbd>Enter</kbd></button>
+      <button id="back-events">← Events <kbd>E</kbd></button>
+    </div>
+  </section>
+
+  <section id="qa-panel">
+    <h2>QA flags <span id="qa-count" class="muted"></span></h2>
+    <ul id="qa-list"></ul>
+  </section>
+
+  <section id="view-panel">
+    <label>Brightness <input type="range" id="bright" min="0.5" max="3" step="0.1" value="1"></label>
+    <label>Contrast <input type="range" id="contrast" min="0.5" max="3" step="0.1" value="1"></label>
+  </section>
+
+  <details id="help">
+    <summary>Keys and mouse</summary>
+    <p><b>Everywhere:</b> drag empty space = pan · pinch or ctrl/alt+scroll = zoom ·
+      two-finger scroll = pan · <kbd>F</kbd> fit player · <kbd>0</kbd> whole image ·
+      <kbd>+</kbd>/<kbd>-</kbd> zoom</p>
+    <p><b>Clip events:</b> <kbd>←</kbd>/<kbd>→</kbd> one frame · shift = 10 frames ·
+      <kbd>Space</kbd> play/pause · <kbd>C</kbd> contact = this frame ·
+      <kbd>B</kbd> max backswing = this frame · <kbd>K</kbd> show/hide model skeleton ·
+      <kbd>Enter</kbd> go to keypoints</p>
+    <p><b>Keypoints:</b> drag a point to move it · <kbd>Tab</kbd>/shift+<kbd>Tab</kbd>
+      select next/previous point · click an unplaced point's row, then click the image to place
+      it · <kbd>B</kbd> selects the ball · shift+click moves the selected point ·
+      <kbd>V</kbd> visible · <kbd>O</kbd> occluded
+      (estimated) · <kbd>U</kbd> unknown (removes it) · <kbd>R</kbd> reset to model ·
+      <kbd>⌘Z</kbd> undo · <kbd>←</kbd>/<kbd>→</kbd> (shift = 10), <kbd>Space</kbd> or the
+      scrubber: look at other frames, with your points drawn faint · <kbd>/</kbd> or
+      <kbd>Enter</kbd> back to the labelled frame · <kbd>H</kbd> hide labels · <kbd>G</kbd> model ghosts ·
+      <kbd>N</kbd>/<kbd>P</kbd> next/previous frame · <kbd>Enter</kbd> confirm frame ·
+      <kbd>E</kbd> back to events</p>
+    <p>Definitions: <code>docs/LABELLING_GUIDE.md</code>.</p>
+  </details>
+  <footer id="timer" class="muted"></footer>
+</aside>
+
+<main id="stage">
+  <canvas id="img-canvas"></canvas>
+  <canvas id="ov-canvas"></canvas>
+  <div id="banner" hidden></div>
+  <div id="toast" hidden></div>
+  <div id="scrubber">
+    <input type="range" id="scrub" min="0" max="0" value="0">
+    <span id="frame-label"></span>
+  </div>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
