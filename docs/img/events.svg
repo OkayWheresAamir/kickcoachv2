@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 300" width="660" height="300" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <title>The three labelled frames: max backswing, contact minus one, contact (schematic)</title>
+  <rect width="660" height="300" fill="#ffffff"/>
+  <g stroke="#9aa3ad" stroke-width="2">
+    <line x1="10" y1="210" x2="210" y2="210"/>
+    <line x1="230" y1="210" x2="430" y2="210"/>
+    <line x1="450" y1="210" x2="650" y2="210"/>
+  </g>
+  <!-- (a) max backswing: knee most bent -->
+  <g>
+    <polyline points="70,40 95,120 45,140" fill="none" stroke="#d9541e" stroke-width="4" stroke-linejoin="round"/>
+    <polyline points="45,140 30,128 40,160 45,140" fill="none" stroke="#d9541e" stroke-width="2"/>
+    <path d="M95 120 m-16 -8 a18 18 0 0 0 -6 20" fill="none" stroke="#1d2329" stroke-width="1.5"/>
+    <circle cx="170" cy="192" r="18" fill="#fff6b0" stroke="#8a7a00" stroke-width="2"/>
+    <text x="15" y="236" font-weight="bold">Max backswing</text>
+    <text x="15" y="254">The frame where the kicking knee</text>
+    <text x="15" y="270">is most bent (smallest hip-knee-</text>
+    <text x="15" y="286">ankle angle), before contact.</text>
+  </g>
+  <!-- (b) contact - 1: gap -->
+  <g>
+    <polyline points="290,40 320,118 352,178" fill="none" stroke="#d9541e" stroke-width="4" stroke-linejoin="round"/>
+    <polyline points="352,178 340,170 370,198 352,178" fill="none" stroke="#d9541e" stroke-width="2"/>
+    <circle cx="402" cy="192" r="18" fill="#fff6b0" stroke="#8a7a00" stroke-width="2"/>
+    <text x="235" y="236" font-weight="bold">Contact − 1</text>
+    <text x="235" y="254">The frame just before contact:</text>
+    <text x="235" y="270">a gap between foot and ball.</text>
+  </g>
+  <!-- (c) contact: first touch -->
+  <g>
+    <polyline points="510,40 545,115 582,175" fill="none" stroke="#d9541e" stroke-width="4" stroke-linejoin="round"/>
+    <polyline points="582,175 570,166 602,196 582,175" fill="none" stroke="#d9541e" stroke-width="2"/>
+    <circle cx="620" cy="190" r="18" fill="#fff6b0" stroke="#8a7a00" stroke-width="2"/>
+    <text x="455" y="236" font-weight="bold">Contact</text>
+    <text x="455" y="254">The first frame in which the foot</text>
+    <text x="455" y="270">touches the ball (ball may still</text>
+    <text x="455" y="286">be in its resting place).</text>
+  </g>
+</svg>
