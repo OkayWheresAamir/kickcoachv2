@@ -1,0 +1,7 @@
+clip_id,frame,roles,confirmed,active_s,wall_s
+c01,43,max_backswing,True,100,103
+c01,59,pre_contact,True,170,170
+c01,60,contact,True,240,248
+c10,64,max_backswing,True,292,312
+c10,75,pre_contact,True,135,135
+c10,76,contact,True,77,77
