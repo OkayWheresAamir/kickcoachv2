@@ -1,0 +1,25 @@
+{
+ "clip": {
+  "contact_between_frames": false,
+  "contact_frame": null,
+  "kick_direction": "right",
+  "kicking_leg": "right",
+  "max_backswing_frame": 27,
+  "notes": "",
+  "view_ok_human": "y"
+ },
+ "clip_id": "c24",
+ "clip_timing": {
+  "active_s": 42,
+  "wall_s": 42
+ },
+ "frames": {},
+ "image_size": [
+  1920,
+  1080
+ ],
+ "n_frames": 228,
+ "prefill_model": "rtmpose",
+ "purpose": "eval",
+ "schema_version": 1
+}
