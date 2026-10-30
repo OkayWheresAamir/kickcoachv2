@@ -15,6 +15,7 @@ dependencies = [
     "pillow>=11",
     "python-dotenv>=1",
     "rtmlib>=0.0.16",
+    "scipy>=1.14",
 ]
 
 [dependency-groups]
@@ -36,6 +37,8 @@ packages = ["kickcoach"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+# eval/ scripts are imported by their tests (python -m eval.<name> from the repo root).
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100
