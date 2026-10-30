@@ -17,14 +17,14 @@
     <text x="15" y="270">is most bent (smallest hip-knee-</text>
     <text x="15" y="286">ankle angle), before contact.</text>
   </g>
-  <!-- (b) contact - 1: gap -->
+  <!-- (b) contact - 1: the frame before; often a gap, sometimes only an overlap -->
   <g>
     <polyline points="290,40 320,118 352,178" fill="none" stroke="#d9541e" stroke-width="4" stroke-linejoin="round"/>
     <polyline points="352,178 340,170 370,198 352,178" fill="none" stroke="#d9541e" stroke-width="2"/>
     <circle cx="402" cy="192" r="18" fill="#fff6b0" stroke="#8a7a00" stroke-width="2"/>
     <text x="235" y="236" font-weight="bold">Contact − 1</text>
     <text x="235" y="254">The frame just before contact:</text>
-    <text x="235" y="270">a gap between foot and ball.</text>
+    <text x="235" y="270">often a gap, or only an overlap.</text>
   </g>
   <!-- (c) contact: first touch -->
   <g>

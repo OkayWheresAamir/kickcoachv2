@@ -62,8 +62,15 @@ Claude must never fill it in.
 
 **Contact frame.** The first frame in which the foot touches the ball. The literature calls
 this moment "ball impact" (e.g. Kellis & Katis 2007, p. 155).
-- Look at the gap between the foot (shoe) and the ball. In the contact frame there is no gap.
-  In the frame before it (contact − 1) there is one.
+- **Overlap is not contact.** In a 2D picture the shoe can cover part of the ball's outline
+  before it touches the ball, because it's in front of the ball or beside it in depth. So "no
+  gap" alone isn't enough. Often two frames in a row show no gap: in the first the shoe only
+  overlaps the ball; in the second it's pressed against the ball's back (the side it's kicked
+  from). Pick the second as contact. Signs of a real touch: the ball looks squashed or pushed,
+  or by the next frame the ball has moved. (Our convention, refined after the first homework
+  sitting.)
+- **Contact − 1 is simply the frame before contact.** It may show a gap or an overlap; it
+  doesn't need a gap.
 - At contact the foot is often blurred. Use the edge of the blur nearest the ball.
 - **If no frame shows the touch** (the gap closes, then in the next frame the ball has already
   moved away), set contact to the first frame in which the ball has moved, and tick "no frame
@@ -102,6 +109,20 @@ surface landmarks of a validated 2D side-view method (Fernández-González et al
 
 ![Where each landmark goes](img/landmarks.svg)
 
+**Finding hips and shoulders under clothing.** Both are ball-and-socket joints, and the
+definitions above are the centre the bone turns about (the "rotation centre" in Wu et al.
+2005). So find the pivot:
+- **Hip:** follow the line down the middle of the thigh up to the pelvis. Then step through
+  the backswing with `←`/`→`: the thigh swings a long way, and the point near its top that
+  stays still is the hip. Place the near hip there. The far hip sits just behind it
+  (*occluded*).
+- **Shoulder:** the same with the arm swing: the point near the top of the upper arm that stays
+  still while the arm moves.
+- **Place each hip from its own leg, not from the trunk's tilt.** Trunk lean is measured from
+  the hip and shoulder midpoints. If you put the hips where the lean "looks right", the label
+  copies your impression of the lean instead of locating the joints, and E1/E2 would be
+  scoring the model against that impression. (Our convention.)
+
 Left and right are always the **player's** left and right, never the image's. In the tool,
 blue = left, orange = right. Check the colours on every frame: pose models often swap the
 near and far legs in a side view (handoff D8), and the most important correction you'll make is
@@ -125,6 +146,10 @@ Rules of thumb:
   the arm. Both matter: trunk lean uses the midpoints of both shoulders and both hips.
 - If the player kicks towards image right, their **right** side faces the camera (near side)
   and their left side is the far side; kicking towards image left, it's the other way round.
+- **The kicking foot's toe at contact** is often behind the ball: where the toe should be,
+  you see ball, not shoe. Mark it *occluded* and place your estimate. Follow the line of
+  the visible part of the shoe (laces and sole), and use the frames just before contact
+  (`←`) to see how long the foot is and which way it points.
 - A **blurred** limb is not occluded. If you can tell where the joint is inside the blur, keep
   it *visible*; if the blur hides it but the limb's line still tells you, use *occluded*; if
   not even that, *unknown*.
