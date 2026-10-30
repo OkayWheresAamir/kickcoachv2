@@ -1,0 +1,27 @@
+clip_id,split,purpose,view_ok_human,accepted,reasons,viewpoint_ratio,keypoint_score,kicking_leg,kicking_leg_label,kick_direction,kick_direction_label,contact_frame,contact_label,contact_method,contact_confidence,max_backswing_frame,max_backswing_label,knee_angle_contact,max_knee_flexion_backswing,trunk_lean_contact,plant_foot_offset,segment_sequence_order,peak_knee_ext_velocity
+c01,tune,eval,y,True,,0.285,0.67,right,right,right,right,60,60,ball_bracket,low,45,43,136.38,88.49,6.0,0.08,proximal_to_distal,not_measured
+c02,tune,eval,y,True,,0.274,0.662,right,right,right,right,83,85,ball_bracket,low,65,68,116.73,82.67,-19.66,0.14,proximal_to_distal,not_measured
+c03,heldout,eval,y,True,,0.089,0.728,right,right,right,right,68,68,ball_motion,high,63,62,117.51,90.44,-6.34,-0.02,proximal_to_distal,not_measured
+c04,tune,eval,y,True,,0.265,0.718,right,right,right,right,73,73,ball_motion,high,54,53,136.64,82.65,-17.35,-0.06,proximal_to_distal,not_measured
+c05,tune,eval,y,True,,0.208,0.686,right,right,right,right,67,69,ball_bracket,low,49,51,123.79,86.03,-13.9,-0.03,proximal_to_distal,not_measured
+c06,tune,eval,y,True,,0.437,0.674,left,left,left,left,91,74,foot_speed,low,89,64,147.05,64.09,11.81,not_measured,simultaneous,not_measured
+c07,tune,eval,y,True,,0.133,0.735,right,right,right,right,76,76,ball_motion,high,49,47,132.59,98.04,-11.6,-0.32,simultaneous,not_measured
+c08,tune,eval,y,True,,0.249,0.722,right,right,right,right,75,75,ball_motion,high,56,48,128.12,78.79,-11.37,0.03,proximal_to_distal,not_measured
+c09,tune,eval,y,True,,0.187,0.698,left,left,left,left,82,83,ball_bracket,medium,65,64,133.78,81.08,-12.67,-0.05,proximal_to_distal,not_measured
+c10,tune,eval,y,True,,0.22,0.742,right,right,right,right,76,76,ball_motion,high,62,64,122.39,74.02,-4.86,-0.02,proximal_to_distal,not_measured
+c11,heldout,eval,y,True,,0.307,0.702,right,right,right,right,82,82,ball_motion,high,64,60,126.53,77.78,-1.76,-0.37,proximal_to_distal,not_measured
+c12,heldout,eval,y,True,,0.291,0.77,right,right,right,right,73,73,ball_motion,high,54,58,140.37,78.93,-7.08,-0.1,proximal_to_distal,not_measured
+c13,tune,eval,y,True,,0.367,0.732,left,left,left,left,84,88,ball_bracket,low,66,67,137.98,89.34,-10.48,0.06,distal_to_proximal,1146.62
+c14,tune,eval,y,True,,0.308,0.73,right,right,right,right,82,84,ball_bracket,low,76,63,116.41,101.39,-1.1,0.2,proximal_to_distal,not_measured
+c15,heldout,eval,y,True,,0.167,0.657,right,right,right,right,75,74,ball_bracket,medium,57,56,129.38,79.63,1.24,-0.01,proximal_to_distal,not_measured
+c16,heldout,eval,y,True,,0.344,0.687,right,right,right,right,83,83,ball_motion,high,63,61,137.23,71.22,5.36,-0.36,proximal_to_distal,not_measured
+c17,tune,eval,y,True,,0.074,0.695,left,left,left,left,68,70,ball_bracket,low,56,45,116.35,89.25,-13.23,-0.03,distal_to_proximal,not_measured
+c18,tune,eval,y,True,,0.282,0.774,right,right,right,right,74,74,ball_motion,high,41,41,122.7,69.26,-16.67,-0.16,proximal_to_distal,not_measured
+c19,tune,eval,y,True,,0.378,0.815,right,right,right,right,100,100,ball_motion,high,82,77,136.64,81.62,-2.17,0.06,proximal_to_distal,1698.48
+c20,tune,eval,y,True,,0.253,0.796,right,right,right,right,130,,ball_motion,high,1,,154.19,93.67,-8.58,-0.14,proximal_to_distal,not_measured
+c23,tune,eval,n,False,"camera not side-on: shoulder width is 0.56 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0.564,0.757,right,,right,,41,,ball_motion,high,40,,,,,,,
+c24,tune,eval,y,True,,0.21,0.745,right,right,right,right,147,,ball_motion,high,121,27,145.7,100.89,-12.57,0.15,proximal_to_distal,not_measured
+c25,tune,eval,,True,,0.368,0.795,right,,right,,86,,foot_speed,low,81,,94.38,47.78,-20.62,not_measured,proximal_to_distal,not_measured
+c26,tune,gate_only,n,False,"camera not side-on: shoulder width is 0.67 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0.673,0.741,right,right,left,right,74,84,ball_bracket,low,41,84,,,,,,
+c27,tune,gate_only,n,False,"camera not side-on: shoulder width is 0.64 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0.636,0.799,right,right,right,,72,,ball_bracket,low,54,,,,,,,
+c28,tune,gate_only,n,False,"camera not side-on: shoulder width is 0.70 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0.699,0.824,right,right,left,,109,,ball_bracket,low,54,,,,,,,

@@ -1,0 +1,73 @@
+subset,model,n,missing_rate,pck,median_err,mean_err,p90_err
+"core, required frames, all labelled",movenet,304,0.0,0.2237,0.1758,0.385,1.0677
+"core, required frames, all labelled",rtmpose,304,0.0,0.852,0.0217,0.0433,0.1226
+"core, required frames, all labelled",mediapipe,304,0.0,0.6546,0.0731,0.1072,0.1626
+"core, required frames, visible only",movenet,284,0.0,0.2218,0.1793,0.3949,1.1015
+"core, required frames, visible only",rtmpose,284,0.0,0.8697,0.0184,0.0398,0.1124
+"core, required frames, visible only",mediapipe,284,0.0,0.6796,0.0713,0.1068,0.1626
+"feet, required frames, all labelled",movenet,152,1.0,0.0,nan,nan,nan
+"feet, required frames, all labelled",rtmpose,152,0.0,0.6711,0.0601,0.0877,0.2001
+"feet, required frames, all labelled",mediapipe,152,0.0,0.5,0.0998,0.203,0.3152
+"feet, required frames, visible only",movenet,141,1.0,0.0,nan,nan,nan
+"feet, required frames, visible only",rtmpose,141,0.0,0.695,0.0561,0.0855,0.2009
+"feet, required frames, visible only",mediapipe,141,0.0,0.5106,0.0979,0.2099,0.3383
+"group=shoulders, required frames",movenet,76,0.0,0.25,0.1612,0.1813,0.3021
+"group=shoulders, required frames",rtmpose,76,0.0,0.7368,0.0381,0.0566,0.1541
+"group=shoulders, required frames",mediapipe,76,0.0,0.7237,0.052,0.0674,0.1364
+"group=kicking_leg, required frames",movenet,114,0.0,0.2281,0.1759,0.549,1.8753
+"group=kicking_leg, required frames",rtmpose,114,0.0,0.9211,0.0213,0.0381,0.0909
+"group=kicking_leg, required frames",mediapipe,114,0.0,0.6579,0.077,0.1191,0.1667
+"group=plant_leg, required frames",movenet,114,0.0,0.2018,0.1872,0.3567,0.9394
+"group=plant_leg, required frames",rtmpose,114,0.0,0.8596,0.0002,0.0396,0.1122
+"group=plant_leg, required frames",mediapipe,114,0.0,0.6053,0.0837,0.1219,0.1664
+"group=kicking_foot, required frames",movenet,76,1.0,0.0,nan,nan,nan
+"group=kicking_foot, required frames",rtmpose,76,0.0,0.6711,0.0476,0.0965,0.2869
+"group=kicking_foot, required frames",mediapipe,76,0.0,0.4342,0.1087,0.2237,0.4311
+"group=plant_foot, required frames",movenet,76,1.0,0.0,nan,nan,nan
+"group=plant_foot, required frames",rtmpose,76,0.0,0.6711,0.0657,0.0789,0.143
+"group=plant_foot, required frames",mediapipe,76,0.0,0.5658,0.0884,0.1823,0.2402
+"core, role=max_backswing",movenet,152,0.0,0.1645,0.23,0.6037,1.8764
+"core, role=max_backswing",rtmpose,152,0.0,0.8421,0.0163,0.0412,0.1155
+"core, role=max_backswing",mediapipe,152,0.0,0.6513,0.0711,0.1266,0.1589
+"core, role=contact",movenet,152,0.0,0.2829,0.1534,0.1663,0.2796
+"core, role=contact",rtmpose,152,0.0,0.8618,0.0238,0.0454,0.1242
+"core, role=contact",mediapipe,152,0.0,0.6579,0.0762,0.0879,0.1642
+"core, role=pre_contact",movenet,40,0.0,0.325,0.143,0.1644,0.3197
+"core, role=pre_contact",rtmpose,40,0.0,0.875,0.0431,0.0518,0.1201
+"core, role=pre_contact",mediapipe,40,0.0,0.675,0.0838,0.0868,0.1403
+kicking leg at contact,movenet,57,0.0,0.3333,0.1223,0.1527,0.2855
+kicking leg at contact,rtmpose,57,0.0,0.8772,0.0418,0.0466,0.1161
+kicking leg at contact,mediapipe,57,0.0,0.614,0.0782,0.0968,0.171
+"kicking big toe at contact, visible only",movenet,19,1.0,0.0,nan,nan,nan
+"kicking big toe at contact, visible only",rtmpose,19,0.0,0.1579,0.258,0.2478,0.4556
+"kicking big toe at contact, visible only",mediapipe,19,0.0,0.2105,0.2104,0.2507,0.5038
+"core, required frames, split=tune",movenet,224,0.0,0.2143,0.1831,0.4028,1.1786
+"core, required frames, split=tune",rtmpose,224,0.0,0.8393,0.025,0.0472,0.1417
+"core, required frames, split=tune",mediapipe,224,0.0,0.6429,0.0716,0.1146,0.1675
+"core, required frames, split=heldout",movenet,80,0.0,0.25,0.1592,0.3351,0.7747
+"core, required frames, split=heldout",rtmpose,80,0.0,0.8875,0.0176,0.0323,0.1029
+"core, required frames, split=heldout",mediapipe,80,0.0,0.6875,0.0784,0.0865,0.1439
+"core, required frames, moved points only",movenet,167,0.0,0.1976,0.1746,0.2978,0.4649
+"core, required frames, moved points only",rtmpose,167,0.0,0.7305,0.0691,0.0787,0.1563
+"core, required frames, moved points only",mediapipe,167,0.0,0.5449,0.0949,0.1114,0.1674
+"feet, required frames, moved points only",movenet,113,1.0,0.0,nan,nan,nan
+"feet, required frames, moved points only",rtmpose,113,0.0,0.5575,0.0827,0.1179,0.2524
+"feet, required frames, moved points only",mediapipe,113,0.0,0.5044,0.0984,0.1841,0.3292
+"joint=shoulder, required frames",movenet,76,0.0,0.25,0.1612,0.1813,0.3021
+"joint=shoulder, required frames",rtmpose,76,0.0,0.7368,0.0381,0.0566,0.1541
+"joint=shoulder, required frames",mediapipe,76,0.0,0.7237,0.052,0.0674,0.1364
+"joint=hip, required frames",movenet,76,0.0,0.25,0.1339,0.1578,0.2542
+"joint=hip, required frames",rtmpose,76,0.0,0.8421,0.0437,0.0544,0.146
+"joint=hip, required frames",mediapipe,76,0.0,0.5132,0.0996,0.1018,0.1659
+"joint=knee, required frames",movenet,76,0.0,0.2368,0.226,0.4259,1.1253
+"joint=knee, required frames",rtmpose,76,0.0,0.9211,0.0001,0.0225,0.0768
+"joint=knee, required frames",mediapipe,76,0.0,0.7105,0.0625,0.1075,0.1702
+"joint=ankle, required frames",movenet,76,0.0,0.1579,0.2561,0.7748,2.3505
+"joint=ankle, required frames",rtmpose,76,0.0,0.9079,0.0187,0.0396,0.0952
+"joint=ankle, required frames",mediapipe,76,0.0,0.6711,0.077,0.1522,0.1655
+"joint=heel, required frames",movenet,76,1.0,0.0,nan,nan,nan
+"joint=heel, required frames",rtmpose,76,0.0,0.7105,0.0611,0.0772,0.147
+"joint=heel, required frames",mediapipe,76,0.0,0.5789,0.0883,0.1706,0.2387
+"joint=big_toe, required frames",movenet,76,1.0,0.0,nan,nan,nan
+"joint=big_toe, required frames",rtmpose,76,0.0,0.6316,0.0601,0.0982,0.2869
+"joint=big_toe, required frames",mediapipe,76,0.0,0.4211,0.1184,0.2355,0.3774

@@ -1,0 +1,118 @@
+{
+ "clip_id": "c25",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [
+   "ball not tracked: contact from peak foot speed; plant-foot offset withheld"
+  ],
+  "viewpoint_ratio": 0.368,
+  "viewpoint_score": 0.632,
+  "keypoint_score": 0.795,
+  "capture_fps": 30.0,
+  "fps_trusted": true,
+  "fps_reason": "real-time clip: playback 30 fps"
+ },
+ "events": {
+  "kicking_leg": "right",
+  "kicking_leg_source": "speed_difference",
+  "foot_speed_contrast": 8.96,
+  "kick_direction": "right",
+  "kick_direction_source": "detected",
+  "contact_frame": 86,
+  "contact_method": "foot_speed",
+  "contact_confidence": "low",
+  "max_backswing_frame": 81,
+  "backswing_window_start": 72,
+  "ball_rest": {
+   "x": 448.9,
+   "y": 259.7,
+   "diameter": 30.4
+  },
+  "ball_last_at_rest": 10,
+  "ball_next_seen_moved": 11,
+  "notes": [
+   "ball-based contact rejected: kicking ankle 6.0 thigh lengths from the ball at contact (> 1.5, heuristic)"
+  ]
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 94.38,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 86,
+   "keypoint_score": 0.729
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 47.78,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 81,
+   "keypoint_score": 0.706
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": -20.62,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 86,
+   "keypoint_score": 0.752
+  },
+  {
+   "id": "plant_foot_offset",
+   "unit": "leg_lengths",
+   "status": "not_measured",
+   "reason": "ball not tracked at contact"
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "proximal_to_distal",
+   "unit": "order",
+   "status": "measured",
+   "frame": 86,
+   "extra": {
+    "thigh_peak_frame": 81,
+    "shank_peak_frame": 86,
+    "lag_ms": null,
+    "lag_note": "lag in ms withheld: capture rate 30 fps is below 120 (handoff D6)"
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "unit": "deg/s",
+   "status": "not_measured",
+   "reason": "capture rate 30 fps is below 120 (handoff D6)"
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": null,
+  "breaks": [
+   86
+  ],
+  "swapped_frames": [],
+  "glitch_frames": [
+   110,
+   111,
+   112,
+   113,
+   114,
+   115,
+   117,
+   118,
+   119,
+   126,
+   127,
+   129,
+   131,
+   132,
+   135,
+   136,
+   137,
+   138
+  ],
+  "filled_points": 19
+ }
+}

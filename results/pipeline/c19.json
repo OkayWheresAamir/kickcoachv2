@@ -1,0 +1,98 @@
+{
+ "clip_id": "c19",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [],
+  "viewpoint_ratio": 0.378,
+  "viewpoint_score": 0.622,
+  "keypoint_score": 0.815,
+  "capture_fps": 240.0,
+  "fps_trusted": true,
+  "fps_reason": "capture rate stated by source: 240 fps"
+ },
+ "events": {
+  "kicking_leg": "right",
+  "kicking_leg_source": "ball_window",
+  "foot_speed_contrast": 20.07,
+  "kick_direction": "right",
+  "kick_direction_source": "detected",
+  "contact_frame": 100,
+  "contact_method": "ball_motion",
+  "contact_confidence": "high",
+  "max_backswing_frame": 82,
+  "backswing_window_start": 59,
+  "ball_rest": {
+   "x": 293.2,
+   "y": 330.2,
+   "diameter": 44.5
+  },
+  "ball_last_at_rest": 100,
+  "ball_next_seen_moved": 101,
+  "notes": []
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 136.64,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 100,
+   "keypoint_score": 0.731
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 81.62,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 82,
+   "keypoint_score": 0.74
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": -2.17,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 100,
+   "keypoint_score": 0.754
+  },
+  {
+   "id": "plant_foot_offset",
+   "value": 0.06,
+   "unit": "leg_lengths",
+   "status": "measured",
+   "frame": 100,
+   "keypoint_score": 0.738
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "proximal_to_distal",
+   "unit": "order",
+   "status": "measured",
+   "frame": 100,
+   "extra": {
+    "thigh_peak_frame": 91,
+    "shank_peak_frame": 100,
+    "lag_ms": 37.5,
+    "peak_shank_ang_velocity_deg_s": 2226.2
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "value": 1698.48,
+   "unit": "deg/s",
+   "status": "measured",
+   "frame": 100
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": 0.075,
+  "breaks": [
+   100
+  ],
+  "swapped_frames": [],
+  "glitch_frames": [],
+  "filled_points": 0
+ }
+}

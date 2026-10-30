@@ -1,0 +1,111 @@
+{
+ "clip_id": "c11",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [
+   "velocities withheld: slow motion with unknown capture rate"
+  ],
+  "viewpoint_ratio": 0.307,
+  "viewpoint_score": 0.693,
+  "keypoint_score": 0.702,
+  "capture_fps": null,
+  "fps_trusted": false,
+  "fps_reason": "slow motion with unknown capture rate"
+ },
+ "events": {
+  "kicking_leg": "right",
+  "kicking_leg_source": "ball_window",
+  "foot_speed_contrast": 6.49,
+  "kick_direction": "right",
+  "kick_direction_source": "detected",
+  "contact_frame": 82,
+  "contact_method": "ball_motion",
+  "contact_confidence": "high",
+  "max_backswing_frame": 64,
+  "backswing_window_start": 57,
+  "ball_rest": {
+   "x": 237.5,
+   "y": 294.8,
+   "diameter": 24.1
+  },
+  "ball_last_at_rest": 82,
+  "ball_next_seen_moved": 83,
+  "notes": []
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 126.53,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 82,
+   "keypoint_score": 0.739
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 77.78,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 64,
+   "keypoint_score": 0.699
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": -1.76,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 82,
+   "keypoint_score": 0.743
+  },
+  {
+   "id": "plant_foot_offset",
+   "value": -0.37,
+   "unit": "leg_lengths",
+   "status": "measured",
+   "frame": 82,
+   "keypoint_score": 0.734
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "proximal_to_distal",
+   "unit": "order",
+   "status": "measured",
+   "frame": 82,
+   "extra": {
+    "thigh_peak_frame": 62,
+    "shank_peak_frame": 77,
+    "lag_ms": null,
+    "lag_note": "lag in ms withheld: real time per frame unknown (DEC-010)"
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "unit": "deg/s",
+   "status": "not_measured",
+   "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": 0.15,
+  "breaks": [
+   82
+  ],
+  "swapped_frames": [
+   17,
+   18,
+   19,
+   20,
+   31,
+   56,
+   89
+  ],
+  "glitch_frames": [
+   19,
+   31,
+   58
+  ],
+  "filled_points": 15
+ }
+}

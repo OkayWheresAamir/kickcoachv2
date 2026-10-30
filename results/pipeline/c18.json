@@ -1,0 +1,102 @@
+{
+ "clip_id": "c18",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [
+   "velocities withheld: slow motion with unknown capture rate"
+  ],
+  "viewpoint_ratio": 0.282,
+  "viewpoint_score": 0.718,
+  "keypoint_score": 0.774,
+  "capture_fps": null,
+  "fps_trusted": false,
+  "fps_reason": "slow motion with unknown capture rate"
+ },
+ "events": {
+  "kicking_leg": "right",
+  "kicking_leg_source": "ball_window",
+  "foot_speed_contrast": 3.68,
+  "kick_direction": "right",
+  "kick_direction_source": "detected",
+  "contact_frame": 74,
+  "contact_method": "ball_motion",
+  "contact_confidence": "high",
+  "max_backswing_frame": 41,
+  "backswing_window_start": 0,
+  "ball_rest": {
+   "x": 359.1,
+   "y": 411.4,
+   "diameter": 42.5
+  },
+  "ball_last_at_rest": 74,
+  "ball_next_seen_moved": 75,
+  "notes": []
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 122.7,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 74,
+   "keypoint_score": 0.759
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 69.26,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 41,
+   "keypoint_score": 0.734,
+   "extra": {
+    "window_from_clip_start": true
+   }
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": -16.67,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 74,
+   "keypoint_score": 0.74
+  },
+  {
+   "id": "plant_foot_offset",
+   "value": -0.16,
+   "unit": "leg_lengths",
+   "status": "measured",
+   "frame": 74,
+   "keypoint_score": 0.694
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "proximal_to_distal",
+   "unit": "order",
+   "status": "measured",
+   "frame": 74,
+   "extra": {
+    "thigh_peak_frame": 58,
+    "shank_peak_frame": 71,
+    "lag_ms": null,
+    "lag_note": "lag in ms withheld: real time per frame unknown (DEC-010)"
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "unit": "deg/s",
+   "status": "not_measured",
+   "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": 0.15,
+  "breaks": [
+   74
+  ],
+  "swapped_frames": [],
+  "glitch_frames": [],
+  "filled_points": 0
+ }
+}

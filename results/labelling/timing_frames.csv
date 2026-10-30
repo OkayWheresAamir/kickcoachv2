@@ -30,8 +30,8 @@ c11,82,contact,True,211,211
 c12,58,max_backswing,True,92,92
 c12,72,pre_contact,True,57,57
 c12,73,contact,True,119,119
-c13,67,max_backswing,True,55,55
-c13,88,contact,True,89,89
+c13,67,max_backswing,True,63,79
+c13,88,contact,True,103,136
 c14,63,max_backswing,True,43,43
 c14,84,contact,True,70,70
 c15,56,max_backswing,True,101,101
@@ -43,5 +43,5 @@ c17,70,contact,True,51,51
 c18,41,max_backswing,True,129,129
 c18,73,pre_contact,False,6,6
 c18,74,contact,True,256,256
-c19,77,max_backswing,True,129,169
-c19,100,contact,True,58,281
+c19,77,max_backswing,True,130,187
+c19,100,contact,True,62,302

@@ -1,0 +1,43 @@
+{
+ "ranked": [
+  "rtmpose",
+  "mediapipe",
+  "movenet"
+ ],
+ "pck_core": {
+  "movenet": 0.2236842105263158,
+  "rtmpose": 0.8519736842105263,
+  "mediapipe": 0.6546052631578947
+ },
+ "pck_core_ci95": {
+  "movenet": [
+   0.17434210526315788,
+   0.26973684210526316
+  ],
+  "rtmpose": [
+   0.8125,
+   0.8914473684210527
+  ],
+  "mediapipe": [
+   0.601891447368421,
+   0.7171052631578947
+  ]
+ },
+ "best": "rtmpose",
+ "runner_up": "mediapipe",
+ "lead": 0.19736842105263164,
+ "lead_ci95": [
+  0.13486842105263153,
+  0.256578947368421
+ ],
+ "pck_core_moved": {
+  "movenet": 0.19760479041916168,
+  "rtmpose": 0.7305389221556886,
+  "mediapipe": 0.5449101796407185
+ },
+ "leads_on_moved": true,
+ "close": false,
+ "n_clips": 19,
+ "n_frames": 38,
+ "n_boot": 2000
+}

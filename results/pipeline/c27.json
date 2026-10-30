@@ -1,0 +1,57 @@
+{
+ "clip_id": "c27",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": false,
+  "reasons": [
+   "camera not side-on: shoulder width is 0.64 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips"
+  ],
+  "warnings": [
+   "velocities withheld: slow motion with unknown capture rate"
+  ],
+  "viewpoint_ratio": 0.636,
+  "viewpoint_score": 0.364,
+  "keypoint_score": 0.799,
+  "capture_fps": null,
+  "fps_trusted": false,
+  "fps_reason": "slow motion with unknown capture rate"
+ },
+ "events": {
+  "kicking_leg": "right",
+  "kicking_leg_source": "ball_window",
+  "foot_speed_contrast": 21.07,
+  "kick_direction": "right",
+  "kick_direction_source": "detected",
+  "contact_frame": 72,
+  "contact_method": "ball_bracket",
+  "contact_confidence": "low",
+  "max_backswing_frame": 54,
+  "backswing_window_start": 23,
+  "ball_rest": {
+   "x": 233.2,
+   "y": 254.3,
+   "diameter": 22.7
+  },
+  "ball_last_at_rest": 72,
+  "ball_next_seen_moved": 88,
+  "notes": []
+ },
+ "features": [],
+ "signal": {
+  "cutoff_cpf": 0.15,
+  "breaks": [
+   72
+  ],
+  "swapped_frames": [],
+  "glitch_frames": [
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   112
+  ],
+  "filled_points": 14
+ }
+}

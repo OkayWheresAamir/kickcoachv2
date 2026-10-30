@@ -1,0 +1,103 @@
+{
+ "clip_id": "c06",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [
+   "ball not tracked: contact from peak foot speed; plant-foot offset withheld",
+   "velocities withheld: slow motion with unknown capture rate"
+  ],
+  "viewpoint_ratio": 0.437,
+  "viewpoint_score": 0.563,
+  "keypoint_score": 0.674,
+  "capture_fps": null,
+  "fps_trusted": false,
+  "fps_reason": "slow motion with unknown capture rate"
+ },
+ "events": {
+  "kicking_leg": "left",
+  "kicking_leg_source": "speed_difference",
+  "foot_speed_contrast": 44.4,
+  "kick_direction": "left",
+  "kick_direction_source": "detected",
+  "contact_frame": 91,
+  "contact_method": "foot_speed",
+  "contact_confidence": "low",
+  "max_backswing_frame": 89,
+  "backswing_window_start": 87,
+  "ball_rest": null,
+  "ball_last_at_rest": null,
+  "ball_next_seen_moved": null,
+  "notes": [
+   "no resting ball found"
+  ]
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 147.05,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 91,
+   "keypoint_score": 0.7
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 64.09,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 89,
+   "keypoint_score": 0.54
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": 11.81,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 91,
+   "keypoint_score": 0.736
+  },
+  {
+   "id": "plant_foot_offset",
+   "unit": "leg_lengths",
+   "status": "not_measured",
+   "reason": "ball not tracked at contact"
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "simultaneous",
+   "unit": "order",
+   "status": "measured",
+   "frame": 91,
+   "extra": {
+    "thigh_peak_frame": 91,
+    "shank_peak_frame": 91,
+    "lag_ms": null,
+    "lag_note": "lag in ms withheld: real time per frame unknown (DEC-010)"
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "unit": "deg/s",
+   "status": "not_measured",
+   "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": 0.15,
+  "breaks": [
+   91
+  ],
+  "swapped_frames": [
+   59,
+   87,
+   89,
+   90
+  ],
+  "glitch_frames": [
+   58
+  ],
+  "filled_points": 7
+ }
+}

@@ -1,0 +1,98 @@
+{
+ "clip_id": "c13",
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [],
+  "viewpoint_ratio": 0.367,
+  "viewpoint_score": 0.633,
+  "keypoint_score": 0.732,
+  "capture_fps": 300.0,
+  "fps_trusted": true,
+  "fps_reason": "capture rate stated by source: 300 fps"
+ },
+ "events": {
+  "kicking_leg": "left",
+  "kicking_leg_source": "ball_window",
+  "foot_speed_contrast": 23.11,
+  "kick_direction": "left",
+  "kick_direction_source": "detected",
+  "contact_frame": 84,
+  "contact_method": "ball_bracket",
+  "contact_confidence": "low",
+  "max_backswing_frame": 66,
+  "backswing_window_start": 44,
+  "ball_rest": {
+   "x": 217.3,
+   "y": 262.3,
+   "diameter": 22.7
+  },
+  "ball_last_at_rest": 58,
+  "ball_next_seen_moved": 101,
+  "notes": []
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 137.98,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 84,
+   "keypoint_score": 0.628
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 89.34,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 66,
+   "keypoint_score": 0.71
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": -10.48,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 84,
+   "keypoint_score": 0.672
+  },
+  {
+   "id": "plant_foot_offset",
+   "value": 0.06,
+   "unit": "leg_lengths",
+   "status": "measured",
+   "frame": 84,
+   "keypoint_score": 0.704
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "distal_to_proximal",
+   "unit": "order",
+   "status": "measured",
+   "frame": 84,
+   "extra": {
+    "thigh_peak_frame": 78,
+    "shank_peak_frame": 75,
+    "lag_ms": -10.0,
+    "peak_shank_ang_velocity_deg_s": 1894.1
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "value": 1146.62,
+   "unit": "deg/s",
+   "status": "measured",
+   "frame": 83
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": 0.060000000000000005,
+  "breaks": [
+   84
+  ],
+  "swapped_frames": [],
+  "glitch_frames": [],
+  "filled_points": 4
+ }
+}
