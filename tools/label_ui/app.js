@@ -22,7 +22,7 @@ const imgs = new Map();
 const S = {
   mode: "label", clips: [], points: [], clip: null, label: null, qa: [],
   view: "events", cur: 0, task: null, sel: null, peek: 0,
-  showLabels: true, showGhost: true, showSkel: false,
+  showLabels: true, showGhost: true, showSkel: false, hideImage: false,
   scale: 1, tx: 0, ty: 0, undo: [], drag: null, lastInput: Date.now(), ticks: 0,
   repeat: null, repeatIdx: 0, playing: null,
   dirty: false, saving: false, pendingSave: false, saveTimer: null,
@@ -233,10 +233,11 @@ function draw() {
   ictx.setTransform(dpr * S.scale, 0, 0, dpr * S.scale, dpr * S.tx, dpr * S.ty);
   ictx.imageSmoothingEnabled = S.scale < 3;
   const im = img(S.clip.clip_id, shownFrame());
-  if (im.complete && im.naturalWidth) ictx.drawImage(im, 0, 0, S.clip.width, S.clip.height);
+  if (!S.hideImage && im.complete && im.naturalWidth) ictx.drawImage(im, 0, 0, S.clip.width, S.clip.height);
   octx.setTransform(dpr, 0, 0, dpr, 0, 0);
   octx.clearRect(0, 0, ov.clientWidth, ov.clientHeight);
-  if (S.view === "events" && S.showSkel) drawSkeleton(modelPoints(S.cur), true);
+  // With the image hidden the skeleton is all there is, so show it regardless of K.
+  if (S.view === "events" && (S.showSkel || S.hideImage)) drawSkeleton(modelPoints(S.cur), true);
   if (S.view === "frame" && S.showLabels) {
     if (S.peek) drawSkeleton(entry().points, false, 0.35); // faint: they belong to another frame
     else {
@@ -723,6 +724,7 @@ document.addEventListener("keydown", e => {
   else if (k === "0") { fitWhole(); draw(); }
   else if (k === "+" || k === "=") zoomAt(ov.clientWidth / 2, viewH() / 2, 1.25);
   else if (k === "-") zoomAt(ov.clientWidth / 2, viewH() / 2, 0.8);
+  else if (lk === "i") setHideImage(!S.hideImage);
   else if (S.view === "events") {
     if (k === "ArrowRight") setCur(S.cur + (e.shiftKey ? 10 : 1));
     else if (k === "ArrowLeft") setCur(S.cur - (e.shiftKey ? 10 : 1));
@@ -776,6 +778,12 @@ $("notes").addEventListener("input", e => { S.label.clip.notes = e.target.value;
 $("to-keypoints").onclick = toKeypoints;
 $("confirm").onclick = confirmFrame;
 $("back-events").onclick = showEvents;
+function setHideImage(on) {
+  S.hideImage = on;
+  $("hide-img").checked = on;
+  draw();
+}
+$("hide-img").addEventListener("change", e => { setHideImage(e.target.checked); e.target.blur(); });
 const applyFilter = () => {
   imgCanvas.style.filter = `brightness(${$("bright").value}) contrast(${$("contrast").value})`;
 };

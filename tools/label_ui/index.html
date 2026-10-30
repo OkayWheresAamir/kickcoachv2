@@ -59,13 +59,15 @@
   <section id="view-panel">
     <label>Brightness <input type="range" id="bright" min="0.5" max="3" step="0.1" value="1"></label>
     <label>Contrast <input type="range" id="contrast" min="0.5" max="3" step="0.1" value="1"></label>
+    <label class="checkline"><input type="checkbox" id="hide-img">
+      <span>hide the image: skeleton only (<kbd>I</kbd>)</span></label>
   </section>
 
   <details id="help">
     <summary>Keys and mouse</summary>
     <p><b>Everywhere:</b> drag empty space = pan · pinch or ctrl/alt+scroll = zoom ·
       two-finger scroll = pan · <kbd>F</kbd> fit player · <kbd>0</kbd> whole image ·
-      <kbd>+</kbd>/<kbd>-</kbd> zoom</p>
+      <kbd>+</kbd>/<kbd>-</kbd> zoom · <kbd>I</kbd> hide/show the image (skeleton only)</p>
     <p><b>Clip events:</b> <kbd>←</kbd>/<kbd>→</kbd> one frame · shift = 10 frames ·
       <kbd>Space</kbd> play/pause · <kbd>C</kbd> contact = this frame ·
       <kbd>B</kbd> max backswing = this frame · <kbd>K</kbd> show/hide model skeleton ·
