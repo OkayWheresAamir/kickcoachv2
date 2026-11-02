@@ -1,0 +1,9 @@
+{
+ "model": "MediaPipe Pose Landmarker heavy (float16), VIDEO mode, num_poses=1",
+ "weights": "models/mediapipe/pose_landmarker_heavy.task",
+ "weights_sha256": "64437af838a65d18e5ba7a0d39b465540069bc8aae8308de3e318aad31fcbc7b",
+ "conf": "landmark visibility",
+ "note": "big_toe is MediaPipe's FOOT_INDEX (tip of the foot); no small-toe point",
+ "clip_id": "c24",
+ "seconds": 14.7
+}

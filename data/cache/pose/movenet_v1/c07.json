@@ -1,0 +1,7 @@
+{
+ "model": "MoveNet SinglePose Lightning (v1's 3.tflite)",
+ "input": "BGR (v1's OpenCV order), letterboxed to 192x192",
+ "weights": "models/movenet/v1_3.tflite",
+ "weights_sha256": "0491b130b2dd622d71a180936e957212341daca78e9f6a04e0d9c2045eff2ecb",
+ "mapping": "v1: (x_norm * width, y_norm * height), padding ignored (V1_AUDIT 2.2)"
+}

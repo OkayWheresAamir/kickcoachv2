@@ -1,0 +1,8 @@
+{
+ "model": "MoveNet SinglePose Lightning (v1's 3.tflite)",
+ "input": "whole frame letterboxed to 192x192, RGB float32 0-255",
+ "weights": "models/movenet/v1_3.tflite",
+ "weights_sha256": "0491b130b2dd622d71a180936e957212341daca78e9f6a04e0d9c2045eff2ecb",
+ "clip_id": "c27",
+ "seconds": 0.6
+}
