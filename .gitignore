@@ -45,3 +45,6 @@ dist/
 .DS_Store
 .vscode/
 .idea/
+
+# Failure-analysis renders are video frames (eval/failures.py regenerates them)
+data/failures/
