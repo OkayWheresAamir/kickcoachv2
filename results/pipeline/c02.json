@@ -7,9 +7,9 @@
   "warnings": [
    "velocities withheld: slow motion with unknown capture rate"
   ],
-  "viewpoint_ratio": 0.274,
-  "viewpoint_score": 0.726,
-  "keypoint_score": 0.662,
+  "viewpoint_ratio": 0.277,
+  "viewpoint_score": 0.723,
+  "keypoint_score": 0.663,
   "capture_fps": null,
   "fps_trusted": false,
   "fps_reason": "slow motion with unknown capture rate"
@@ -17,14 +17,14 @@
  "events": {
   "kicking_leg": "right",
   "kicking_leg_source": "ball_window",
-  "foot_speed_contrast": 73.82,
+  "foot_speed_contrast": 9.41,
   "kick_direction": "right",
   "kick_direction_source": "detected",
-  "contact_frame": 83,
+  "contact_frame": 85,
   "contact_method": "ball_bracket",
   "contact_confidence": "low",
   "max_backswing_frame": 65,
-  "backswing_window_start": 56,
+  "backswing_window_start": 55,
   "ball_rest": {
    "x": 236.9,
    "y": 257.9,
@@ -37,11 +37,11 @@
  "features": [
   {
    "id": "knee_angle_contact",
-   "value": 116.73,
+   "value": 129.48,
    "unit": "deg",
    "status": "measured",
-   "frame": 83,
-   "keypoint_score": 0.704
+   "frame": 85,
+   "keypoint_score": 0.73
   },
   {
    "id": "max_knee_flexion_backswing",
@@ -53,29 +53,29 @@
   },
   {
    "id": "trunk_lean_contact",
-   "value": -19.66,
+   "value": -19.79,
    "unit": "deg",
    "status": "measured",
-   "frame": 83,
-   "keypoint_score": 0.678
+   "frame": 85,
+   "keypoint_score": 0.694
   },
   {
    "id": "plant_foot_offset",
    "value": 0.14,
    "unit": "leg_lengths",
    "status": "measured",
-   "frame": 83,
-   "keypoint_score": 0.735
+   "frame": 85,
+   "keypoint_score": 0.746
   },
   {
    "id": "segment_sequence_order",
    "value": "proximal_to_distal",
    "unit": "order",
    "status": "measured",
-   "frame": 83,
+   "frame": 85,
    "extra": {
     "thigh_peak_frame": 74,
-    "shank_peak_frame": 83,
+    "shank_peak_frame": 85,
     "lag_ms": null,
     "lag_note": "lag in ms withheld: real time per frame unknown (DEC-010)"
    }
@@ -90,7 +90,7 @@
  "signal": {
   "cutoff_cpf": 0.15,
   "breaks": [
-   83
+   85
   ],
   "swapped_frames": [
    57,

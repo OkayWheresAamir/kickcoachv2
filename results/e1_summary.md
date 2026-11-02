@@ -96,7 +96,7 @@ Angle from each model's raw points at the labelled frame minus the angle from th
 labels (same geometry code). No filtering; frames come from the labels. Visible only =
 frames where every point the angle needs is marked visible.
 
-| angle | frame | points | model | n | MAE ° | bias ° | median |err| ° | max |err| ° |
+| angle | frame | points | model | n | MAE ° | bias ° | median abs err ° | max abs err ° |
 |---|---|---|---|---|---|---|---|---|
 | knee_angle | max_backswing | all labelled | movenet | 19 | 54.9 | 54.3 | 63.7 | 93.5 |
 | knee_angle | max_backswing | all labelled | rtmpose | 19 | 2.5 | 1.2 | 2.0 | 10.0 |

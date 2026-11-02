@@ -15,14 +15,14 @@
  "events": {
   "kicking_leg": "left",
   "kicking_leg_source": "ball_window",
-  "foot_speed_contrast": 23.11,
+  "foot_speed_contrast": 17.36,
   "kick_direction": "left",
   "kick_direction_source": "detected",
-  "contact_frame": 84,
+  "contact_frame": 86,
   "contact_method": "ball_bracket",
   "contact_confidence": "low",
   "max_backswing_frame": 66,
-  "backswing_window_start": 44,
+  "backswing_window_start": 42,
   "ball_rest": {
    "x": 217.3,
    "y": 262.3,
@@ -35,15 +35,15 @@
  "features": [
   {
    "id": "knee_angle_contact",
-   "value": 137.98,
+   "value": 145.58,
    "unit": "deg",
    "status": "measured",
-   "frame": 84,
-   "keypoint_score": 0.628
+   "frame": 86,
+   "keypoint_score": 0.638
   },
   {
    "id": "max_knee_flexion_backswing",
-   "value": 89.34,
+   "value": 89.33,
    "unit": "deg",
    "status": "measured",
    "frame": 66,
@@ -51,45 +51,45 @@
   },
   {
    "id": "trunk_lean_contact",
-   "value": -10.48,
+   "value": -8.83,
    "unit": "deg",
    "status": "measured",
-   "frame": 84,
-   "keypoint_score": 0.672
+   "frame": 86,
+   "keypoint_score": 0.678
   },
   {
    "id": "plant_foot_offset",
-   "value": 0.06,
+   "value": 0.07,
    "unit": "leg_lengths",
    "status": "measured",
-   "frame": 84,
-   "keypoint_score": 0.704
+   "frame": 86,
+   "keypoint_score": 0.685
   },
   {
    "id": "segment_sequence_order",
-   "value": "distal_to_proximal",
+   "value": "proximal_to_distal",
    "unit": "order",
    "status": "measured",
-   "frame": 84,
+   "frame": 86,
    "extra": {
     "thigh_peak_frame": 78,
-    "shank_peak_frame": 75,
-    "lag_ms": -10.0,
-    "peak_shank_ang_velocity_deg_s": 1894.1
+    "shank_peak_frame": 84,
+    "lag_ms": 20.0,
+    "peak_shank_ang_velocity_deg_s": 2021.4
    }
   },
   {
    "id": "peak_knee_ext_velocity",
-   "value": 1146.62,
+   "value": 1313.51,
    "unit": "deg/s",
    "status": "measured",
-   "frame": 83
+   "frame": 85
   }
  ],
  "signal": {
   "cutoff_cpf": 0.060000000000000005,
   "breaks": [
-   84
+   86
   ],
   "swapped_frames": [],
   "glitch_frames": [],

@@ -1,0 +1,27 @@
+clip_id,allowed,fps_reason,v2_reported,v2_value,v2_reason,v2_correct,v1_reported,v1_value,v1_fps_used,v1_correct
+c01,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-399.6,29.97,False
+c02,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,1469.2,29.97,False
+c03,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-2506.2,29.97,False
+c04,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,2851.5,29.97,False
+c05,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-1896.5,29.97,False
+c06,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-3363.3,29.97,False
+c07,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-1440.6,29.97,False
+c08,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,735.4,29.97,False
+c09,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-3697.7,29.97,False
+c10,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-1261.5,29.97,False
+c11,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,1695.7,29.97,False
+c12,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,818.2,29.97,False
+c13,True,capture rate stated by source: 300 fps,True,1313.51,,True,True,-3753.6,29.97,True
+c14,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,345.1,29.97,False
+c15,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-1173.4,29.97,False
+c16,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-1944.3,29.97,False
+c17,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-1303.1,29.97,False
+c18,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-278.0,25.0,False
+c19,True,capture rate stated by source: 240 fps,True,1698.48,,True,True,-918.7,29.97,True
+c20,False,slow motion with unknown capture rate,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,2690.6,29.97,False
+c23,False,unknown whether the clip is slowed down,False,,,True,True,2485.4,23.98,False
+c24,False,unknown whether the clip is slowed down,False,,"capture frame rate unknown, so no real time per frame (DEC-010)",True,True,-948.1,23.98,False
+c25,False,real-time clip: playback 30 fps,False,,capture rate 30 fps is below 120 (handoff D6),True,True,3962.7,30.0,False
+c26,False,slow motion with unknown capture rate,False,,,True,True,1039.5,29.97,False
+c27,False,slow motion with unknown capture rate,False,,,True,True,941.5,29.97,False
+c28,False,slow motion with unknown capture rate,False,,,True,True,482.9,29.97,False

@@ -7,9 +7,9 @@
   "warnings": [
    "velocities withheld: slow motion with unknown capture rate"
   ],
-  "viewpoint_ratio": 0.308,
-  "viewpoint_score": 0.692,
-  "keypoint_score": 0.73,
+  "viewpoint_ratio": 0.39,
+  "viewpoint_score": 0.61,
+  "keypoint_score": 0.738,
   "capture_fps": null,
   "fps_trusted": false,
   "fps_reason": "slow motion with unknown capture rate"
@@ -17,14 +17,14 @@
  "events": {
   "kicking_leg": "right",
   "kicking_leg_source": "ball_window",
-  "foot_speed_contrast": 37.11,
+  "foot_speed_contrast": 41.33,
   "kick_direction": "right",
   "kick_direction_source": "detected",
-  "contact_frame": 82,
+  "contact_frame": 84,
   "contact_method": "ball_bracket",
   "contact_confidence": "low",
   "max_backswing_frame": 76,
-  "backswing_window_start": 0,
+  "backswing_window_start": 73,
   "ball_rest": {
    "x": 196.9,
    "y": 282.6,
@@ -37,48 +37,45 @@
  "features": [
   {
    "id": "knee_angle_contact",
-   "value": 116.41,
+   "value": 127.13,
    "unit": "deg",
    "status": "measured",
-   "frame": 82,
-   "keypoint_score": 0.766
+   "frame": 84,
+   "keypoint_score": 0.779
   },
   {
    "id": "max_knee_flexion_backswing",
-   "value": 101.39,
+   "value": 101.38,
    "unit": "deg",
    "status": "measured",
    "frame": 76,
-   "keypoint_score": 0.673,
-   "extra": {
-    "window_from_clip_start": true
-   }
+   "keypoint_score": 0.673
   },
   {
    "id": "trunk_lean_contact",
-   "value": -1.1,
+   "value": 1.13,
    "unit": "deg",
    "status": "measured",
-   "frame": 82,
-   "keypoint_score": 0.734
+   "frame": 84,
+   "keypoint_score": 0.735
   },
   {
    "id": "plant_foot_offset",
    "value": 0.2,
    "unit": "leg_lengths",
    "status": "measured",
-   "frame": 82,
-   "keypoint_score": 0.779
+   "frame": 84,
+   "keypoint_score": 0.785
   },
   {
    "id": "segment_sequence_order",
    "value": "proximal_to_distal",
    "unit": "order",
    "status": "measured",
-   "frame": 82,
+   "frame": 84,
    "extra": {
-    "thigh_peak_frame": 69,
-    "shank_peak_frame": 71,
+    "thigh_peak_frame": 75,
+    "shank_peak_frame": 84,
     "lag_ms": null,
     "lag_note": "lag in ms withheld: real time per frame unknown (DEC-010)"
    }
@@ -93,7 +90,7 @@
  "signal": {
   "cutoff_cpf": 0.15,
   "breaks": [
-   82
+   84
   ],
   "swapped_frames": [
    46,

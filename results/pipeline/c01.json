@@ -7,9 +7,9 @@
   "warnings": [
    "velocities withheld: slow motion with unknown capture rate"
   ],
-  "viewpoint_ratio": 0.285,
-  "viewpoint_score": 0.715,
-  "keypoint_score": 0.67,
+  "viewpoint_ratio": 0.287,
+  "viewpoint_score": 0.713,
+  "keypoint_score": 0.671,
   "capture_fps": null,
   "fps_trusted": false,
   "fps_reason": "slow motion with unknown capture rate"
@@ -17,14 +17,14 @@
  "events": {
   "kicking_leg": "right",
   "kicking_leg_source": "ball_window",
-  "foot_speed_contrast": 2.4,
+  "foot_speed_contrast": 3.82,
   "kick_direction": "right",
   "kick_direction_source": "detected",
-  "contact_frame": 60,
+  "contact_frame": 62,
   "contact_method": "ball_bracket",
   "contact_confidence": "low",
   "max_backswing_frame": 45,
-  "backswing_window_start": 19,
+  "backswing_window_start": 15,
   "ball_rest": {
    "x": 236.1,
    "y": 238.3,
@@ -37,11 +37,11 @@
  "features": [
   {
    "id": "knee_angle_contact",
-   "value": 136.38,
+   "value": 146.95,
    "unit": "deg",
    "status": "measured",
-   "frame": 60,
-   "keypoint_score": 0.563
+   "frame": 62,
+   "keypoint_score": 0.582
   },
   {
    "id": "max_knee_flexion_backswing",
@@ -53,26 +53,26 @@
   },
   {
    "id": "trunk_lean_contact",
-   "value": 6.0,
+   "value": 7.13,
    "unit": "deg",
    "status": "measured",
-   "frame": 60,
-   "keypoint_score": 0.657
+   "frame": 62,
+   "keypoint_score": 0.66
   },
   {
    "id": "plant_foot_offset",
-   "value": 0.08,
+   "value": 0.02,
    "unit": "leg_lengths",
    "status": "measured",
-   "frame": 60,
-   "keypoint_score": 0.573
+   "frame": 62,
+   "keypoint_score": 0.588
   },
   {
    "id": "segment_sequence_order",
    "value": "proximal_to_distal",
    "unit": "order",
    "status": "measured",
-   "frame": 60,
+   "frame": 62,
    "extra": {
     "thigh_peak_frame": 55,
     "shank_peak_frame": 58,
@@ -90,7 +90,7 @@
  "signal": {
   "cutoff_cpf": 0.15,
   "breaks": [
-   60
+   62
   ],
   "swapped_frames": [
    57,

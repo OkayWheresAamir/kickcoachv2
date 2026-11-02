@@ -1,0 +1,27 @@
+clip_id,split,purpose,view_ok_human,v2_refused,viewpoint_ratio,reasons,features_when_refused,v1_refused
+c01,tune,eval,y,False,0.287,,,False
+c02,tune,eval,y,False,0.277,,,False
+c03,heldout,eval,y,False,0.089,,,False
+c04,tune,eval,y,False,0.265,,,False
+c05,tune,eval,y,False,0.203,,,False
+c06,tune,eval,y,False,0.437,,,False
+c07,tune,eval,y,False,0.133,,,False
+c08,tune,eval,y,False,0.249,,,False
+c09,tune,eval,y,False,0.187,,,False
+c10,tune,eval,y,False,0.22,,,False
+c11,heldout,eval,y,False,0.307,,,False
+c12,heldout,eval,y,False,0.291,,,False
+c13,tune,eval,y,False,0.367,,,False
+c14,tune,eval,y,False,0.39,,,False
+c15,heldout,eval,y,False,0.167,,,False
+c16,heldout,eval,y,False,0.344,,,False
+c17,tune,eval,y,False,0.085,,,False
+c18,tune,eval,y,False,0.282,,,False
+c19,tune,eval,y,False,0.378,,,False
+c20,tune,eval,y,False,0.253,,,False
+c23,tune,eval,n,True,0.564,"camera not side-on: shoulder width is 0.56 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0,False
+c24,tune,eval,y,False,0.21,,,False
+c25,tune,eval,,False,0.368,,,False
+c26,tune,gate_only,n,True,0.673,"camera not side-on: shoulder width is 0.67 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0,False
+c27,tune,gate_only,n,True,0.633,"camera not side-on: shoulder width is 0.63 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0,False
+c28,tune,gate_only,n,True,0.698,"camera not side-on: shoulder width is 0.70 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips",0,False

@@ -9,8 +9,8 @@
   "warnings": [
    "velocities withheld: slow motion with unknown capture rate"
   ],
-  "viewpoint_ratio": 0.699,
-  "viewpoint_score": 0.301,
+  "viewpoint_ratio": 0.698,
+  "viewpoint_score": 0.302,
   "keypoint_score": 0.824,
   "capture_fps": null,
   "fps_trusted": false,
@@ -19,10 +19,10 @@
  "events": {
   "kicking_leg": "right",
   "kicking_leg_source": "ball_window",
-  "foot_speed_contrast": 20.87,
+  "foot_speed_contrast": 15.18,
   "kick_direction": "left",
   "kick_direction_source": "detected",
-  "contact_frame": 109,
+  "contact_frame": 111,
   "contact_method": "ball_bracket",
   "contact_confidence": "low",
   "max_backswing_frame": 54,
@@ -40,7 +40,7 @@
  "signal": {
   "cutoff_cpf": 0.15,
   "breaks": [
-   109
+   111
   ],
   "swapped_frames": [],
   "glitch_frames": [],
