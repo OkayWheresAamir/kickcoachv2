@@ -78,6 +78,7 @@ def ingest_clip(
         "source": src.name,
         "window_s": [start_s, end_s],
         "stream": info.to_dict(),
+        "frame_size": [int(prev.shape[1]), int(prev.shape[0])],  # upright (width, height)
         "n_frames": len(times),
         "frame_times_s": [round(t, 6) for t in times],
         "playback_fps": playback_fps,

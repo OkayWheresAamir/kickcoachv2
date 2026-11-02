@@ -16,6 +16,8 @@ from pathlib import Path
 
 import numpy as np
 
+from kickcoach.pose.ort_threads import cap_threads
+
 ROOT = Path(__file__).resolve().parents[2]
 MODEL_PATH = ROOT / "models" / "yolox" / "yolox_m.onnx"
 CACHE_DIR = ROOT / "data" / "cache" / "ball"
@@ -58,6 +60,7 @@ class BallDetector:
         self._yolox = YOLOX(
             str(self.model_path), model_input_size=INPUT_SIZE, backend="onnxruntime"
         )
+        cap_threads(self._yolox)
 
     def detect(self, rgb: np.ndarray) -> np.ndarray:
         bgr = np.ascontiguousarray(rgb[..., ::-1])  # Megvii's ONNX was exported for cv2 BGR

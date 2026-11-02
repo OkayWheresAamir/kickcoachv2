@@ -53,7 +53,9 @@ def probe(path: Path) -> StreamInfo:
 
 
 def iter_window(path: Path, start_s: float, end_s: float) -> Iterator[tuple[float, np.ndarray]]:
-    """Yield (presentation time in s, RGB uint8 [H, W, 3]) for frames with start <= t < end."""
+    """Yield (presentation time in s, RGB uint8 [H, W, 3]) for frames with start <= t < end,
+    turned upright by the stream's display rotation (PyAV's ``rotation`` is counterclockwise,
+    as is ``np.rot90``). Mirrored display matrices are not handled."""
     with av.open(str(path)) as c:
         s = c.streams.video[0]
         s.thread_type = "AUTO"
@@ -67,7 +69,11 @@ def iter_window(path: Path, start_s: float, end_s: float) -> Iterator[tuple[floa
                 continue
             if t >= end_s:
                 break
-            yield t, frame.to_ndarray(format="rgb24")
+            img = frame.to_ndarray(format="rgb24")
+            # Phones store portrait video as landscape pixels plus a display rotation; without
+            # applying it the player lies on their side and the pose model fails.
+            k = round(frame.rotation / 90) % 4
+            yield t, (np.ascontiguousarray(np.rot90(img, k)) if k else img)
 
 
 def changed_fraction(prev: np.ndarray, cur: np.ndarray) -> float:

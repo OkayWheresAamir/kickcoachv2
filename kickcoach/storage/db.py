@@ -136,9 +136,17 @@ def save_session(
 def history_delta(
     con: sqlite3.Connection, player: str, session_id: int, window: int = HISTORY_WINDOW
 ) -> dict[str, dict]:
-    """For each numeric feature measured in this session, the change against the mean of the
-    same player's last ``window`` sessions in which it was measured. Earlier sessions only."""
-    current = {
+    """``delta_vs`` against the same player's earlier stored sessions."""
+    current = _measured(con, session_id)
+    earlier = con.execute(
+        "SELECT id FROM sessions WHERE player = ? AND id < ? ORDER BY id DESC",
+        (player, session_id),
+    )
+    return delta_vs(current, [_measured(con, r["id"]) for r in earlier], window)
+
+
+def _measured(con: sqlite3.Connection, session_id: int) -> dict[str, float]:
+    return {
         r["feature_id"]: r["value"]
         for r in con.execute(
             "SELECT feature_id, value FROM features WHERE session_id = ? AND status = "
@@ -146,17 +154,17 @@ def history_delta(
             (session_id,),
         )
     }
+
+
+def delta_vs(
+    current: dict[str, float], earlier: list[dict[str, float]], window: int = HISTORY_WINDOW
+) -> dict[str, dict]:
+    """For each numeric feature measured now, the change against the mean of the last
+    ``window`` earlier sessions in which it was measured. ``earlier`` is newest first, one
+    {feature_id: value} per session (from the database, or the page's own history)."""
     out = {}
     for fid, value in current.items():
-        prev = [
-            r["value"]
-            for r in con.execute(
-                "SELECT f.value FROM features f JOIN sessions s ON s.id = f.session_id "
-                "WHERE s.player = ? AND s.id < ? AND f.feature_id = ? AND f.status = "
-                "'measured' AND f.value IS NOT NULL ORDER BY s.id DESC LIMIT ?",
-                (player, session_id, fid, window),
-            )
-        ]
+        prev = [e[fid] for e in earlier if e.get(fid) is not None][:window]
         if not prev:
             continue
         mean = sum(prev) / len(prev)

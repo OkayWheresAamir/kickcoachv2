@@ -1,0 +1,482 @@
+{
+ "example": {
+  "clip_id": "c07",
+  "source_url": "https://www.youtube.com/watch?v=xKpa1LNqrUg",
+  "window_s": [
+   12.5,
+   17.5
+  ],
+  "level_guess": "amateur",
+  "note": "A public clip from the evaluation set, analysed from the committed pose and ball caches. Its feedback is the cached LLM answer that passed the validator."
+ },
+ "session_id": null,
+ "pose_model": "rtmpose",
+ "quality": {
+  "accepted": true,
+  "reasons": [],
+  "warnings": [
+   "velocities withheld: slow motion with unknown capture rate"
+  ],
+  "viewpoint_ratio": 0.133,
+  "viewpoint_score": 0.867,
+  "keypoint_score": 0.735,
+  "capture_fps": null,
+  "fps_trusted": false,
+  "fps_reason": "slow motion with unknown capture rate"
+ },
+ "events": {
+  "kicking_leg": "right",
+  "kicking_leg_source": "ball_window",
+  "foot_speed_contrast": 14.53,
+  "kick_direction": "right",
+  "kick_direction_source": "detected",
+  "contact_frame": 76,
+  "contact_method": "ball_motion",
+  "contact_confidence": "high",
+  "max_backswing_frame": 49,
+  "backswing_window_start": 23,
+  "ball_rest": {
+   "x": 268.2,
+   "y": 308.3,
+   "diameter": 26.5
+  },
+  "ball_last_at_rest": 76,
+  "ball_next_seen_moved": 77,
+  "notes": []
+ },
+ "features": [
+  {
+   "id": "knee_angle_contact",
+   "value": 132.59,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 76,
+   "keypoint_score": 0.749
+  },
+  {
+   "id": "max_knee_flexion_backswing",
+   "value": 98.04,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 49,
+   "keypoint_score": 0.749
+  },
+  {
+   "id": "trunk_lean_contact",
+   "value": -11.6,
+   "unit": "deg",
+   "status": "measured",
+   "frame": 76,
+   "keypoint_score": 0.723
+  },
+  {
+   "id": "plant_foot_offset",
+   "value": -0.32,
+   "unit": "leg_lengths",
+   "status": "measured",
+   "frame": 76,
+   "keypoint_score": 0.687
+  },
+  {
+   "id": "segment_sequence_order",
+   "value": "simultaneous",
+   "unit": "order",
+   "status": "measured",
+   "frame": 76,
+   "extra": {
+    "thigh_peak_frame": 55,
+    "shank_peak_frame": 55,
+    "lag_ms": null,
+    "lag_note": "lag in ms withheld: real time per frame unknown (DEC-010)"
+   }
+  },
+  {
+   "id": "peak_knee_ext_velocity",
+   "unit": "deg/s",
+   "status": "not_measured",
+   "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+  }
+ ],
+ "signal": {
+  "cutoff_cpf": 0.15,
+  "breaks": [
+   76
+  ],
+  "swapped_frames": [
+   53,
+   57,
+   59,
+   67
+  ],
+  "glitch_frames": [
+   55,
+   56,
+   58,
+   59
+  ],
+  "filled_points": 25
+ },
+ "figure": {
+  "frame_size": [
+   480,
+   360
+  ],
+  "kicking_leg": "right",
+  "kick_direction": "right",
+  "ball_rest": {
+   "x": 268.2,
+   "y": 308.3,
+   "diameter": 26.5
+  },
+  "frames": {
+   "contact": {
+    "frame": 76,
+    "points": {
+     "nose": [
+      241.2,
+      145.0
+     ],
+     "left_eye": [
+      242.6,
+      141.7
+     ],
+     "right_eye": [
+      240.3,
+      139.8
+     ],
+     "left_ear": [
+      227.1,
+      140.3
+     ],
+     "right_ear": [
+      230.4,
+      136.6
+     ],
+     "left_shoulder": [
+      229.5,
+      160.0
+     ],
+     "right_shoulder": [
+      215.9,
+      157.7
+     ],
+     "left_elbow": [
+      250.1,
+      175.0
+     ],
+     "right_elbow": [
+      204.6,
+      188.6
+     ],
+     "left_wrist": [
+      273.6,
+      183.0
+     ],
+     "right_wrist": [
+      200.4,
+      216.3
+     ],
+     "left_hip": [
+      235.6,
+      211.6
+     ],
+     "right_hip": [
+      231.8,
+      213.5
+     ],
+     "left_knee": [
+      258.5,
+      249.6
+     ],
+     "right_knee": [
+      260.9,
+      252.4
+     ],
+     "left_ankle": [
+      237.9,
+      295.0
+     ],
+     "right_ankle": [
+      252.0,
+      299.7
+     ],
+     "left_big_toe": [
+      249.6,
+      307.7
+     ],
+     "left_small_toe": [
+      247.3,
+      306.3
+     ],
+     "left_heel": [
+      231.4,
+      300.7
+     ],
+     "right_big_toe": [
+      269.8,
+      313.3
+     ],
+     "right_small_toe": [
+      263.2,
+      315.2
+     ],
+     "right_heel": [
+      247.3,
+      308.2
+     ]
+    }
+   },
+   "max_backswing": {
+    "frame": 49,
+    "points": {
+     "nose": [
+      233.3,
+      144.6
+     ],
+     "left_eye": [
+      235.1,
+      140.8
+     ],
+     "right_eye": [
+      232.2,
+      139.5
+     ],
+     "left_ear": [
+      222.3,
+      140.1
+     ],
+     "right_ear": [
+      222.1,
+      137.0
+     ],
+     "left_shoulder": [
+      217.9,
+      159.5
+     ],
+     "right_shoulder": [
+      210.1,
+      158.5
+     ],
+     "left_elbow": [
+      214.4,
+      188.8
+     ],
+     "right_elbow": [
+      205.3,
+      189.8
+     ],
+     "left_wrist": [
+      225.2,
+      211.6
+     ],
+     "right_wrist": [
+      219.4,
+      213.7
+     ],
+     "left_hip": [
+      226.4,
+      216.3
+     ],
+     "right_hip": [
+      212.6,
+      216.9
+     ],
+     "left_knee": [
+      251.3,
+      254.1
+     ],
+     "right_knee": [
+      206.0,
+      264.2
+     ],
+     "left_ankle": [
+      234.4,
+      297.4
+     ],
+     "right_ankle": [
+      164.2,
+      264.3
+     ],
+     "left_big_toe": [
+      253.5,
+      308.3
+     ],
+     "left_small_toe": [
+      245.8,
+      306.3
+     ],
+     "left_heel": [
+      227.9,
+      305.3
+     ],
+     "right_big_toe": [
+      148.5,
+      283.2
+     ],
+     "right_small_toe": [
+      146.1,
+      277.1
+     ],
+     "right_heel": [
+      160.4,
+      259.7
+     ]
+    }
+   }
+  }
+ },
+ "comparisons": [
+  {
+   "feature_id": "knee_angle_contact",
+   "value": 132.59,
+   "unit": "deg",
+   "norm_ref": "N-019",
+   "verdict": "below_norm",
+   "norm_mean": 156.2,
+   "norm_sd": 10.1,
+   "norm_band": [
+    146.1,
+    166.3
+   ],
+   "band_rule": "heuristic: 'within' = mean \u00b1 1 SD of the study sample, or inside a reported range; the band is a description of that sample, not a target",
+   "source": "Scurr & Hall (2009), J Sports Sci Med 8(2):230-234, p. 232, Table 2",
+   "population": "recreational, adult, male",
+   "kick_type": "instep penalty kick, self-selected approach angle",
+   "converted": false,
+   "caveats": [
+    "Measured in a lab (3D motion capture (DLT)); this app measures a 2D side-on angle from video, so some difference is expected.",
+    "These were kicks aimed for accuracy (instep penalty kick); accurate kicks use slower motion than maximum-power kicks (e.g. 1364 vs 1175 deg/s knee extension, N-011/N-012).",
+    "Small sample: n = 7."
+   ],
+   "also_matching": [
+    "N-020",
+    "N-021",
+    "N-022"
+   ]
+  },
+  {
+   "feature_id": "max_knee_flexion_backswing",
+   "value": 98.04,
+   "unit": "deg",
+   "norm_ref": "N-032",
+   "verdict": "above_norm",
+   "norm_mean": 77.29,
+   "norm_sd": 6.16,
+   "norm_band": [
+    71.13,
+    83.45
+   ],
+   "band_rule": "heuristic: 'within' = mean \u00b1 1 SD of the study sample, or inside a reported range; the band is a description of that sample, not a target",
+   "source": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+   "population": "elite, adults, mixed",
+   "kick_type": "instep",
+   "converted": true,
+   "caveats": [
+    "Measured in a lab (IMU and OpenSim); this app measures a 2D side-on angle from video, so some difference is expected.",
+    "Small sample: n = 26."
+   ],
+   "also_matching": []
+  },
+  {
+   "feature_id": "trunk_lean_contact",
+   "norm_ref": null,
+   "verdict": "no_comparable_norm",
+   "reason": "no verified norm row for this feature"
+  },
+  {
+   "feature_id": "plant_foot_offset",
+   "norm_ref": null,
+   "verdict": "no_comparable_norm",
+   "reason": "N-004: the norm is in cm, the measurement in leg_lengths; N-027: the norm is in cm, the measurement in leg_lengths; N-028: the norm is in cm, the measurement in leg_lengths; N-029: the norm is in cm, the measurement in leg_lengths; N-030: the norm is in cm, the measurement in leg_lengths; N-031: the norm is in cm, the measurement in leg_lengths"
+  }
+ ],
+ "faults": [
+  {
+   "fault_id": "F-LEAN-BACK",
+   "name": "Leaning back at contact",
+   "evidence": {
+    "trunk_lean_contact": -11.6
+   },
+   "unit": "deg",
+   "fires_when": "below",
+   "threshold": -10.0,
+   "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.",
+   "text_source": "heuristic: common coaching advice, not from a cited study",
+   "citations": []
+  },
+  {
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "name": "Shallow knee bend in the backswing",
+   "evidence": {
+    "max_knee_flexion_backswing": 98.04
+   },
+   "unit": "deg",
+   "fires_when": "above",
+   "threshold": 89.61,
+   "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.",
+   "text_source": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987).",
+   "citations": [
+    "N-032",
+    "kellis_katis_2007"
+   ]
+  },
+  {
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "name": "Plant foot far behind the ball",
+   "evidence": {
+    "plant_foot_offset": -0.32
+   },
+   "unit": "leg_lengths",
+   "fires_when": "below",
+   "threshold": -0.25,
+   "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it).",
+   "text_source": "heuristic: common coaching advice, not from a cited study",
+   "citations": []
+  }
+ ],
+ "inactive_rules": [],
+ "feedback": {
+  "items": [
+   {
+    "fault_id": "F-LEAN-BACK",
+    "what": "Your trunk was leaning back at -12 deg when you made contact with the ball.",
+    "why_it_matters": "Leaning back makes the ball go too high instead of staying low.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow kicks while focusing on moving your chest forward over the ball as you kick.",
+    "citations": []
+   },
+   {
+    "fault_id": "F-SHALLOW-BACKSWING",
+    "what": "Your knee bend in the backswing was 98 deg.",
+    "why_it_matters": "Not bending your knee enough reduces the power in your kick.",
+    "cue": "Bend your knee more.",
+    "drill": "Practice the backswing motion slowly while bending your knee further back before you swing forward.",
+    "citations": [
+     "N-032",
+     "kellis_katis_2007"
+    ]
+   },
+   {
+    "fault_id": "F-PLANT-FAR-BEHIND",
+    "what": "Your plant foot landed at -0.32 leg lengths behind the ball.",
+    "why_it_matters": "Planting too far behind the ball makes it hard to strike cleanly.",
+    "cue": "Step closer to the ball.",
+    "drill": "Practice stepping up to a stationary ball and placing your plant foot closer before kicking.",
+    "citations": []
+   }
+  ],
+  "generated_by": "llm",
+  "validator_passed": true,
+  "attempts": [
+   {
+    "attempt": 1,
+    "cache_key": "a45deb5f145f85a873c2fa04",
+    "cached": true,
+    "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-LEAN-BACK\",\n      \"what\": \"Your trunk was leaning back at -12 deg when you made contact with the ball.\",\n      \"why_it_matters\": \"Leaning back makes the ball go too high instead of staying low.\",\n      \"cue\": \"Keep your chest over the ball.\",\n      \"drill\": \"Practice slow kicks while focusing on moving your chest forward over the ball as you kick.\",\n      \"citations\": []\n    },\n    {\n      \"fault_id\": \"F-SHALLOW-BACKSWING\",\n      \"what\": \"Your knee bend in the backswing was 98 deg.\",\n      \"why_it_matters\": \"Not bending your knee enough reduces the power in your kick.\",\n      \"cue\": \"Bend your knee more.\",\n      \"drill\": \"Practice the backswing motion slowly while bending your knee further back before you swing forward.\",\n      \"citations\": [\n        \"N-032\",\n        \"kellis_katis_2007\"\n      ]\n    },\n    {\n      \"fault_id\": \"F-PLANT-FAR-BEHIND\",\n      \"what\": \"Your plant foot landed at -0.32 leg lengths behind the ball.\",\n      \"why_it_matters\": \"Planting too far behind the ball makes it hard to strike cleanly.\",\n      \"cue\": \"Step closer to the ball.\",\n      \"drill\": \"Practice stepping up to a stationary ball and placing your plant foot closer before kicking.\",\n      \"citations\": []\n    }\n  ]\n}",
+    "errors": []
+   }
+  ],
+  "fallback_reason": null
+ },
+ "history_delta": {}
+}

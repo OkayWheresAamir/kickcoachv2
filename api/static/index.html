@@ -1,320 +1,692 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>KickCoach</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-    <!-- Adapted from the v1 page (kickcoach-2/index.html): same look; the pro-reference
-         rating, profiles and drills are gone, and every server string is escaped. -->
+    <meta name="description" content="Measure an instep kick from a side-on video: joint angles from a pose model, compared with published studies." />
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
-        --bg: #070a0f; --surface: #0e1219; --surface2: #131720;
-        --border: #1c2230; --border-hi: #2a3347;
-        --text: #edf0f7; --muted: #8391ab;
-        --accent: #00e5a0; --accent-dim: rgba(0,229,160,0.08);
-        --good: #00e5a0; --moderate: #ffb800; --significant: #ff4757; --unavailable: #6b7891;
-        --font-display: 'Bebas Neue', sans-serif;
-        --font-body: 'Plus Jakarta Sans', sans-serif;
-        --font-mono: 'JetBrains Mono', monospace;
-        --radius: 12px; --radius-sm: 8px;
+        --bg: #f5f6f7; --surface: #ffffff; --sunken: #f0f2f4; --border: #dfe3e8; --border-strong: #c9cfd6;
+        --text: #15191e; --muted: #5b6570; --faint: #8a939c;
+        --accent: #0b6e4f; --accent-soft: #e3f2ec; --accent-text: #ffffff;
+        --ok: #0b6e4f; --ok-soft: #e3f2ec; --warn: #9a5b00; --warn-soft: #fdf0dc; --bad: #b42318; --bad-soft: #fde7e5;
+        --na: #5b6570; --na-soft: #eef0f2;
+        --fig-body: #4b5560; --fig-faint: #b3bac2; --fig-kick: #0b6e4f; --fig-mark: #c2410c;
+        --radius: 10px;
+        --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        color-scheme: light;
       }
-      body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
-      body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse 60% 40% at 20% 10%, rgba(0,229,160,0.06) 0%, transparent 60%); pointer-events:none; z-index:0; }
-      .page { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 16px 80px; }
-      nav { display:flex; align-items:center; justify-content:space-between; padding:22px 0 0; margin-bottom:40px; }
-      .nav-wordmark { font-family:var(--font-display); font-size:1.6rem; letter-spacing:0.04em; }
-      .nav-wordmark span { color:var(--accent); }
-      .pill-btn { font-family:var(--font-mono); font-size:11px; padding:5px 12px; border:1px solid var(--border-hi); border-radius:20px; color:var(--muted); background:none; cursor:pointer; }
-      .pill-btn:hover { color:var(--accent); border-color:var(--accent); }
-      .hero h1 { font-family:var(--font-display); font-size:clamp(2.6rem,8vw,4.6rem); line-height:0.95; letter-spacing:0.02em; text-transform:uppercase; margin-bottom:16px; }
-      .hero h1 .hl { color:var(--accent); }
-      .hero p { color:var(--muted); max-width:600px; margin-bottom:28px; }
-      .card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:16px; }
-      .card h3 { font-family:var(--font-display); font-size:1.15rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:12px; }
-      .tips { list-style:none; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:8px 16px; font-size:13px; color:var(--muted); }
-      .tips li::before { content:'✓ '; color:var(--accent); }
-      .fields { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px; }
-      .field label { display:block; font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-      .field select, .field input { width:100%; background:var(--bg); border:1px solid var(--border-hi); border-radius:var(--radius-sm); padding:9px 12px; color:var(--text); font-family:var(--font-body); font-size:13.5px; }
-      .field .hint { font-size:11px; color:var(--muted); margin-top:4px; }
-      .upload-card { position:relative; background:var(--surface); border:2px dashed var(--border-hi); border-radius:16px; padding:36px 20px; text-align:center; cursor:pointer; }
-      .upload-card.drag-over { border-color:var(--accent); }
-      .upload-card input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-      .upload-title { font-family:var(--font-display); font-size:1.6rem; letter-spacing:0.06em; text-transform:uppercase; }
-      .upload-hint, #file-name { color:var(--muted); font-size:13px; }
-      #file-name { font-family:var(--font-mono); color:var(--accent); margin-top:8px; }
-      .submit-btn { width:100%; padding:16px; background:var(--accent); color:#070a0f; border:none; border-radius:var(--radius); font-family:var(--font-display); font-size:1.25rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; margin-top:14px; }
-      .submit-btn:disabled { opacity:0.3; cursor:not-allowed; }
-      #status-bar { margin-top:12px; font-family:var(--font-mono); font-size:12px; color:var(--muted); min-height:18px; text-align:center; }
-      #status-bar.error { color:var(--significant); }
-      #results { margin-top:40px; }
-      .section-label { font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin:26px 0 12px; display:flex; align-items:center; gap:10px; }
-      .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
-      .verdict { font-family:var(--font-display); font-size:2rem; letter-spacing:0.04em; }
-      .ok { color:var(--good); } .bad { color:var(--significant); } .warn { color:var(--moderate); }
-      .kv { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:6px 18px; font-size:13px; color:var(--muted); margin-top:8px; }
-      .kv b { color:var(--text); font-weight:600; }
-      .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px; }
-      .feat { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; overflow:hidden; }
-      .feat .bar { position:absolute; top:0; left:0; right:0; height:2px; background:var(--unavailable); }
-      .feat.within .bar { background:var(--good); } .feat.below .bar, .feat.above .bar { background:var(--moderate); }
-      .feat-label { font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); }
-      .feat-def { font-size:11px; color:var(--muted); margin-bottom:6px; }
-      .feat-value { font-family:var(--font-display); font-size:1.9rem; line-height:1.1; }
-      .feat-unit { font-family:var(--font-mono); font-size:11px; color:var(--muted); }
-      .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin:4px 4px 0 0; }
-      .b-good { background:rgba(0,229,160,0.12); color:var(--good); }
-      .b-mod { background:rgba(255,184,0,0.12); color:var(--moderate); }
-      .b-bad { background:rgba(255,71,87,0.12); color:var(--significant); }
-      .b-na { background:rgba(107,120,145,0.15); color:var(--unavailable); }
-      .small { font-size:12px; color:var(--muted); margin-top:6px; }
-      .small.mono { font-family:var(--font-mono); font-size:11px; }
-      details summary { cursor:pointer; font-size:12px; color:var(--muted); margin-top:6px; }
-      details ul { margin:6px 0 0 16px; font-size:12px; color:var(--muted); }
-      .fault, .fb { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--moderate); border-radius:var(--radius); padding:16px 18px; margin-bottom:10px; }
-      .fb { border-left-color:var(--accent); }
-      .fault h4, .fb h4 { font-family:var(--font-display); font-size:1.15rem; letter-spacing:0.05em; text-transform:uppercase; }
-      .fb p { font-size:13.5px; margin-top:6px; }
-      .fb p b { color:var(--muted); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; margin-right:6px; }
-      .cue { padding:6px 10px; margin-top:8px; border-left:2px solid var(--accent); background:var(--accent-dim); font-style:italic; font-size:13px; }
-      .history-panel { display:none; position:fixed; top:0; right:0; width:380px; max-width:100%; height:100vh; background:var(--surface); border-left:1px solid var(--border); z-index:100; overflow-y:auto; padding:22px; }
-      .history-panel.open { display:block; }
-      .hs { padding:12px; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:10px; font-size:12px; color:var(--muted); }
-      .hs b { color:var(--text); }
-      pre#raw-output { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; font-family:var(--font-mono); font-size:11px; color:var(--muted); white-space:pre-wrap; word-break:break-all; display:none; }
-      .loading { display:none; text-align:center; padding:40px 0; color:var(--muted); }
-      .loading.show { display:block; }
-      @media (max-width:600px) { nav { margin-bottom:28px; } }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101214; --surface: #171a1d; --sunken: #1d2125; --border: #2a2f35; --border-strong: #3a4148;
+          --text: #e7eaed; --muted: #a0a9b2; --faint: #76808a;
+          --accent: #3fb68b; --accent-soft: #15302a; --accent-text: #0b1512;
+          --ok: #3fb68b; --ok-soft: #15302a; --warn: #e0a447; --warn-soft: #33270f; --bad: #f07a6e; --bad-soft: #3a1b18;
+          --na: #a0a9b2; --na-soft: #22272c;
+          --fig-body: #c3cad1; --fig-faint: #59626b; --fig-kick: #3fb68b; --fig-mark: #f08a4b;
+          color-scheme: dark;
+        }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 var(--font); }
+      a { color: var(--accent); }
+      h1, h2, h3, h4 { margin: 0; line-height: 1.25; }
+      h1 { font-size: 1.6rem; font-weight: 650; letter-spacing: -0.01em; }
+      h2 { font-size: 1.1rem; font-weight: 650; }
+      h3 { font-size: 1rem; font-weight: 650; }
+      p { margin: 0; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+      .muted { color: var(--muted); }
+      .small { font-size: 13px; }
+      .num { font-variant-numeric: tabular-nums; }
+      [hidden] { display: none !important; }
+
+      .top { background: var(--surface); border-bottom: 1px solid var(--border); }
+      .top-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+      .brand { font-weight: 700; font-size: 1.05rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+      .brand svg { width: 22px; height: 22px; }
+      .top nav { display: flex; gap: 20px; font-size: 14px; }
+      .top nav a { color: var(--muted); text-decoration: none; }
+      .top nav a:hover { color: var(--text); }
+
+      .intro { padding: 32px 0 20px; max-width: 720px; }
+      .intro p { margin-top: 8px; color: var(--muted); }
+
+      .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+      .panel + .panel, .stack > * + * { margin-top: 16px; }
+      .layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: start; }
+      .layout .panel + .panel { margin-top: 0; }
+
+      .drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; margin-top: 14px; padding: 28px 16px; border: 1.5px dashed var(--border-strong); border-radius: var(--radius); background: var(--sunken); text-align: center; cursor: pointer; }
+      .drop:hover, .drop.over { border-color: var(--accent); }
+      .drop:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+      .drop-main { font-weight: 600; }
+      .drop-file { font-family: var(--mono); font-size: 13px; color: var(--accent); word-break: break-all; }
+
+      details.opts { margin-top: 14px; }
+      details.opts > summary { cursor: pointer; font-size: 14px; color: var(--muted); }
+      .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; margin-top: 12px; }
+      .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+      .field select, .field input { width: 100%; padding: 8px 10px; font: inherit; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; }
+      .field .hint { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+      button { font: inherit; cursor: pointer; }
+      .primary { margin-top: 16px; width: 100%; padding: 11px 16px; font-weight: 600; color: var(--accent-text); background: var(--accent); border: 0; border-radius: 8px; }
+      .primary:disabled { opacity: 0.45; cursor: not-allowed; }
+      .secondary { padding: 7px 12px; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; }
+      .link { padding: 0; color: var(--accent); background: none; border: 0; text-decoration: underline; text-underline-offset: 2px; }
+      .or { margin-top: 12px; font-size: 14px; color: var(--muted); text-align: center; }
+
+      .progress { margin-top: 16px; padding: 14px; border-radius: 8px; background: var(--sunken); }
+      .bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
+      .bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.4s; }
+      .steps { list-style: none; margin: 12px 0 0; padding: 0; font-size: 14px; }
+      .steps li { display: flex; gap: 8px; align-items: baseline; padding: 2px 0; color: var(--faint); }
+      .steps li::before { content: "○"; width: 14px; flex: none; text-align: center; }
+      .steps li.now { color: var(--text); font-weight: 600; }
+      .steps li.now::before { content: "●"; color: var(--accent); }
+      .steps li.done { color: var(--muted); }
+      .steps li.done::before { content: "✓"; color: var(--ok); }
+      .steps .count { font-weight: 400; color: var(--muted); }
+      .error { margin-top: 14px; padding: 10px 12px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-size: 14px; }
+
+      .tips ol { margin: 10px 0 0; padding-left: 20px; }
+      .tips li { margin-top: 8px; }
+      .tips li b { font-weight: 600; }
+      .tips li span { display: block; color: var(--muted); font-size: 13px; }
+
+      #result { margin-top: 28px; scroll-margin-top: 16px; }
+      .result-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+      .eyebrow { font-size: 13px; color: var(--muted); }
+      .verdict { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+      .verdict h2 { font-size: 1.4rem; }
+      .summary { margin-top: 6px; color: var(--muted); max-width: 640px; }
+      .notes { margin: 10px 0 0; padding-left: 18px; font-size: 14px; }
+      .notes.bad { color: var(--bad); }
+      .notes.warn { color: var(--warn); }
+      .example-note { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--accent-soft); font-size: 14px; }
+
+      .result-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 16px; margin-top: 16px; align-items: start; }
+      .result-grid .panel + .panel { margin-top: 0; }
+      .fig-tabs { display: inline-flex; border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; margin-top: 10px; }
+      .fig-tabs button { padding: 5px 12px; font-size: 13px; color: var(--muted); background: var(--surface); border: 0; }
+      .fig-tabs button + button { border-left: 1px solid var(--border-strong); }
+      .fig-tabs button[aria-pressed="true"] { color: var(--text); background: var(--sunken); font-weight: 600; }
+      .fig svg { display: block; width: 100%; height: auto; max-height: 380px; margin-top: 12px; }
+      .fig figcaption { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+      .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+      .legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+
+      table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+      th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); padding: 0 8px 6px 0; border-bottom: 1px solid var(--border); }
+      td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+      tr:last-child td { border-bottom: 0; }
+      td .def { display: block; font-size: 12px; color: var(--muted); }
+      td.val { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      td .delta { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+      td .ref { display: block; font-size: 12px; color: var(--muted); }
+      td.study { width: 34%; }
+      td.study .range { display: block; margin-top: 3px; font-variant-numeric: tabular-nums; }
+      .badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+      .b-ok { background: var(--ok-soft); color: var(--ok); }
+      .b-warn { background: var(--warn-soft); color: var(--warn); }
+      .b-bad { background: var(--bad-soft); color: var(--bad); }
+      .b-na { background: var(--na-soft); color: var(--na); }
+      .fine { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+      details.more { margin-top: 10px; font-size: 13px; }
+      details.more > summary { cursor: pointer; color: var(--muted); }
+      details.more ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+      details.more li + li { margin-top: 6px; }
+
+      .fault { padding: 16px 0; border-top: 1px solid var(--border); }
+      .fault:first-of-type { border-top: 0; padding-top: 6px; }
+      .fault-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+      .fault .evidence { margin-top: 4px; font-size: 13.5px; color: var(--muted); }
+      .fb { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 6px 12px; margin-top: 10px; font-size: 14.5px; }
+      .fb dt { color: var(--muted); font-size: 13px; padding-top: 1px; }
+      .fb dd { margin: 0; }
+      .fb .cue { font-weight: 600; }
+      .fb-by { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; font-size: 13px; color: var(--muted); }
+
+      .kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px 18px; margin-top: 12px; font-size: 14px; }
+      .kv div span { display: block; font-size: 12px; color: var(--muted); }
+      pre.raw { margin-top: 10px; padding: 12px; max-height: 420px; overflow: auto; background: var(--sunken); border-radius: 8px; font: 12px/1.45 var(--mono); white-space: pre-wrap; word-break: break-word; }
+
+      .history-head { display: flex; justify-content: space-between; align-items: baseline; }
+      .history ul { list-style: none; margin: 10px 0 0; padding: 0; }
+      .history li { border-top: 1px solid var(--border); }
+      .history li button { display: flex; width: 100%; justify-content: space-between; gap: 12px; padding: 10px 2px; text-align: left; color: var(--text); background: none; border: 0; }
+      .history li button:hover { background: var(--sunken); }
+      .history .h-main { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .history .h-vals { font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+      .how ol { margin: 10px 0 0; padding-left: 20px; }
+      .how li { margin-top: 8px; }
+      .how li span { color: var(--muted); }
+      .foot { padding: 28px 16px 40px; font-size: 13px; color: var(--muted); }
+      .foot p + p { margin-top: 6px; }
+
+      @media (max-width: 820px) {
+        .layout, .result-grid { grid-template-columns: minmax(0, 1fr); }
+        .layout .panel + .panel, .result-grid .panel + .panel { margin-top: 0; }
+      }
+      @media (max-width: 520px) {
+        .fields { grid-template-columns: minmax(0, 1fr); }
+        .top nav { gap: 14px; }
+        .result-head { flex-direction: column; }
+        .fb { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+        .fb dd + dt { margin-top: 6px; }
+        thead { display: none; }
+        table, tbody, tr, td, td.study { display: block; width: auto; }
+        tr { padding: 10px 0; border-bottom: 1px solid var(--border); }
+        tr:last-child { border-bottom: 0; }
+        td, tr:last-child td { padding: 2px 0; border: 0; }
+        td.val { font-size: 1.05rem; }
+      }
     </style>
   </head>
   <body>
-    <div class="history-panel" id="history-panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <h3 style="font-family:var(--font-display);letter-spacing:0.06em">SESSION HISTORY</h3>
-        <button class="pill-btn" onclick="closeHistory()">Close</button>
+    <header class="top">
+      <div class="wrap top-inner">
+        <a class="brand" href="/">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z" fill="currentColor"/></svg>
+          KickCoach
+        </a>
+        <nav>
+          <a href="#how">How it works</a>
+          <a href="https://github.com/OkayWheresAamir/kickcoachv2">Source</a>
+        </nav>
       </div>
-      <div id="history-list"></div>
-    </div>
+    </header>
 
-    <div class="page">
-      <nav>
-        <div class="nav-wordmark">Kick<span>Coach</span></div>
-        <button class="pill-btn" onclick="openHistory()">History</button>
-      </nav>
+    <main class="wrap">
+      <section class="intro">
+        <h1>Measure an instep kick from a side-on video</h1>
+        <p>A pose model finds the player's joints in every frame. Plain code then measures the knee and trunk angles around ball contact and compares them with published studies. If a clip can't be measured reliably, it's refused, and you're told why.</p>
+      </section>
 
-      <div class="hero">
-        <h1>Measure your <span class="hl">instep kick.</span></h1>
-        <p>Upload a side-on video of one kick. KickCoach measures your joint angles, compares them with
-          published studies, and tells you what to work on. When a clip can't be measured reliably,
-          it says why instead of guessing.</p>
+      <div class="layout">
+        <section class="panel" aria-labelledby="upload-title">
+          <h2 id="upload-title">Analyse a kick</h2>
+          <label class="drop" id="drop">
+            <input type="file" id="file" accept="video/*" />
+            <span class="drop-main">Choose a video</span>
+            <span class="muted small" id="drop-hint">or drop it here. One kick, a few seconds long.</span>
+            <span class="drop-file" id="file-name"></span>
+          </label>
+
+          <details class="opts">
+            <summary>Clip details (optional)</summary>
+            <div class="fields">
+              <div class="field"><label for="leg">Kicking leg</label>
+                <select id="leg"><option value="auto">Detect it</option><option value="right">Right</option><option value="left">Left</option></select></div>
+              <div class="field"><label for="level">Your level</label>
+                <select id="level"><option value="">Not specified</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
+                <div class="hint">Picks the closest study group to compare with.</div></div>
+              <div class="field"><label for="slow">Is the video slowed down?</label>
+                <select id="slow"><option value="unknown">Don't know</option><option value="real_time">No, real time</option><option value="slow_motion">Yes, slow motion</option></select></div>
+              <div class="field"><label for="fps">Recorded at (frames per second)</label>
+                <input id="fps" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 240" />
+                <div class="hint">Only if you know it. Speeds are measured only when the real frame rate is known.</div></div>
+            </div>
+          </details>
+
+          <button class="primary" id="go" disabled>Analyse</button>
+          <p class="or">No video to hand? <button class="link" id="example-btn" type="button">See an example result</button></p>
+
+          <div class="progress" id="progress" hidden aria-live="polite">
+            <div class="bar"><span id="bar"></span></div>
+            <ol class="steps" id="steps"></ol>
+            <p class="muted small" id="elapsed" style="margin-top:8px"></p>
+          </div>
+          <p class="error" id="error" role="alert" hidden></p>
+        </section>
+
+        <aside class="panel tips" aria-labelledby="tips-title">
+          <h2 id="tips-title">Filming it</h2>
+          <ol>
+            <li><b>Side-on to the kick.</b><span>Camera level with the ball, at right angles to where the ball goes. Front-on or angled clips are refused.</span></li>
+            <li><b>Keep it still.</b><span>On a tripod or propped up, at about hip height.</span></li>
+            <li><b>Whole body and ball in view</b><span>from the last steps of the run-up to the follow-through.</span></li>
+            <li><b>One player, one kick.</b><span>Trim the clip to a few seconds around the kick.</span></li>
+            <li><b>Kicking leg nearer the camera</b><span>if you can; the far leg is often hidden.</span></li>
+          </ol>
+        </aside>
       </div>
 
-      <div class="card">
-        <h3>Filming checklist</h3>
-        <ul class="tips">
-          <li>Camera side-on to the kick</li>
-          <li>Camera at hip height, not moving</li>
-          <li>Whole body and the ball in view</li>
-          <li>One player, one kick</li>
-          <li>Kicking leg nearer the camera if you can</li>
-        </ul>
-      </div>
+      <section id="result" hidden aria-live="polite"></section>
 
-      <div class="card">
-        <h3>About this clip</h3>
-        <div class="fields">
-          <div class="field"><label for="player">Player name</label>
-            <input id="player" type="text" value="me" maxlength="40"/>
-            <div class="hint">Your history is grouped by this name.</div></div>
-          <div class="field"><label for="level">Level</label>
-            <select id="level"><option value="">Not specified</option><option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div>
-          <div class="field"><label for="leg">Kicking leg</label>
-            <select id="leg"><option value="auto">Detect it</option><option value="right">Right</option><option value="left">Left</option></select></div>
-          <div class="field"><label for="slow">Is the video slowed down?</label>
-            <select id="slow"><option value="unknown">Don't know</option><option value="real_time">No, real time</option><option value="slow_motion">Yes, slow motion</option></select>
-            <div class="hint">Speeds are only measured when the timing is known.</div></div>
-          <div class="field"><label for="fps">Camera frame rate (optional)</label>
-            <input id="fps" type="number" min="1" step="1" placeholder="e.g. 240"/>
-            <div class="hint">Only if you know the slow-motion capture rate.</div></div>
+      <section class="panel history" id="history" hidden aria-labelledby="history-title" style="margin-top:16px">
+        <div class="history-head">
+          <h2 id="history-title">Your sessions</h2>
+          <button class="link small" id="clear" type="button">Clear</button>
         </div>
-      </div>
+        <p class="muted small">Saved in this browser only. New results are compared with your last three.</p>
+        <ul id="history-list"></ul>
+      </section>
 
-      <div class="upload-card" id="drop-zone">
-        <input type="file" id="file-input" accept="video/*"/>
-        <div class="upload-title">Drop your kick video</div>
-        <p class="upload-hint">MP4 or MOV, one kick, up to 100 MB. Analysis takes a minute or two.</p>
-        <div id="file-name"></div>
-      </div>
-      <button class="submit-btn" id="submit-btn" onclick="submitVideo()" disabled>Analyse my kick</button>
-      <div id="status-bar"></div>
-      <div class="loading" id="loading">Measuring: pose model, ball tracking, then comparisons…</div>
-      <div id="results"></div>
-    </div>
+      <section class="panel how" id="how" style="margin-top:16px">
+        <h2>How it works</h2>
+        <ol>
+          <li><b>Pose.</b> <span>RTMPose finds 23 body and foot keypoints in each frame (chosen over MediaPipe and MoveNet on hand-labelled frames).</span></li>
+          <li><b>Events.</b> <span>Ball contact is the last frame before a ball detector sees the ball move; the backswing is the knee's most bent point before it.</span></li>
+          <li><b>Measurements.</b> <span>Angles come from the cleaned keypoints with plain geometry. Any value outside a sanity bound is reported as not measured, never clamped.</span></li>
+          <li><b>Comparison.</b> <span>Each value is set against norms extracted from biomechanics papers and checked by hand, with the study's population and caveats.</span></li>
+          <li><b>Feedback.</b> <span>Fault rules with cited or clearly marked heuristic thresholds pick what to work on. The wording comes from an LLM under a validator, or from templates.</span></li>
+        </ol>
+        <p class="fine">Every measurement is evaluated against human labels, with v1 and a frontier video model as baselines. <a href="https://github.com/OkayWheresAamir/kickcoachv2#results">See the results</a>.</p>
+      </section>
+    </main>
+
+    <footer class="wrap foot">
+      <p>Your video is deleted as soon as it has been analysed. <span id="mode-note"></span></p>
+      <p>KickCoach measures one kind of kick from 2D video. It isn't a substitute for a coach, and lab studies used 3D capture on small samples.</p>
+    </footer>
 
     <script>
-      const LABELS = {
-        knee_angle_contact: ['Knee angle at contact', '180° = straight leg'],
-        max_knee_flexion_backswing: ['Most-bent knee in backswing', 'smallest knee angle; 180° = straight'],
-        trunk_lean_contact: ['Trunk lean at contact', 'from vertical; negative = leaning back'],
-        plant_foot_offset: ['Plant foot vs ball', 'leg lengths; negative = behind the ball'],
-        segment_sequence_order: ['Thigh → shank sequence', 'which segment peaked first'],
-        peak_knee_ext_velocity: ['Peak knee straightening speed', 'needs a known frame rate'],
+      const STORE = "kickcoach.sessions.v1";
+      const MAX_SAVED = 20; // heuristic: bounds this browser's storage; the server compares with the last 3
+      const FEATURES = {
+        knee_angle_contact: ["Knee angle at contact", "180° = straight leg", "deg"],
+        max_knee_flexion_backswing: ["Deepest knee bend in the backswing", "smaller = more bent", "deg"],
+        trunk_lean_contact: ["Trunk lean at contact", "from vertical; negative = leaning back", "deg"],
+        plant_foot_offset: ["Plant foot vs ball", "in leg lengths; negative = behind the ball", "leg_lengths"],
+        segment_sequence_order: ["Thigh → shank timing", "which segment's speed peaked first", ""],
+        peak_knee_ext_velocity: ["Peak knee-straightening speed", "needs the real frame rate", "deg/s"],
       };
-      const VERDICT = {
-        within_norm: ['within studied range', 'b-good', 'within'],
-        below_norm: ['below studied range', 'b-mod', 'below'],
-        above_norm: ['above studied range', 'b-mod', 'above'],
-        reference_only: ['reference only', 'b-na', ''],
-        no_comparable_norm: ['no comparable study', 'b-na', ''],
+      const VERDICTS = {
+        within_norm: ["within study range", "b-ok"],
+        below_norm: ["below study range", "b-warn"],
+        above_norm: ["above study range", "b-warn"],
+        reference_only: ["reference only", "b-na"],
+        no_comparable_norm: ["no comparable study", "b-na"],
       };
-      const fileInput = document.getElementById('file-input');
-      const submitBtn = document.getElementById('submit-btn');
-      const dropZone = document.getElementById('drop-zone');
+      const STAGES = [
+        ["upload", "Uploading"],
+        ["queued", "Waiting for a free slot"],
+        ["ingest", "Reading the video"],
+        ["pose", "Finding body keypoints"],
+        ["ball", "Finding the ball"],
+        ["measure", "Measuring and checking the clip"],
+        ["feedback", "Comparing with studies"],
+      ];
+      // Rough share of the total time per stage, for the bar only (pose and ball dominate).
+      const WEIGHT = { upload: [0, 5], queued: [5, 5], ingest: [5, 8], pose: [8, 52], ball: [52, 92], measure: [92, 96], feedback: [96, 99] };
+      const $ = (id) => document.getElementById(id);
+      let health = { public: false, max_upload_mb: 100 };
+      let file = null;
 
-      function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-      function fmt(v, unit) {
-        if (v === null || v === undefined) return '—';
-        if (typeof v !== 'number') return esc(String(v).replace(/_/g, ' '));
-        return unit === 'leg_lengths' ? v.toFixed(2) : v.toFixed(1);
+      function esc(s) { return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+      function unitText(u) { return u === "deg" ? "°" : u === "leg_lengths" ? " leg lengths" : u === "deg/s" ? "°/s" : ""; }
+      function num(v, unit, digits) {
+        if (typeof v !== "number" || !isFinite(v)) return esc(v ?? "—").replace(/_/g, " ");
+        const d = digits ?? (unit === "leg_lengths" ? 2 : 1);
+        return (v < 0 ? "−" : "") + Math.abs(v).toFixed(d) + unitText(unit);
       }
-      function setStatus(msg, cls='') { const el = document.getElementById('status-bar'); el.textContent = msg; el.className = cls; }
-
-      fileInput.addEventListener('change', () => { if (fileInput.files[0]) chosen(fileInput.files[0]); });
-      function chosen(f) {
-        document.getElementById('file-name').textContent = `${f.name} (${(f.size/1048576).toFixed(1)} MB)`;
-        submitBtn.disabled = false;
+      function shortSource(src) {
+        const m = String(src || "").match(/^([^,(&]+)(.*?)\((\d{4})\)/);
+        if (!m) return String(src || "").split(",")[0];
+        return m[2].includes(",") ? `${m[1].trim()} et al. (${m[3]})` : `${m[1].trim()} ${m[2].trim()} (${m[3]})`;
       }
-      dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-      dropZone.addEventListener('drop', e => {
-        e.preventDefault(); dropZone.classList.remove('drag-over');
-        const f = e.dataTransfer.files[0];
-        if (f && f.type.startsWith('video/')) { const dt = new DataTransfer(); dt.items.add(f); fileInput.files = dt.files; chosen(f); }
-        else setStatus('Please drop a video file.', 'error');
-      });
+      function citation(id, d) { // "N-032" -> the study it came from; "kellis_katis_2007" -> "Kellis & Katis (2007)"
+        const c = (d.comparisons || []).find((x) => x.norm_ref === id || (x.also_matching || []).includes(id));
+        if (/^N-\d+$/.test(id)) return c ? `${shortSource(c.source)}, norm ${id}` : `norm ${id}`;
+        const m = String(id).match(/^([a-z]+(?:_[a-z]+)*)_(\d{4})$/);
+        if (!m) return id;
+        const names = m[1].split("_").map((n) => n[0].toUpperCase() + n.slice(1));
+        return `${names.length > 2 ? names[0] + " et al." : names.join(" & ")} (${m[2]})`;
+      }
+      const plain = (s) => String(s ?? "").replace(/\s*\((?:DEC|D)-?\d+(?:, ?(?:DEC|D)-?\d+)*\)/g, ""); // drop internal decision refs
+      function loadSessions() {
+        try { const v = JSON.parse(localStorage.getItem(STORE) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; }
+      }
+      function saveSessions(list) {
+        try { localStorage.setItem(STORE, JSON.stringify(list.slice(0, MAX_SAVED))); return true; } catch { return false; }
+      }
+      function measuredValues(r) {
+        const out = {};
+        for (const f of r.features || []) if (f.status === "measured" && typeof f.value === "number") out[f.id] = f.value;
+        return out;
+      }
 
-      async function submitVideo() {
-        const file = fileInput.files[0];
+      // ---------- upload ----------
+      const input = $("file"), drop = $("drop"), go = $("go");
+      function choose(f) {
+        $("error").hidden = true;
+        if (!f) return;
+        if (!f.type.startsWith("video/") && !/\.(mp4|mov|m4v|avi|webm|mkv)$/i.test(f.name)) return showError("That doesn't look like a video file.");
+        if (f.size > health.max_upload_mb * 1048576) return showError(`The video is ${(f.size / 1048576).toFixed(0)} MB; the limit is ${health.max_upload_mb} MB. Trim it to the one kick.`);
+        file = f;
+        $("file-name").textContent = `${f.name} · ${(f.size / 1048576).toFixed(1)} MB`;
+        go.disabled = false;
+      }
+      input.addEventListener("change", () => choose(input.files[0]));
+      drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+      drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+      drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); choose(e.dataTransfer.files[0]); });
+      go.addEventListener("click", start);
+      $("example-btn").addEventListener("click", showExample);
+      $("clear").addEventListener("click", () => { saveSessions([]); renderHistory(); });
+
+      function showError(msg) { const e = $("error"); e.textContent = msg; e.hidden = false; }
+      function busy(on) { go.disabled = on || !file; input.disabled = on; $("example-btn").disabled = on; }
+
+      function setProgress(stage, done, total, extra) {
+        $("progress").hidden = false;
+        const idx = STAGES.findIndex((s) => s[0] === stage);
+        $("steps").innerHTML = STAGES.filter((s) => s[0] !== "queued" || stage === "queued").map(([key, label]) => {
+          const i = STAGES.findIndex((s) => s[0] === key);
+          const cls = i < idx ? "done" : i === idx ? "now" : "";
+          let count = "";
+          if (i === idx && total) count = ` <span class="count">frame ${done} of ${total}</span>`;
+          if (i === idx && extra) count = ` <span class="count">${esc(extra)}</span>`;
+          return `<li class="${cls}">${esc(label)}${count}</li>`;
+        }).join("");
+        const [a, b] = WEIGHT[stage] || [0, 0];
+        const frac = total ? done / total : 0;
+        $("bar").style.width = `${a + (b - a) * frac}%`;
+      }
+
+      function upload(form, onProgress) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "/analyse");
+          xhr.responseType = "json";
+          xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);
+          xhr.onload = () => resolve({ status: xhr.status, body: xhr.response });
+          xhr.onerror = () => reject(new Error("the upload failed; check your connection"));
+          xhr.send(form);
+        });
+      }
+      const detail = (body, status) => (body && body.detail ? (typeof body.detail === "string" ? body.detail : "the form was not accepted") : `error ${status}`);
+
+      async function start() {
         if (!file) return;
+        busy(true);
+        $("error").hidden = true;
         const form = new FormData();
-        form.append('file', file);
-        form.append('player', document.getElementById('player').value.trim() || 'me');
-        form.append('level', document.getElementById('level').value);
-        form.append('kicking_leg', document.getElementById('leg').value);
-        form.append('slow_motion', document.getElementById('slow').value);
-        const fps = document.getElementById('fps').value.trim();
-        if (fps) form.append('capture_fps', fps);
-        submitBtn.disabled = true;
-        document.getElementById('loading').classList.add('show');
-        document.getElementById('results').innerHTML = '';
-        setStatus('Uploading and analysing…');
-        let res, data;
+        form.append("file", file);
+        form.append("kicking_leg", $("leg").value);
+        form.append("level", $("level").value);
+        form.append("slow_motion", $("slow").value);
+        if ($("fps").value.trim()) form.append("capture_fps", $("fps").value.trim());
+        form.append("history", JSON.stringify(loadSessions().filter((s) => s.result.quality.accepted).map((s) => measuredValues(s.result))));
+        const t0 = Date.now();
+        const tick = setInterval(() => {
+          const s = Math.round((Date.now() - t0) / 1000);
+          $("elapsed").textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")} elapsed · usually one to three minutes`;
+        }, 1000);
         try {
-          res = await fetch('/analyse', { method: 'POST', body: form });
-          data = await res.json();
+          setProgress("upload", 0, 0);
+          const r = await upload(form, (f) => setProgress("upload", 0, 0, `${Math.round(f * 100)}%`));
+          if (r.status !== 202) throw new Error(detail(r.body, r.status));
+          const job = await poll(r.body.job_id);
+          const name = file.name;
+          const entry = { id: String(Date.now()), saved_at: new Date().toISOString(), clip_name: name, result: slim(job.result) };
+          const list = [entry, ...loadSessions()];
+          saveSessions(list);
+          renderHistory();
+          renderResult(job.result, { kind: "upload", name, when: entry.saved_at });
         } catch (err) {
-          setStatus(`Network error: ${err.message}`, 'error');
-          return done();
+          showError(`Couldn't analyse this clip: ${err.message}`);
+        } finally {
+          clearInterval(tick);
+          $("progress").hidden = true;
+          $("elapsed").textContent = "";
+          busy(false);
         }
-        done();
-        if (!res.ok) {
-          const d = data && data.detail ? (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)) : res.statusText;
-          setStatus(`Error ${res.status}: ${d}`, 'error');
-          return;
-        }
-        setStatus(`Session ${data.session_id} saved.`);
-        render(data);
       }
-      function done() { submitBtn.disabled = false; document.getElementById('loading').classList.remove('show'); }
+      async function poll(id) {
+        for (;;) {
+          await new Promise((r) => setTimeout(r, 1500));
+          let res;
+          try { res = await fetch(`/jobs/${encodeURIComponent(id)}`); } catch { continue; } // keep polling through a blip
+          const s = await res.json().catch(() => null);
+          if (!res.ok || !s) throw new Error(detail(s, res.status));
+          if (s.state === "done") return s;
+          if (s.state === "failed") throw new Error(s.error ? s.error.detail : "the analysis failed");
+          if (s.state === "queued") setProgress("queued", 0, 0, s.ahead ? `${s.ahead} ahead of you` : "");
+          else setProgress(s.stage || "ingest", s.done || 0, s.total || 0);
+        }
+      }
+      function slim(r) { // drop the raw LLM transcripts before saving
+        const out = { ...r, feedback: { ...r.feedback } };
+        delete out.feedback.attempts;
+        return out;
+      }
 
-      function render(d) {
-        const el = document.getElementById('results');
-        const q = d.quality, ev = d.events;
-        let html = `<p class="section-label">Can this clip be measured?</p>
-          <div class="card"><div class="verdict ${q.accepted ? 'ok' : 'bad'}">${q.accepted ? 'Measured' : 'Not measured'}</div>
-          ${q.reasons.length ? `<ul class="small">${q.reasons.map(r => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
-          ${(q.warnings || []).length ? `<ul class="small warn">${q.warnings.map(r => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
-          <div class="kv">
-            <div>Side-on score <b>${fmt(q.viewpoint_score)}</b></div>
-            <div>Frame timing <b>${q.fps_trusted ? 'trusted' : 'not trusted'}</b></div>
-            <div>Kicking leg <b>${esc(ev.kicking_leg || '—')}</b> (${esc(ev.kicking_leg_source || '')})</div>
-            <div>Contact frame <b>${ev.contact_frame ?? '—'}</b> (${esc(ev.contact_method || '')}, ${esc(ev.contact_confidence || '')})</div>
-          </div><div class="small mono">${esc(q.fps_reason || '')}</div></div>`;
+      async function showExample() {
+        $("error").hidden = true;
+        try {
+          const r = await fetch("/example");
+          if (!r.ok) throw new Error(`error ${r.status}`);
+          renderResult(await r.json(), { kind: "example" });
+        } catch (err) { showError(`Couldn't load the example: ${err.message}`); }
+      }
+
+      // ---------- result ----------
+      function renderResult(d, src) {
+        const q = d.quality, ev = d.events || {};
+        const el = $("result");
+        let eyebrow = "";
+        if (src.kind === "example") eyebrow = `Example result · public clip ${esc(d.example.clip_id)} from the evaluation set`;
+        else eyebrow = `${src.kind === "saved" ? "Saved session" : "Your kick"} · ${esc(src.name || "video")} · ${esc(new Date(src.when).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }))}`;
+        const leg = ev.kicking_leg ? `${ev.kicking_leg} foot${ev.kicking_leg_source === "user" ? " (as you said)" : ""}` : null;
+        const contact = ev.contact_frame != null
+          ? `Contact at frame ${ev.contact_frame}, found ${ev.contact_method === "ball_motion" ? "from the ball starting to move" : "from the foot's movement"} (${esc(ev.contact_confidence)} confidence).`
+          : "";
+        let html = `<div class="panel"><div class="result-head"><div>
+            <p class="eyebrow">${eyebrow}</p>
+            <div class="verdict"><h2>${q.accepted ? "Measured" : "Not measured"}</h2>
+              <span class="badge ${q.accepted ? "b-ok" : "b-bad"}">${q.accepted ? "clip passed the checks" : "clip refused"}</span></div>
+            <p class="summary">${q.accepted ? `${leg ? esc(leg[0].toUpperCase() + leg.slice(1)) + ". " : ""}${contact}` : "This clip can't be measured reliably, so no numbers are shown."}</p>
+            ${q.reasons.length ? `<ul class="notes bad">${q.reasons.map((r) => `<li>${esc(plain(r))}</li>`).join("")}</ul>` : ""}
+            ${(q.warnings || []).length ? `<ul class="notes warn">${q.warnings.map((r) => `<li>${esc(plain(r))}</li>`).join("")}</ul>` : ""}
+          </div>
+          <button class="secondary" type="button" id="again">${src.kind === "example" ? "Analyse your own" : "Analyse another"}</button></div>
+          ${src.kind === "example" ? `<p class="example-note">${esc(d.example.note)} <a href="${esc(d.example.source_url)}" rel="noopener" target="_blank">Source video</a> (${esc(d.example.window_s[0])}–${esc(d.example.window_s[1])} s).</p>` : ""}
+        </div>`;
 
         if (q.accepted) {
-          const comps = Object.fromEntries((d.comparisons || []).map(c => [c.feature_id, c]));
-          html += `<p class="section-label">Measurements vs published studies</p><div class="grid">${d.features.map(f => featCard(f, comps[f.id], (d.history_delta || {})[f.id])).join('')}</div>
-            <p class="small">"Within studied range" means within one standard deviation of a study's average (a heuristic band). Studies used lab 3D capture on small samples, so treat it as context, not a target.</p>`;
-          html += `<p class="section-label">Faults found</p>`;
-          html += (d.faults || []).length ? d.faults.map(faultCard).join('') : `<div class="card small">No fault rule fired on this kick.</div>`;
-          if ((d.inactive_rules || []).length) html += `<p class="small">Inactive rules: ${d.inactive_rules.map(r => `${esc(r.fault_id)} (${esc(r.reason)})`).join('; ')}</p>`;
-          html += feedbackSection(d.feedback);
+          const comps = Object.fromEntries((d.comparisons || []).map((c) => [c.feature_id, c]));
+          html += `<div class="result-grid">${figurePanel(d)}${measurementsPanel(d, comps)}</div>`;
+          html += workOnPanel(d);
         }
-        html += `<p class="section-label">Raw response</p><button class="pill-btn" onclick="toggleRaw(this)">Show JSON</button><pre id="raw-output">${esc(JSON.stringify(d, null, 2))}</pre>`;
+        html += checksPanel(d);
         el.innerHTML = html;
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.hidden = false;
+        $("again").addEventListener("click", () => { el.hidden = true; window.scrollTo({ top: 0, behavior: "smooth" }); });
+        el.querySelectorAll("[data-fig]").forEach((b) => b.addEventListener("click", () => {
+          el.querySelectorAll("[data-fig]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+          el.querySelector(".fig-holder").innerHTML = figureSVG(d, b.dataset.fig);
+          el.querySelector(".fig-cap").textContent = figCaption(d, b.dataset.fig);
+        }));
+        const raw = el.querySelector("#raw-toggle");
+        if (raw) raw.addEventListener("toggle", () => { if (raw.open && !raw.dataset.done) { raw.querySelector("pre").textContent = JSON.stringify(d, null, 2); raw.dataset.done = "1"; } });
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
-      function featCard(f, c, h) {
-        const [label, def] = LABELS[f.id] || [f.id, ''];
-        const v = c ? (VERDICT[c.verdict] || [c.verdict, 'b-na', '']) : null;
-        const measured = f.status === 'measured';
-        return `<div class="feat ${v ? v[2] : ''}"><div class="bar"></div>
-          <div class="feat-label">${esc(label)}</div><div class="feat-def">${esc(def)}</div>
-          ${measured ? `<span class="feat-value">${fmt(f.value, f.unit)}</span> <span class="feat-unit">${esc(f.unit)}</span>`
-                     : `<span class="badge b-na">not measured</span><div class="small">${esc(f.reason)}</div>`}
-          ${h ? `<div class="small mono">${esc(h.text)}</div>` : ''}
-          ${v ? `<div><span class="badge ${v[1]}">${esc(v[0])}</span></div>` : ''}
-          ${c && c.norm_ref ? `<div class="small">Study: ${fmt(c.norm_band?.[0], c.unit)}–${fmt(c.norm_band?.[1], c.unit)} ${esc(c.unit)} (${esc(c.norm_ref)}${c.converted ? ', converted from flexion' : ''})</div>
-            <details><summary>Source and caveats</summary><ul><li>${esc(c.source)}</li><li>Population: ${esc(c.population)}; ${esc(c.kick_type)}</li>${(c.caveats || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></details>` : ''}
-          ${c && !c.norm_ref && c.reason ? `<div class="small">${esc(c.reason)}</div>` : ''}
-        </div>`;
+      function measurementsPanel(d, comps) {
+        const hist = d.history_delta || {};
+        const rows = d.features.map((f) => {
+          const [label, def, unit] = FEATURES[f.id] || [f.id, "", f.unit];
+          const c = comps[f.id];
+          const measured = f.status === "measured";
+          const v = c && VERDICTS[c.verdict];
+          const verdict = measured && v && c.norm_band ? `<span class="badge ${v[1]}">${esc(v[0])}</span>` : "";
+          let study = "—";
+          if (c && c.norm_band) study = `${verdict}<span class="range">${num(c.norm_band[0], f.unit)} to ${num(c.norm_band[1], f.unit)}</span><span class="ref">${esc(shortSource(c.source))}</span>`;
+          else if (c && c.verdict === "no_comparable_norm") study = `<span class="ref">no comparable study</span>`;
+          const h = hist[f.id];
+          const value = measured
+            ? `${f.unit === "order" ? esc(String(f.value).replace(/_/g, " ")) : num(f.value, f.unit)}${h ? `<span class="delta">${esc(h.text.replace(/^([+-])/, (m) => (m === "-" ? "−" : "+")))}</span>` : ""}`
+            : `<span class="badge b-na">not measured</span>`;
+          const why = !measured ? `<span class="def">${esc(plain(f.reason))}</span>` : "";
+          return `<tr><td>${esc(label)}<span class="def">${esc(def)}</span>${why}</td><td class="val">${value}</td><td class="study">${study}</td></tr>`;
+        }).join("");
+        const sources = (d.comparisons || []).filter((c) => c.norm_ref).map((c) => `<li><b>${esc((FEATURES[c.feature_id] || [c.feature_id])[0])}:</b> ${esc(c.source)}${c.converted ? " (converted from flexion, where 0° = straight)" : ""}. ${esc(c.population)}; ${esc(c.kick_type)}.${(c.caveats || []).map((x) => ` ${esc(x)}`).join("")}</li>`).join("");
+        return `<div class="panel"><h3>Measurements</h3>
+          <table><thead><tr><th>Measurement</th><th>This kick</th><th>Published studies</th></tr></thead><tbody>${rows}</tbody></table>
+          <p class="fine">"Within study range" means within one standard deviation of a study's average, a heuristic band. The studies measured in 3D in a lab, on small groups, so treat the range as context, not a target.</p>
+          ${sources ? `<details class="more"><summary>Studies and caveats</summary><ul>${sources}</ul></details>` : ""}</div>`;
       }
 
-      function faultCard(f) {
-        const [k, v] = Object.entries(f.evidence)[0];
-        const heuristic = String(f.threshold_source).startsWith('heuristic');
-        return `<div class="fault"><h4>${esc(f.name)}</h4>
-          <div class="small">${esc((LABELS[k] || [k])[0])}: <b>${fmt(v, f.unit)}</b> ${esc(f.unit || '')}; fires when ${esc(f.fires_when)} ${fmt(f.threshold, f.unit)}
-          <span class="badge ${heuristic ? 'b-mod' : 'b-good'}">${heuristic ? 'heuristic threshold' : 'cited threshold'}</span></div>
-          <details><summary>Where the threshold comes from</summary><ul><li>${esc(f.threshold_source)}</li></ul></details></div>`;
+      function workOnPanel(d) {
+        const fb = d.feedback || { items: [] };
+        const byId = Object.fromEntries((fb.items || []).map((i) => [i.fault_id, i]));
+        const llm = fb.generated_by === "llm";
+        let by = llm ? `<span class="badge b-ok">written by an LLM</span>${fb.validator_passed ? `<span class="badge b-ok">passed the validator</span>` : ""}` : `<span class="badge b-na">template feedback</span>`;
+        let why = "";
+        if (!llm && health.public && d.example === undefined) why = "This public demo doesn't send your measurements to an LLM: the free Gemini tier may use inputs to improve Google's products and isn't allowed for users in the EEA, Switzerland or the UK.";
+        else if (!llm && fb.fallback_reason) why = `(${fb.fallback_reason})`;
+        const faults = (d.faults || []).map((f) => {
+          const [fid, val] = Object.entries(f.evidence)[0];
+          const heuristic = String(f.threshold_source).startsWith("heuristic");
+          const i = byId[f.fault_id];
+          return `<div class="fault"><div class="fault-head"><h4>${esc(f.name)}</h4>
+              <span class="badge ${heuristic ? "b-warn" : "b-ok"}">${heuristic ? "heuristic threshold" : "cited threshold"}</span></div>
+            <p class="evidence">${esc((FEATURES[fid] || [fid])[0])} ${num(val, f.unit)}; this rule fires ${esc(f.fires_when)} ${num(f.threshold, f.unit)}.</p>
+            ${i ? `<dl class="fb"><dt>What</dt><dd>${esc(i.what)}</dd><dt>Why</dt><dd>${esc(i.why_it_matters)}</dd><dt>Cue</dt><dd class="cue">${esc(i.cue)}</dd><dt>Drill</dt><dd>${esc(i.drill)}</dd>${i.citations.length ? `<dt>Sources</dt><dd class="small">${i.citations.map((c) => esc(citation(c, d))).join("; ")}</dd>` : ""}</dl>` : ""}
+            <details class="more"><summary>Where the threshold comes from</summary><ul><li>${esc(f.threshold_source)}</li></ul></details></div>`;
+        }).join("");
+        const body = faults || `<p class="muted" style="margin-top:8px">No fault rule fired on this kick.</p>`;
+        return `<div class="panel" style="margin-top:16px"><h3>What to work on</h3>
+          ${faults ? `<div class="fb-by">${by}${why ? `<span>${esc(why)}</span>` : ""}</div>` : ""}${body}</div>`;
       }
 
-      function feedbackSection(fb) {
-        if (!fb || !fb.items.length) return fb && fb.fallback_reason ? `<p class="small">${esc(fb.fallback_reason)}</p>` : '';
-        const by = fb.generated_by === 'llm' ? 'Written by an LLM, checked by a validator' : 'Template feedback';
-        return `<p class="section-label">What to work on</p>
-          <div class="small" style="margin-bottom:10px"><span class="badge ${fb.generated_by === 'llm' ? 'b-good' : 'b-na'}">${esc(by)}</span>
-          ${fb.validator_passed === true ? '<span class="badge b-good">validator passed</span>' : ''}${fb.fallback_reason ? ` ${esc(fb.fallback_reason)}` : ''}</div>
-          ${fb.items.map(i => `<div class="fb"><h4>${esc(i.fault_id)}</h4>
-            <p><b>What</b>${esc(i.what)}</p><p><b>Why</b>${esc(i.why_it_matters)}</p>
-            <div class="cue">${esc(i.cue)}</div><p><b>Drill</b>${esc(i.drill)}</p>
-            ${i.citations.length ? `<p class="small mono">Sources: ${i.citations.map(esc).join(', ')}</p>` : ''}</div>`).join('')}`;
+      function checksPanel(d) {
+        const q = d.quality, ev = d.events || {}, sig = d.signal || {};
+        const kv = [
+          ["Side-on score", q.viewpoint_score != null ? q.viewpoint_score.toFixed(2) : "—", "1 = fully side-on"],
+          ["Keypoint confidence", q.keypoint_score != null ? q.keypoint_score.toFixed(2) : "—", "the pose model's own score"],
+          ["Frame timing", q.fps_trusted ? "trusted" : "not trusted", q.fps_reason],
+          ["Kicking leg", ev.kicking_leg || "—", (ev.kicking_leg_source || "").replace(/_/g, " ")],
+          ["Kick direction", ev.kick_direction || "—", (ev.kick_direction_source || "")],
+          ["Contact frame", ev.contact_frame ?? "—", ev.contact_method ? `${ev.contact_method.replace(/_/g, " ")}, ${ev.contact_confidence}` : ""],
+          ["Deepest backswing frame", ev.max_backswing_frame ?? "—", ""],
+          ["Filtering", sig.cutoff_cpf != null ? `${sig.cutoff_cpf.toFixed(3)} cycles/frame` : "none", sig.swapped_frames && sig.swapped_frames.length ? `left/right fixed on ${sig.swapped_frames.length} frames` : ""],
+        ].map(([k, v, h]) => `<div><span>${esc(k)}</span>${esc(v)}${h ? `<span>${esc(h)}</span>` : ""}</div>`).join("");
+        const inactive = (d.inactive_rules || []).map((r) => `<li>${esc(r.fault_id)}: ${esc(r.reason)}</li>`).join("");
+        return `<details class="panel more" style="margin-top:16px"><summary><b>How this clip was checked</b></summary>
+          <div class="kv">${kv}</div>
+          ${inactive ? `<p class="fine">Rules that couldn't run:</p><ul>${inactive}</ul>` : ""}
+          <details class="more" id="raw-toggle"><summary>Full response (JSON)</summary><pre class="raw"></pre></details>
+          <p class="fine">Pose model: ${esc(d.pose_model || "—")}.</p></details>`;
       }
 
-      async function openHistory() {
-        document.getElementById('history-panel').classList.add('open');
-        const list = document.getElementById('history-list');
-        const player = document.getElementById('player').value.trim() || 'me';
-        list.innerHTML = '<div class="small">Loading…</div>';
-        try {
-          const data = await (await fetch(`/sessions?player=${encodeURIComponent(player)}&limit=30`)).json();
-          if (!data.sessions.length) { list.innerHTML = `<div class="small">No sessions for "${esc(player)}" yet.</div>`; return; }
-          list.innerHTML = data.sessions.map(s => `<div class="hs"><a href="/?session=${s.session_id}" style="color:var(--accent)"><b>Session ${s.session_id}</b></a> · ${esc(s.created_at)} · ${s.accepted ? 'measured' : 'refused'}<br>
-            ${Object.entries(s.features).map(([k, v]) => `${esc((LABELS[k] || [k])[0])}: <b>${typeof v === 'number' ? v.toFixed(1) : esc(v)}</b>`).join('<br>')}
-            ${s.faults.length ? `<br>Faults: ${s.faults.map(esc).join(', ')}` : ''}</div>`).join('');
-        } catch (e) { list.innerHTML = '<div class="small">Could not load history.</div>'; }
+      // ---------- stick figure ----------
+      const BONES = [["left_shoulder", "right_shoulder"], ["left_hip", "right_hip"], ["left_shoulder", "left_hip"], ["right_shoulder", "right_hip"]];
+      const ARM = [["shoulder", "elbow"], ["elbow", "wrist"]];
+      const LEG = [["hip", "knee"], ["knee", "ankle"], ["ankle", "heel"], ["heel", "big_toe"], ["ankle", "big_toe"]];
+
+      function figurePanel(d) {
+        if (!d.figure) return `<div class="panel fig"><h3>The kick</h3><p class="fine">No keypoints to draw.</p></div>`;
+        const frames = Object.keys(d.figure.frames);
+        const tabs = frames.length > 1 ? `<div class="fig-tabs" role="group" aria-label="Frame">${frames.map((f, i) => `<button type="button" data-fig="${f}" aria-pressed="${i === 0}">${f === "contact" ? "Contact" : "Backswing"}</button>`).join("")}</div>` : "";
+        return `<figure class="panel fig" style="margin:0"><h3>What was measured</h3>${tabs}
+          <div class="fig-holder">${figureSVG(d, frames[0])}</div>
+          <div class="legend"><span><i style="background:var(--fig-kick)"></i>kicking leg</span><span><i style="background:var(--fig-body)"></i>body</span><span><i style="background:var(--fig-mark)"></i>measured angle</span></div>
+          <figcaption class="fig-cap">${esc(figCaption(d, frames[0]))}</figcaption></figure>`;
       }
-      // /?session=<id> reopens a stored session (from the history panel).
-      const sid = new URLSearchParams(location.search).get('session');
-      if (sid) fetch(`/sessions/${encodeURIComponent(sid)}`).then(r => r.ok ? r.json() : Promise.reject(r.status))
-        .then(d => { setStatus(`Session ${d.session_id}`); render(d); })
-        .catch(e => setStatus(`Could not load session ${sid} (${e})`, 'error'));
-      function closeHistory() { document.getElementById('history-panel').classList.remove('open'); }
-      function toggleRaw(btn) { const p = document.getElementById('raw-output'); const open = p.style.display === 'block'; p.style.display = open ? 'none' : 'block'; btn.textContent = open ? 'Show JSON' : 'Hide JSON'; }
+      function figCaption(d, which) {
+        const f = d.figure.frames[which];
+        return `Keypoints at frame ${f.frame} (${which === "contact" ? "ball contact" : "deepest backswing"}), after cleaning and filtering: the positions the angles were measured on. The video itself isn't kept.`;
+      }
+      function featureValue(d, id) { const f = (d.features || []).find((x) => x.id === id); return f && f.status === "measured" ? f.value : null; }
+
+      function figureSVG(d, which) {
+        const fig = d.figure, P = fig.frames[which].points, kick = fig.kicking_leg;
+        const pts = Object.values(P).filter(Boolean);
+        const ball = which === "contact" && fig.ball_rest ? fig.ball_rest : null;
+        if (ball) pts.push([ball.x - ball.diameter / 2, ball.y - ball.diameter / 2], [ball.x + ball.diameter / 2, ball.y + ball.diameter / 2]);
+        if (pts.length < 4) return `<p class="fine">Too few keypoints to draw.</p>`;
+        const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+        let [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+        const size = Math.max(x1 - x0, y1 - y0), pad = size * 0.22;
+        x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
+        const sw = size / 55, fs = size / 13;
+        const line = (a, b, cls, w) => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" class="${cls}" stroke-width="${w}" stroke-linecap="round"/>`;
+        const at = (n) => P[n];
+        let out = "";
+        const nonKick = kick === "left" ? "right" : "left";
+        // far arm and plant leg first, so the kicking leg sits on top
+        for (const side of ["left", "right"]) for (const [a, b] of ARM) if (at(`${side}_${a}`) && at(`${side}_${b}`)) out += line(at(`${side}_${a}`), at(`${side}_${b}`), "fb", sw * 0.8);
+        for (const [a, b] of BONES) if (at(a) && at(b)) out += line(at(a), at(b), "fb", sw);
+        for (const [a, b] of LEG) if (at(`${nonKick}_${a}`) && at(`${nonKick}_${b}`)) out += line(at(`${nonKick}_${a}`), at(`${nonKick}_${b}`), "fb", sw);
+        for (const [a, b] of LEG) if (at(`${kick}_${a}`) && at(`${kick}_${b}`)) out += line(at(`${kick}_${a}`), at(`${kick}_${b}`), "fk", sw * 1.3);
+        const head = ["nose", "left_ear", "right_ear", "left_eye", "right_eye"].map(at).filter(Boolean);
+        if (head.length) {
+          const hx = head.reduce((s, p) => s + p[0], 0) / head.length, hy = head.reduce((s, p) => s + p[1], 0) / head.length;
+          out += `<circle cx="${hx}" cy="${hy}" r="${size / 22}" class="fb-fill"/>`;
+        }
+        for (const [n, p] of Object.entries(P)) if (p && !/eye|ear|nose/.test(n)) out += `<circle cx="${p[0]}" cy="${p[1]}" r="${sw * 0.9}" class="${n.startsWith(kick + "_") && /hip|knee|ankle|heel|toe/.test(n) ? "fk-fill" : "fb-fill"}"/>`;
+        if (ball) out += `<circle cx="${ball.x}" cy="${ball.y}" r="${ball.diameter / 2}" class="ball" stroke-width="${sw * 0.7}"/>`;
+        // the measured knee angle
+        const H = at(`${kick}_hip`), K = at(`${kick}_knee`), A = at(`${kick}_ankle`);
+        const kneeVal = featureValue(d, which === "contact" ? "knee_angle_contact" : "max_knee_flexion_backswing");
+        if (H && K && A && kneeVal != null) out += angleMark(H, K, A, `knee ${Math.round(kneeVal)}°`, size, sw, fs);
+        // trunk lean against vertical, at contact
+        const lean = featureValue(d, "trunk_lean_contact");
+        const mid = (a, b) => (at(a) && at(b) ? [(at(a)[0] + at(b)[0]) / 2, (at(a)[1] + at(b)[1]) / 2] : null);
+        const M = mid("left_hip", "right_hip"), S = mid("left_shoulder", "right_shoulder");
+        if (which === "contact" && M && S && lean != null) {
+          const len = Math.hypot(S[0] - M[0], S[1] - M[1]);
+          out += line(M, [M[0], M[1] - len], "fm dash", sw * 0.7);
+          out += line(M, S, "fm", sw * 0.9);
+          out += label([S[0] + (S[0] >= M[0] ? fs * 0.4 : -fs * 0.4), S[1] - fs * 0.6], `trunk ${lean < 0 ? "−" : ""}${Math.abs(lean).toFixed(0)}°`, fs, S[0] >= M[0] ? "start" : "end");
+        }
+        return `<svg viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="img" aria-label="Stick figure of the player at ${which === "contact" ? "ball contact" : "the deepest backswing"}">
+          <style>.fb{stroke:var(--fig-body)}.fk{stroke:var(--fig-kick)}.fm{stroke:var(--fig-mark);fill:none}.dash{stroke-dasharray:${sw * 1.6} ${sw * 1.6};opacity:.8}
+          .fb-fill{fill:var(--fig-body)}.fk-fill{fill:var(--fig-kick)}.ball{fill:none;stroke:var(--fig-faint)}
+          text{font-family:var(--font);font-weight:600;fill:var(--fig-mark);paint-order:stroke;stroke:var(--surface);stroke-linejoin:round}</style>${out}</svg>`;
+      }
+      function label(p, text, fs, anchor) {
+        return `<text x="${p[0]}" y="${p[1]}" font-size="${fs}" stroke-width="${fs / 4}" text-anchor="${anchor || "middle"}" dominant-baseline="middle">${esc(text)}</text>`;
+      }
+      function angleMark(H, K, A, text, size, sw, fs) {
+        const u = (p) => { const dx = p[0] - K[0], dy = p[1] - K[1], n = Math.hypot(dx, dy) || 1; return [dx / n, dy / n, n]; };
+        const [ux, uy, nh] = u(H), [vx, vy, na] = u(A);
+        const r = Math.min(nh, na) * 0.38;
+        const s = [K[0] + ux * r, K[1] + uy * r], e = [K[0] + vx * r, K[1] + vy * r];
+        const sweep = ux * vy - uy * vx > 0 ? 1 : 0;
+        let bx = ux + vx, by = uy + vy, bn = Math.hypot(bx, by);
+        if (bn < 1e-3) { bx = -uy; by = ux; bn = 1; } // a straight leg: put the label beside the knee
+        // label on the outside of the joint, which faces away from the other leg
+        const lp = [K[0] - (bx / bn) * fs * 1.6, K[1] - (by / bn) * fs * 1.6];
+        const anchor = -bx / bn > 0.3 ? "start" : -bx / bn < -0.3 ? "end" : "middle";
+        return `<path d="M ${s[0]} ${s[1]} A ${r} ${r} 0 0 ${sweep} ${e[0]} ${e[1]}" class="fm" stroke-width="${sw * 0.9}"/>` + label(lp, text, fs, anchor);
+      }
+
+      // ---------- history ----------
+      function renderHistory() {
+        const list = loadSessions();
+        $("history").hidden = !list.length;
+        $("history-list").innerHTML = list.map((s, i) => {
+          const r = s.result, v = measuredValues(r);
+          const vals = r.quality.accepted
+            ? [["knee", v.knee_angle_contact], ["trunk", v.trunk_lean_contact]].filter((x) => x[1] != null).map(([k, x]) => `${k} ${num(x, "deg", 0)}`).join(" · ")
+            : "refused";
+          const when = new Date(s.saved_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+          return `<li><button type="button" data-i="${i}"><span class="h-main">${esc(when)} · ${esc(s.clip_name)}</span><span class="h-vals">${vals}</span></button></li>`;
+        }).join("");
+        $("history-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+          const s = loadSessions()[Number(b.dataset.i)];
+          if (s) renderResult(s.result, { kind: "saved", name: s.clip_name, when: s.saved_at });
+        }));
+      }
+
+      // ---------- start ----------
+      renderHistory();
+      fetch("/health").then((r) => r.json()).then((h) => {
+        health = h;
+        $("drop-hint").textContent = `or drop it here. One kick, a few seconds long, up to ${h.max_upload_mb} MB.`;
+        $("mode-note").textContent = h.public
+          ? "Results are kept in this browser only; nothing about your kick is stored on the server. Feedback on this demo comes from templates."
+          : "Running locally: sessions are also saved to data/kickcoach.db.";
+      }).catch(() => {});
     </script>
   </body>
 </html>

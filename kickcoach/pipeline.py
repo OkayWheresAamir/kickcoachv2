@@ -18,7 +18,7 @@ from kickcoach.events.kick import knee_angle, max_backswing
 from kickcoach.features import kick as features
 from kickcoach.ingest.fps import MAX_REPEATED_FRAME_RATIO
 from kickcoach.quality import gate
-from kickcoach.signal import clean
+from kickcoach.signal import Cleaned, clean
 
 
 def analyse(
@@ -31,6 +31,28 @@ def analyse(
     target_cpf: float | None | str = "auto",
 ) -> dict:
     """``meta`` is the ingest metadata (kickcoach.ingest): fps_trusted, seconds_per_frame,
+    constant_frame_rate, repeated_frame_ratio. ``kicking_leg``/``kick_direction`` are
+    optional user inputs ("left"/"right"); otherwise they are detected. ``target_cpf``
+    overrides the cutoff, for E2's sensitivity check only."""
+    return analyse_with_signal(
+        poses, meta, ball_cands,
+        kicking_leg=kicking_leg, kick_direction=kick_direction, target_cpf=target_cpf,
+    )[0]  # fmt: skip
+
+
+def analyse_with_signal(
+    poses: np.ndarray,
+    meta: dict,
+    ball_cands: list[np.ndarray] | None,
+    *,
+    kicking_leg: str | None = None,
+    kick_direction: str | None = None,
+    target_cpf: float | None | str = "auto",
+) -> tuple[dict, Cleaned]:
+    """As ``analyse``, plus the cleaned signal the features were measured on (the app draws
+    its stick figure from it).
+
+    ``meta`` is the ingest metadata (kickcoach.ingest): fps_trusted, seconds_per_frame,
     constant_frame_rate, repeated_frame_ratio. ``kicking_leg``/``kick_direction`` are
     optional user inputs ("left"/"right"); otherwise they are detected. ``target_cpf``
     overrides the cutoff, for E2's sensitivity check only."""
@@ -72,7 +94,7 @@ def analyse(
             "glitch_frames": [int(t) for t in np.flatnonzero(cleaned.glitches.any(1))],
             "filled_points": int(cleaned.filled.sum()),
         },
-    }
+    }, cleaned
 
 
 def events_dict(ev: events.Events) -> dict:

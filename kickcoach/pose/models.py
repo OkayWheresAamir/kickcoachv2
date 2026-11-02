@@ -17,6 +17,7 @@ import numpy as np
 
 from kickcoach.pose import skeleton
 from kickcoach.pose.letterbox import PixelLetterbox
+from kickcoach.pose.ort_threads import cap_threads
 from kickcoach.pose.track import BoxTracker
 
 MODELS_DIR = Path(__file__).resolve().parents[2] / "models"
@@ -74,6 +75,8 @@ class RTMPoseFeet:
 
         self.mode = mode
         self._model = BodyWithFeet(mode=mode, backend="onnxruntime", device="cpu")
+        cap_threads(self._model.det_model)
+        cap_threads(self._model.pose_model)
 
     def run_clip(self, frames: Iterable[np.ndarray], times_s: Sequence[float]) -> np.ndarray:
         out = skeleton.empty(len(times_s))

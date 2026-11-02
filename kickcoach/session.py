@@ -17,9 +17,10 @@ import numpy as np
 
 from kickcoach.compare import engine, faults, norms
 from kickcoach.feedback import generate_feedback
+from kickcoach.figure import frame_size, pose_figure
 from kickcoach.ingest import ingest_clip, probe
 from kickcoach.llm import GeminiClient
-from kickcoach.pipeline import analyse
+from kickcoach.pipeline import analyse_with_signal
 
 POSE_MODEL = "rtmpose"  # chosen by E1 (DEC-016)
 # heuristic: an upload is one kick, not a match. 20 s at 30 fps is ~600 frames, ~4 min of
@@ -57,11 +58,20 @@ def assess(
     return out
 
 
-def _frames(frames_dir: Path):
+def _log(stage: str, done: int | None = None, total: int | None = None) -> None:
+    if done is None or done == total:
+        print(stage if done is None else f"{stage} {done}/{total}", flush=True)
+
+
+def _frames(frames_dir: Path, on_frame=None):
+    """The ingested frames in order; ``on_frame(done, total)`` after each one is used."""
     from PIL import Image
 
-    for p in sorted(frames_dir.glob("*.jpg")):
+    paths = sorted(frames_dir.glob("*.jpg"))
+    for i, p in enumerate(paths):
         yield np.asarray(Image.open(p).convert("RGB"))
+        if on_frame is not None:
+            on_frame(i + 1, len(paths))
 
 
 def measure_video(
@@ -71,10 +81,11 @@ def measure_video(
     capture_fps: float | None = None,
     slow_motion: str = "unknown",
     workdir: Path,
-    progress=print,
+    progress=_log,
 ) -> tuple[dict, np.ndarray, list[np.ndarray]]:
     """Ingest the whole upload, run the pose model and ball detector, then the pipeline.
-    Returns (pipeline result, poses, ball candidates); frames stay in ``workdir``."""
+    Returns (pipeline result with its stick figure, poses, ball candidates); frames stay in
+    ``workdir``. ``progress(stage, done, total)`` reports each stage and frame."""
     import certifi
 
     from kickcoach.events.ball_detector import BallDetector
@@ -92,6 +103,7 @@ def measure_video(
             f" frames); trim it to the one kick (at most {MAX_FRAMES} frames)"
         )
     frames_dir = workdir / "frames"
+    progress("ingest")
     meta = ingest_clip(
         video,
         clip_id="upload",
@@ -103,13 +115,18 @@ def measure_video(
         frames_dir=frames_dir,
         clip_path=workdir / "clip.mp4",
     )
-    progress(f"ingested {meta['n_frames']} frames ({meta['fps_reason']})")
-    poses = MODELS[POSE_MODEL]().run_clip(_frames(frames_dir), meta["frame_times_s"])
-    progress("pose done")
+    n = meta["n_frames"]
+    model = MODELS[POSE_MODEL]()
+    progress("pose", 0, n)
+    poses = model.run_clip(
+        _frames(frames_dir, lambda i, t: progress("pose", i, t)), meta["frame_times_s"]
+    )
     det = BallDetector()
-    cands = [det.detect(img) for img in _frames(frames_dir)]
-    progress("ball detection done")
-    res = analyse(poses, meta, cands, kicking_leg=kicking_leg)
+    progress("ball", 0, n)
+    cands = [det.detect(img) for img in _frames(frames_dir, lambda i, t: progress("ball", i, t))]
+    progress("measure")
+    res, cleaned = analyse_with_signal(poses, meta, cands, kicking_leg=kicking_leg)
+    res["figure"] = pose_figure(cleaned.xy, res, frame_size(meta))
     return {"pose_model": POSE_MODEL, **res}, poses, cands
 
 
@@ -122,7 +139,7 @@ def analyse_video(
     level: str | None = None,
     use_llm: bool = True,
     keep_dir: Path | None = None,
-    progress=print,
+    progress=_log,
 ) -> tuple[dict, dict[str, str]]:
     """The full analysis of an upload. The video and its frames are deleted afterwards;
     the pose array and ball candidates are kept in ``keep_dir`` (D16 artifacts), if given.
@@ -144,6 +161,7 @@ def analyse_video(
                 "poses": str(keep_dir / "poses.npy"),
                 "ball_candidates": str(keep_dir / "ball_candidates.json"),
             }
+        progress("feedback")
         return assess(res, level=level, use_llm=use_llm), artifacts
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
