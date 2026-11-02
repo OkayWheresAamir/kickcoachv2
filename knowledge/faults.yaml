@@ -1,0 +1,109 @@
+# Fault rules (handoff S8, D11). Deterministic: kickcoach/compare/faults.py fires a rule when
+# its feature is measured and crosses the threshold. A rule never fires on a value that is
+# not_measured.
+#
+# Every threshold cites a source or starts with "heuristic:" and says why that number
+# (CLAUDE.md rule 2). A threshold can come from a verified norm row instead of a number:
+# `norm` + `sd` puts it `sd` standard deviations from that row's mean, converted to the
+# pipeline's angle convention. If the row isn't verified, the rule is inactive and says so.
+#
+# Template text (what / why_it_matters / cue / drill) is what the app shows when the LLM is
+# unavailable or fails the validator. It contains no numbers except {value}: the
+# measurement's magnitude, rounded for display; the wording carries its direction.
+# `text_source` says where its claims come from, and `citations` lists the IDs (norm rows,
+# knowledge/sources.md keys) feedback about this fault may cite.
+
+- id: F-LEAN-BACK
+  name: Leaning back at contact
+  feature: trunk_lean_contact
+  fires_when: below
+  threshold: -10.0
+  unit: deg
+  threshold_source: >-
+    heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is
+    about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so
+    measurement error alone rarely fires it. Not calibrated on outcomes.
+  text_source: "heuristic: common coaching advice, not from a cited study"
+  citations: []
+  template:
+    what: "Your trunk was leaning back ({value} deg from upright) when your foot met the ball."
+    why_it_matters: >-
+      Coaches commonly link leaning back at contact with the ball rising instead of being
+      driven low and hard.
+    cue: Keep your chest over the ball as you strike it.
+    drill: >-
+      Slow walk-up strikes against a wall, freezing at contact to check your shoulders are
+      level with or ahead of your hips.
+
+- id: F-SHALLOW-BACKSWING
+  name: Shallow knee bend in the backswing
+  feature: max_knee_flexion_backswing
+  fires_when: above        # a larger interior angle = a straighter, less bent knee
+  norm: N-032              # Xu et al. 2025, Table 1: swing knee flexion 102.71 +/- 6.16 deg
+  sd: 2
+  unit: deg
+  threshold_source: >-
+    Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16
+    deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD
+    (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.
+  text_source: >-
+    Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then
+    shortens the knee extensors, and kicking speed is higher with that stretch-shortening
+    cycle (citing Bober et al. 1987).
+  citations: [N-032, kellis_katis_2007]
+  template:
+    what: >-
+      At its most bent in the backswing, your kicking knee still made a {value} deg angle
+      between thigh and shin; the studied players bent it further.
+    why_it_matters: >-
+      A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks
+      that use this stretch are faster (Kellis & Katis 2007).
+    cue: Let your heel swing up towards your backside before you swing through.
+    drill: >-
+      Standing leg swings holding a wall: bring the heel high behind you, then swing through
+      slowly, feeling the knee fold and unfold.
+
+- id: F-PLANT-FAR-BEHIND
+  name: Plant foot far behind the ball
+  feature: plant_foot_offset
+  fires_when: below
+  threshold: -0.25
+  unit: leg_lengths
+  threshold_source: >-
+    heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031),
+    and converting needs a leg length in cm that a video doesn't give. A quarter of a leg
+    length behind the ball centre is an uncalibrated guess, and this feature's accuracy has
+    not been measured against labels (E2 doesn't score it).
+  text_source: "heuristic: common coaching advice, not from a cited study"
+  citations: []
+  template:
+    what: >-
+      Your plant foot landed well behind the ball ({value} leg lengths behind its centre).
+    why_it_matters: >-
+      Coaches commonly teach planting beside the ball, so the kicking foot meets it near the
+      bottom of its swing.
+    cue: Plant your standing foot beside the ball, pointing at the target.
+    drill: >-
+      Place a marker beside the ball and practise your approach so your standing foot lands
+      on it before striking.
+
+- id: F-REVERSED-SEQUENCE
+  name: Shank peaked before the thigh
+  feature: segment_sequence_order
+  fires_when: equals
+  value: distal_to_proximal
+  threshold_source: >-
+    Kellis & Katis 2007, p. 155: the majority of kicking studies identify the importance of
+    a proximal-to-distal sequence of segmental angular velocities; the thigh peaks before
+    the knee extends and the shank peaks at impact.
+  text_source: "Kellis & Katis 2007, p. 155"
+  citations: [kellis_katis_2007]
+  template:
+    what: Your shank reached its top speed before your thigh did.
+    why_it_matters: >-
+      Kicking studies find the fastest kicks build from the hip outwards: the thigh peaks
+      first, then the shank whips through to peak at impact (Kellis & Katis 2007).
+    cue: Lead with your knee, then let the lower leg snap through.
+    drill: >-
+      Slow-motion swings without a ball: drive the knee forward first and let the shank
+      follow, then build speed gradually.
