@@ -48,3 +48,6 @@ dist/
 
 # Failure-analysis renders are video frames (eval/failures.py regenerates them)
 data/failures/
+
+# Per-session artifacts from the API (pose arrays, ball candidates, responses)
+data/sessions/
