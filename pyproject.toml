@@ -24,6 +24,10 @@ dependencies = [
 ]
 
 [dependency-groups]
+deploy = [
+    "modal>=1.6.3",
+    "requests>=2.34.2",
+]
 dev = [
     "httpx2>=2.16.0",
     "pytest>=8.0",
