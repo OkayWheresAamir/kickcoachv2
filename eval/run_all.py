@@ -56,6 +56,7 @@ STEPS = (
     ("E8 reliability", ["-m", "eval.e8_reliability"]),
     ("labelling repeatability", ["-m", "eval.repeatability"]),
     ("norms, faults, feedback (cached LLM)", ["tools/run_assess.py", "--llm"]),
+    ("the page's example (api/static/example.json)", ["tools/make_example.py"]),
 )
 FEATURES = ("knee_angle_contact", "max_knee_flexion_backswing", "trunk_lean_contact")
 FEATURE_NAMES = {
