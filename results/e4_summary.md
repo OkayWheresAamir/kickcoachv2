@@ -9,15 +9,15 @@ min(playback fps, 24) frames/s (so a 30 fps clip loses 1 frame in 5),
 `media_resolution` HIGH, `thinking_level` HIGH;
 no temperature (ignored by this model). Frames = Gemini's time × playback fps.
 
-**n:** asked on 10 of 26 clips; 8 have labels to score
+**n:** asked on 21 of 26 clips; 19 have labels to score
 against.
 
 ## 1. Did it answer?
 
 | clips | n | all 4 numbers | no numbers (cannot determine) | answers with numbers and no hedge word |
 |---|---|---|---|---|
-| scored clips | 8 | 7/8 | 1/8 | 1/7 |
-| all asked clips | 10 | 9/10 | 1/10 | 1/9 |
+| scored clips | 19 | 18/19 | 1/19 | 1/18 |
+| all asked clips | 21 | 20/21 | 1/21 | 1/20 |
 
 Cannot-determine reasons, verbatim:
 
@@ -34,35 +34,49 @@ a number, which is the fair comparison (eval plan, E4 protocol).
 
 | feature | split | Gemini answered | Gemini MAE / bias | both answered: Gemini | both answered: pipeline | n both |
 |---|---|---|---|---|---|---|
-| knee_angle_contact | all | 7/8 | 22.9 / +22.9 | 22.9 / +22.9 | 2.3 / +1.2 | 7 |
-| knee_angle_contact | tune | 6/7 | 21.1 / +21.1 | 21.1 / +21.1 | 2.7 / +1.4 | 6 |
-| knee_angle_contact | heldout | 1/1 | 33.5 / +33.5 | 33.5 / +33.5 | 0.0 / +0.0 | 1 |
-| max_knee_flexion_backswing | all | 7/8 | 19.3 / +8.9 | 19.3 / +8.9 | 2.6 / -1.1 | 7 |
-| max_knee_flexion_backswing | tune | 6/7 | 18.1 / +6.0 | 18.1 / +6.0 | 2.8 / -1.5 | 6 |
-| max_knee_flexion_backswing | heldout | 1/1 | 26.6 / +26.6 | 26.6 / +26.6 | 1.0 / +1.0 | 1 |
-| trunk_lean_contact | all | 7/8 | 10.2 / +9.3 | 10.2 / +9.3 | 1.5 / +0.9 | 7 |
-| trunk_lean_contact | tune | 6/7 | 11.4 / +11.4 | 11.4 / +11.4 | 1.7 / +1.1 | 6 |
-| trunk_lean_contact | heldout | 1/1 | 3.2 / -3.2 | 3.2 / -3.2 | 0.0 / +0.0 | 1 |
+| knee_angle_contact | all | 18/19 | 18.5 / +18.4 | 18.5 / +18.4 | 2.7 / -0.7 | 18 |
+| knee_angle_contact | tune | 13/14 | 18.2 / +18.2 | 18.2 / +18.2 | 3.3 / -0.9 | 13 |
+| knee_angle_contact | heldout | 5/5 | 19.3 / +18.9 | 19.3 / +18.9 | 1.2 / +0.1 | 5 |
+| max_knee_flexion_backswing | all | 18/19 | 15.2 / +4.4 | 15.2 / +4.4 | 4.9 / -3.6 | 18 |
+| max_knee_flexion_backswing | tune | 13/14 | 13.6 / +1.7 | 13.6 / +1.7 | 5.7 / -5.0 | 13 |
+| max_knee_flexion_backswing | heldout | 5/5 | 19.2 / +11.3 | 19.2 / +11.3 | 2.6 / -0.1 | 5 |
+| trunk_lean_contact | all | 18/19 | 8.8 / +7.1 | 8.8 / +7.1 | 2.6 / +2.3 | 18 |
+| trunk_lean_contact | tune | 13/14 | 9.4 / +8.8 | 9.4 / +8.8 | 3.1 / +2.8 | 13 |
+| trunk_lean_contact | heldout | 5/5 | 7.0 / +2.7 | 7.0 / +2.7 | 1.2 / +1.0 | 5 |
 
 Do the numbers move with the truth? (Pearson r, clips where both answered)
 
 | feature | n | truth range ° | Gemini range ° | r Gemini | r pipeline |
 |---|---|---|---|---|---|
-| knee_angle_contact | 7 | 118–139 | 138–161 | -0.42 | +0.88 |
-| max_knee_flexion_backswing | 7 | 69–99 | 52–116 | +0.41 | +0.93 |
-| trunk_lean_contact | 7 | -22–-2 | -10–5 | +0.42 | +0.96 |
+| knee_angle_contact | 18 | 118–154 | 138–174 | +0.27 | +0.93 |
+| max_knee_flexion_backswing | 18 | 69–109 | 52–116 | +0.28 | +0.74 |
+| trunk_lean_contact | 18 | -22–6 | -10–9 | +0.31 | +0.89 |
 
-On the 6 clips where Gemini's contact time was within ±1 frame of the
-label, so a wrong moment can't explain its contact angles (MAE ° / bias °): knee 24.8 / +24.8; trunk 9.0 / +8.0.
+On the 13 clips where Gemini's contact time was within ±1 frame of the
+label, so a wrong moment can't explain its contact angles (MAE ° / bias °): knee 21.1 / +21.0; trunk 8.7 / +7.6.
 
 ## 3. Event timing (frames)
 
 | event | system | answered | ±1 (of answered) | ±2 (of answered) | MAE | median signed |
 |---|---|---|---|---|---|---|
-| contact | Gemini | 7/8 | 86% | 86% | 1.0 | 0.0 |
-| contact | pipeline | 8/8 | 88% | 100% | 0.2 | 0.0 |
-| backswing | Gemini | 7/8 | 14% | 14% | 6.4 | 3.0 |
-| backswing | pipeline | 8/8 | 38% | 62% | 3.1 | 1.0 |
+| contact | Gemini | 18/19 | 72% | 83% | 1.7 | 0.0 |
+| contact | pipeline | 19/19 | 84% | 95% | 1.2 | 0.0 |
+| backswing | Gemini | 18/19 | 17% | 22% | 7.0 | 2.5 |
+| backswing | pipeline | 19/19 | 32% | 58% | 4.6 | 1.0 |
+
+## 4. Same question twice
+
+The model ignores temperature, so identical requests can differ. Second answer −
+first, on the clips asked twice:
+
+| clip | knee_angle_contact_deg | max_knee_flexion_deg | trunk_lean_contact_deg | contact_frame | backswing_frame |
+|---|---|---|---|---|---|
+| c01 | – | – | – | – | – |
+| c03 | +5 | -15 | +3.9 | +0 | +0 |
+| c07 | -5 | +0 | +1 | +0 | +0 |
+| c10 | +1 | -0.7 | -4.5 | +0 | +1 |
+| c13 | -19.4 | +19.6 | -2.9 | +1 | +2 |
+| c16 | +8 | -16.4 | -15.8 | +0 | -6 |
 
 ## Per clip
 
@@ -72,7 +86,18 @@ label, so a wrong moment can't explain its contact angles (MAE ° / bias °): kn
 | c02 | tune | 121 / 161 / 129 | 84 / 106 / 83 | -21 / -7 / -20 | 85 / 84 / 85 | 32310 / 30317 |
 | c03 | heldout | 118 / 151 / 118 | 89 / 116 / 90 | -6 / -10 / -6 | 68 / 67 / 68 | 29118 / 43796 |
 | c04 | tune | 134 / 138 / 137 | 82 / 116 / 83 | -16 / -4 / -17 | 73 / 72 / 73 | 32310 / 33350 |
+| c05 | tune | 139 / 143 / 133 | 85 / 74 / 86 | -15 / -10 / -13 | 69 / 76 / 69 | 32044 / 46867 |
+| c06 | tune | 153 / 156 / 147 | 92 / 100 / 64 | -4 / -6 / 12 | 74 / 74 / 91 | 32310 / 31840 |
+| c07 | tune | 133 / 150 / 133 | 102 / 110 / 98 | -12 / -7 / -12 | 76 / 76 / 76 | 32310 / 39547 |
+| c08 | tune | 132 / 153 / 128 | 89 / 99 / 79 | -11 / -4 / -11 | 75 / 74 / 75 | 32310 / 24789 |
+| c09 | tune | 138 / 165 / 138 | 84 / 86 / 81 | -17 / -7 / -13 | 83 / 82 / 83 | 32310 / 28293 |
 | c10 | tune | 124 / 145 / 122 | 72 / 84 / 74 | -7 / -3 / -5 | 76 / 76 / 76 | 29118 / 33710 |
+| c11 | heldout | 128 / 164 / 127 | 72 / 86 / 78 | -5 / 5 / -2 | 82 / 82 / 82 | 32310 / 24060 |
+| c12 | heldout | 138 / 150 / 140 | 84 / 64 / 79 | -8 / 6 / -7 | 73 / 75 / 73 | 29118 / 33313 |
+| c13 | tune | 154 / 174 / 146 | 93 / 89 / 89 | -14 / 9 / -9 | 88 / 87 / 86 | 35502 / 32705 |
+| c14 | tune | 124 / 142 / 127 | 109 / 83 / 101 | -1 / -4 / 1 | 84 / 86 / 84 | 32310 / 33481 |
+| c15 | heldout | 129 / 142 / 129 | 80 / 101 / 80 | 1 / -5 / 1 | 74 / 66 / 75 | 35502 / 39146 |
+| c16 | heldout | 139 / 138 / 137 | 72 / 88 / 71 | 6 / 4 / 5 | 83 / 84 / 83 | 35502 / 35925 |
 | c17 | tune | 133 / 144 / 132 | 99 / 80 / 89 | -12 / 5 / -12 | 70 / 73 / 70 | 32310 / 41389 |
 | c18 | tune | 122 / 156 / 123 | 69 / 52 / 69 | -22 / -7 / -17 | 74 / 75 / 74 | 42726 / 29968 |
 | c19 | tune | 139 / 154 / 137 | 83 / 86 / 82 | -2 / 4 / -2 | 100 / 100 / 100 | 38694 / 42880 |

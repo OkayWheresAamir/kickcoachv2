@@ -1,0 +1,128 @@
+{
+ "key": "dfe0663fcc8732efd8ff1e38",
+ "tag": "feedback-v2 attempt 1",
+ "model": "gemini-3.5-flash-lite",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "fault_id": {
+        "type": "string"
+       },
+       "what": {
+        "type": "string"
+       },
+       "why_it_matters": {
+        "type": "string"
+       },
+       "cue": {
+        "type": "string"
+       },
+       "drill": {
+        "type": "string"
+       },
+       "citations": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "fault_id",
+       "what",
+       "why_it_matters",
+       "cue",
+       "drill",
+       "citations"
+      ]
+     }
+    }
+   },
+   "required": [
+    "items"
+   ]
+  },
+  "temperature": null,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are a football (soccer) coach writing feedback on one instep kick, for a player whose\nlevel is: not stated. The kick was measured from video by a\nseparate system; the facts below are its output. You write words only.\n\nRules:\n1. Write exactly one item per fault in \"faults\", with that fault_id.\n2. Use only these facts. If you mention a number, copy it from the facts (you may round an\n   angle to whole degrees). Write no other numbers at all: no rep counts, distances,\n   percentages, times or list numbering.\n3. Never mention a feature listed in \"not_measured\", or anything it describes.\n4. \"citations\" may contain only IDs from \"citable_sources\", and only when the item uses that\n   source. An empty list is fine.\n5. \"what\": what happened in this kick, in plain words. \"why_it_matters\": why it matters for\n   the kick. \"cue\": one short coaching cue. \"drill\": one practice drill, described in words.\n6. Short sentences a teenager would understand. No medical advice.\n\nFacts (JSON):\n{\n \"player_level\": null,\n \"measured\": [\n  {\n   \"id\": \"knee_angle_contact\",\n   \"value\": 129.48,\n   \"unit\": \"deg\",\n   \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n  },\n  {\n   \"id\": \"max_knee_flexion_backswing\",\n   \"value\": 82.67,\n   \"unit\": \"deg\",\n   \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n  },\n  {\n   \"id\": \"trunk_lean_contact\",\n   \"value\": -19.79,\n   \"unit\": \"deg\",\n   \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n  },\n  {\n   \"id\": \"plant_foot_offset\",\n   \"value\": 0.14,\n   \"unit\": \"leg_lengths\",\n   \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n  },\n  {\n   \"id\": \"segment_sequence_order\",\n   \"value\": \"proximal_to_distal\",\n   \"unit\": \"order\",\n   \"definition\": \"whether the thigh's speed peaked before the shank's\"\n  }\n ],\n \"not_measured\": [\n  {\n   \"id\": \"peak_knee_ext_velocity\",\n   \"reason\": \"capture frame rate unknown, so no real time per frame (DEC-010)\"\n  }\n ],\n \"faults\": [\n  {\n   \"fault_id\": \"F-LEAN-BACK\",\n   \"name\": \"Leaning back at contact\",\n   \"evidence\": {\n    \"trunk_lean_contact\": -19.79\n   },\n   \"unit\": \"deg\",\n   \"fires_when\": \"below\",\n   \"threshold\": -10.0,\n   \"threshold_source\": \"heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.\",\n   \"citations\": []\n  }\n ],\n \"norm_comparisons\": [\n  {\n   \"feature_id\": \"knee_angle_contact\",\n   \"verdict\": \"below_norm\",\n   \"norm_ref\": \"N-019\",\n   \"norm_mean\": 156.2,\n   \"norm_sd\": 10.1,\n   \"norm_band\": [\n    146.1,\n    166.3\n   ],\n   \"population\": \"recreational, adult, male\",\n   \"caveats\": [\n    \"Measured in a lab (3D motion capture (DLT)); this app measures a 2D side-on angle from video, so some difference is expected.\",\n    \"These were kicks aimed for accuracy (instep penalty kick); accurate kicks use slower motion than maximum-power kicks (e.g. 1364 vs 1175 deg/s knee extension, N-011/N-012).\",\n    \"Small sample: n = 7.\"\n   ]\n  },\n  {\n   \"feature_id\": \"max_knee_flexion_backswing\",\n   \"verdict\": \"within_norm\",\n   \"norm_ref\": \"N-032\",\n   \"norm_mean\": 77.29,\n   \"norm_sd\": 6.16,\n   \"norm_band\": [\n    71.13,\n    83.45\n   ],\n   \"population\": \"elite, adults, mixed\",\n   \"caveats\": [\n    \"Measured in a lab (IMU and OpenSim); this app measures a 2D side-on angle from video, so some difference is expected.\",\n    \"Small sample: n = 26.\"\n   ]\n  }\n ],\n \"citable_sources\": {\n  \"N-019\": \"Scurr & Hall (2009), J Sports Sci Med 8(2):230-234, p. 232, Table 2: kicking_knee_angle_at_impact (recreational)\",\n  \"N-032\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1: kicking_knee_max_flexion (elite)\"\n }\n}\n"
+ },
+ "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-LEAN-BACK\",\n      \"what\": \"Your trunk lean at contact was measured at -19.79 degrees, which means you were leaning back.\",\n      \"why_it_matters\": \"Leaning back makes it hard to keep your shot low and powerful.\",\n      \"cue\": \"Chest over the ball.\",\n      \"drill\": \"Practice striking while focusing on keeping your upper body tilted forward over the ball.\",\n      \"citations\": []\n    }\n  ]\n}",
+ "parsed": {
+  "items": [
+   {
+    "fault_id": "F-LEAN-BACK",
+    "what": "Your trunk lean at contact was measured at -19.79 degrees, which means you were leaning back.",
+    "why_it_matters": "Leaning back makes it hard to keep your shot low and powerful.",
+    "cue": "Chest over the ball.",
+    "drill": "Practice striking while focusing on keeping your upper body tilted forward over the ball.",
+    "citations": []
+   }
+  ]
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Mon, 02 Nov 2026 02:44:51 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=1607",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-LEAN-BACK\",\n      \"what\": \"Your trunk lean at contact was measured at -19.79 degrees, which means you were leaning back.\",\n      \"why_it_matters\": \"Leaning back makes it hard to keep your shot low and powerful.\",\n      \"cue\": \"Chest over the ball.\",\n      \"drill\": \"Practice striking while focusing on keeping your upper body tilted forward over the ball.\",\n      \"citations\": []\n    }\n  ]\n}",
+       "thought_signature": "EmAKXgFpFH0TuRx0C5uyMRKa2rrYjpE3sIyp4y75UXMWXbC1tuwH0h5XO7uYPBWSJ3mjCte9GqxkCDcv1-hstnBPcGLcmELamZ80cOKdDaw9HATGm-p5QoncMPzzVmVsx38="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.5-flash-lite",
+  "response_id": "IvnnapOwONGp694PteC8sQM",
+  "usage_metadata": {
+   "candidates_token_count": 125,
+   "prompt_token_count": 1351,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1351
+    }
+   ],
+   "total_token_count": 1476
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "items": [
+    {
+     "fault_id": "F-LEAN-BACK",
+     "what": "Your trunk lean at contact was measured at -19.79 degrees, which means you were leaning back.",
+     "why_it_matters": "Leaning back makes it hard to keep your shot low and powerful.",
+     "cue": "Chest over the ball.",
+     "drill": "Practice striking while focusing on keeping your upper body tilted forward over the ball.",
+     "citations": []
+    }
+   ]
+  }
+ }
+}

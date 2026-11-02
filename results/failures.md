@@ -37,16 +37,19 @@ held-out clip where RTMPose's backswing knee sits off the labelled one.
 | c23, gate | refused correctly, ratio 0.564 | `e8/c23_gate.png` | A rear-oblique view, so both shoulders show. It's the not-OK clip nearest the 0.5 threshold. |
 | c06, gate | accepted correctly, ratio 0.437 | `e8/c06_gate.png` | The highest side-on ratio. It's measured around the wrong (follow-through) contact, where the trunk turns toward the camera, so a contact error also moves the gate's window. |
 
-## E4: Gemini (partial: 8 of 19 scored clips asked so far; see `results/e4_summary.md`)
+## E4: Gemini (all 19 scored clips asked; see `results/e4_summary.md`)
 
 | case | error | image | diagnosis |
 |---|---|---|---|
 | c02 knee at contact | +40.5° | `e4/c02_knee.png` | **Right moment, wrong angle.** Gemini's contact is 1 frame from the label, yet it reports 161° for a knee that is visibly bent (120.5° from the labels). |
-| c18 knee at contact | +33.7° | `e4/c18_knee.png` | The same pattern: contact +1 frame, a clearly flexed knee (122.3°), answered as 156°. |
+| c11 knee at contact | +36.5° | `e4/c11_knee.png` | The same pattern (held-out): Gemini's contact is the labelled frame (82), the knee is clearly bent (127.5°), and it answers 164°. |
+| c18 knee at contact | +33.7° | `e4/c18_knee.png` | The same: contact +1 frame, a clearly flexed knee (122.3°), answered as 156°. |
 | c03 knee at contact | +33.5° | `e4/c03_knee.png` | The same again (held-out): contact −1 frame, 117.5° answered as 151°. |
-| c01 (no numbers) | – | – | Gemini answered that the video "is completely static and consists of a single frozen frame repeated". The file isn't frozen: it decodes to 150 distinct frames, and Gemini's own usage shows 120 sampled frames (31,920 video tokens). Same container settings as clips it answered (one keyframe, pts from 0). Queued for a repeat call. |
+| c01 (no numbers, then confabulated edits) | – | – | **First call:** "a single frozen frame repeated for the entire 5.00 seconds". **Repeat call (2026-11-02):** numbers this time, explained by "edited pauses highlighting key kick phases: maximum backswing is held starting at 0.71 s". Neither is true. Ingest's frame-difference data has no still run at all: every consecutive pair changes by at least 0.66% of pixels (still = below 0.01%), and `repeated_frame_ratio` is 0. The repeat's numbers are also far off: max flexion 152.8° (label 89°), contact 8 frames early. So c01 isn't a file problem to fix by re-encoding. The model describes video properties that aren't there, and the description changes between identical calls. |
 
-Across the clips it answered, Gemini's knee angles at contact sit between 138° and 161°
-whatever the frame shows. They don't move with the labelled angles (Pearson r −0.42 on 7
-clips; the pipeline's is +0.88). It reads like a prior for "a nearly straight leg at impact",
-not a measurement of this kick. Its contact *timing* is good: within ±1 frame on 6 of 7.
+Across the 18 clips it answered, Gemini's knee angles at contact sit between 138° and 174°,
+whatever the frame shows. They barely move with the labelled angles (Pearson r +0.27; the
+pipeline's is +0.93 on the same clips), and on the 13 clips where its contact is within ±1
+frame of the label, the knee error is still +21° on average. It reads like a prior for "a
+nearly straight leg at impact", not a measurement of this kick. Its contact *timing* is
+decent: within ±1 frame on 72% of answers (pipeline 84%), ±2 on 83% (pipeline 95%).

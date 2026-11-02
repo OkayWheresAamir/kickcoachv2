@@ -1,0 +1,22 @@
+{
+ "source_id": "nunome_ikegami_2006",
+ "citation": "Nunome & Ikegami (2006), ISBS Proceedings, Salzburg",
+ "url": "https://ojs.ub.uni-konstanz.de/cpa/article/download/135/96",
+ "model": "gemini-3.6-flash",
+ "prompt_version": "norms-v1",
+ "cache_key": "03d3542ce75dbefa774a828c",
+ "paper_text_sha256": "b8fd5cdc748feb3b4220256838c46a3ea2fc21d79da2caa9ca3848407ecabab7",
+ "paper_text_chars": 12662,
+ "prompt_template": "You are extracting reference values (norms) from one biomechanics paper for an app that\nmeasures football (soccer) instep kicks. The paper is: Nunome & Ikegami (2006), ISBS Proceedings, Salzburg. Its full text follows,\nwith page or table markers in square brackets.\n\nVariables of interest:\n- kicking_knee_angle_at_impact: the kicking leg's knee angle at ball impact / contact\n- kicking_knee_max_flexion: the kicking leg's deepest knee flexion (most bent) during the backswing or swing, before impact\n- trunk_angle_at_impact: the trunk's inclination (lean) at ball impact\n- support_foot_posterior_distance: how far the support (plant, standing) foot is behind the ball, along the kick direction\n- support_foot_lateral_distance: how far the support foot is to the side of the ball, across the kick direction\n- support_foot_distance: the support-foot-to-ball distance when the paper doesn't say in which direction\n- peak_knee_extension_velocity: the kicking leg's maximum knee extension angular velocity during the swing\n- peak_thigh_angular_velocity: the kicking thigh's maximum angular velocity\n- peak_shank_angular_velocity: the kicking shank's maximum angular velocity\n\nRules:\n1. Extract only values printed as numbers in the text or in a table. Never read values off\n   a figure or chart axis, never compute, average, convert units, or convert angle\n   conventions. Copy every number exactly as printed.\n2. One row per reported value: per variable, per group, per condition. If a table reports\n   the same variable under several conditions (e.g. approach angles, kick types), give each\n   condition its own row.\n3. \"quote\" must be copied character for character from the text below and must contain the\n   number(s) of the row. For a table, quote the table row as it appears (row label and\n   values).\n4. If the paper is a review and attributes the value to another study, put that study in\n   \"primary_source\"; describe the population of that study if the paper says it.\n5. \"angle_convention\": interior_180_is_straight if 180 deg is a straight knee;\n   flexion_0_is_straight if 0 deg is a straight knee; unclear if the paper doesn't make it\n   clear (explain in notes); not_applicable for distances and velocities.\n6. \"page_or_table\": the page number from the markers, and the table number if any\n   (e.g. \"p. 232, Table 2\").\n7. \"method\": how the data were captured, as the paper states (e.g. \"3D video (DLT)\",\n   \"3D motion capture\", \"IMU\", \"2D video\").\n8. If the paper reports none of these variables as printed numbers, return no rows and say\n   why in no_rows_reason.\n\nFull text:\n<paper text, not stored>\n",
+ "text": "{\n  \"rows\": [],\n  \"no_rows_reason\": \"The paper does not report numerical values (means, SDs, or individual data) in the text or tables for any of the target variables. Kicking leg knee, thigh, and shank angular velocity data are only presented in figures.\"\n}",
+ "parsed": {
+  "rows": [],
+  "no_rows_reason": "The paper does not report numerical values (means, SDs, or individual data) in the text or tables for any of the target variables. Kicking leg knee, thigh, and shank angular velocity data are only presented in figures."
+ },
+ "usage": {
+  "prompt_token_count": 4242,
+  "candidates_token_count": 66,
+  "thoughts_token_count": 687,
+  "total_token_count": 4995
+ }
+}
