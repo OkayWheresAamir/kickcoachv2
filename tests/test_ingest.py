@@ -1,7 +1,9 @@
 from fractions import Fraction
 
+import av
 import numpy as np
 import pytest
+from PIL import Image
 
 from kickcoach.ingest import fps_trust, ingest_clip, probe
 from kickcoach.ingest.video import Mp4Writer, constant_frame_rate, repeated_frame_ratio
@@ -121,3 +123,28 @@ def test_ingest_flags_a_clip_slowed_by_repeating_frames(tmp_path):
     )
     assert meta["repeated_frame_ratio"] > 0.4
     assert not meta["fps_trusted"]
+
+
+def test_ingest_turns_a_portrait_phone_video_upright(tmp_path):
+    # Phones store portrait video as landscape pixels plus a display rotation. PyAV's
+    # rotation is counterclockwise; an iPhone held upright reads -90 (a clockwise turn).
+    src = tmp_path / "portrait.mp4"
+    out = av.open(str(src), "w")
+    s = out.add_stream("libx264", rate=30)
+    s.width, s.height, s.pix_fmt = 160, 90, "yuv420p"
+    s.set_display_rotation(-90)
+    for _ in range(10):
+        img = np.zeros((90, 160, 3), np.uint8)
+        img[0:20, 0:40] = 255  # marker in the stored frame's top-left corner
+        out.mux(s.encode(av.VideoFrame.from_ndarray(img)))
+    out.mux(s.encode())
+    out.close()
+    meta = ingest_clip(
+        src, clip_id="p", start_s=0.0, end_s=1.0, capture_fps_known="n", capture_fps=None,
+        slow_motion="n", frames_dir=tmp_path / "frames", clip_path=tmp_path / "clip.mp4",
+    )  # fmt: skip
+    assert meta["frame_size"] == [90, 160]  # portrait once upright
+    first = np.asarray(Image.open(tmp_path / "frames" / "000000.jpg"))
+    assert first.shape[:2] == (160, 90)
+    # Turned clockwise, the stored top-left lands at the top-right.
+    assert first[:40, -20:].mean() > 200 and first[:40, :20].mean() < 50
