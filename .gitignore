@@ -4,16 +4,24 @@
 !.env.example
 
 # Video and frames are never committed (copyright and privacy).
-# Only the manifest (URLs + timestamps) and label files (coordinates) are.
+# Only the manifest (URLs + timestamps), label files (coordinates) and numbers derived from
+# the clips (below) are.
 data/raw/
-data/frames/
+# Each clip's meta.json (frame times, fps, image size; no pixels) is committed so the evals
+# rerun from a fresh clone without the video (DEC-031).
+data/frames/*/*
+!data/frames/*/meta.json
 *.mp4
 *.mov
 *.webm
 *.mkv
 
-# Regenerable caches and downloaded model weights
-data/cache/
+# Regenerable caches and downloaded model weights. Pose keypoints and ball detections are
+# numbers derived from the clips, like the labels, and are committed so every eval reruns
+# from a fresh clone (DEC-031).
+data/cache/*
+!data/cache/pose/
+!data/cache/ball/
 models/
 *.tflite
 *.onnx
