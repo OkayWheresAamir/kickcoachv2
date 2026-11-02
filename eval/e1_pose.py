@@ -559,8 +559,8 @@ def report(out: dict) -> str:
                 fmt(r["max_abs"], nd=1),
             ]
         )
-    L += table(["angle", "frame", "points", "model", "n", "MAE °", "bias °", "median |err| °",
-                "max |err| °"], body)  # fmt: skip
+    L += table(["angle", "frame", "points", "model", "n", "MAE °", "bias °", "median abs err °",
+                "max abs err °"], body)  # fmt: skip
     L += ["", "## Whole-leg left/right swaps vs the labels", ""]
     L += table(
         ["model", "frames swapped", "which"],
