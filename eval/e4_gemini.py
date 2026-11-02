@@ -17,7 +17,8 @@ Request settings (DEC-023), each giving the baseline the most the free tier allo
   the gut-check's temperature 0 never applied. Answers can vary between calls, so a few
   clips are asked twice (``--repeat 1``) to measure that.
 
-Raw responses are cached in results/e4_raw/ and committed, so scoring reruns without calls.
+Raw responses are cached in results/e4_raw/ and committed, so scoring reruns without calls,
+and without the video (``cached_record`` finds them by tag; DEC-031).
 
     uv run python -m eval.e4_gemini collect [--clips c01 c02 ...] [--repeat N]
     uv run python -m eval.e4_gemini            # score from the cache only
@@ -82,9 +83,7 @@ def collect(jobs: list[tuple[str, int]]) -> None:
     print(f"{len(jobs) - len(todo)} of {len(jobs)} requests cached; {len(todo)} to ask", flush=True)
     for i, (cid, r) in enumerate(todo):
         try:
-            res = client.generate_json(
-                **request_for(cid, labels), repeat=r, tag=f"e4 {cid} {PROMPT_VERSION} r{r}"
-            )
+            res = client.generate_json(**request_for(cid, labels), repeat=r, tag=tag_for(cid, r))
         except DailyQuotaExhausted:
             print(f"daily quota used up; {len(todo) - i} requests left for another day", flush=True)
             return
@@ -144,9 +143,35 @@ def _num(x) -> float | None:
     return float(x) if isinstance(x, (int, float)) and not isinstance(x, bool) else None
 
 
+def tag_for(cid: str, repeat: int) -> str:
+    return f"e4 {cid} {PROMPT_VERSION} r{repeat}"
+
+
+def cached_record(cid: str, labels: dict, client: GeminiClient, repeat: int = 0) -> dict | None:
+    """The cached response to E4's request for a clip, or None if it was never asked.
+
+    With the clip on disk this is the exact lookup (the cache key hashes the video). A fresh
+    clone has no video (CLAUDE.md rule 4), so there the record is found by its tag, and it
+    must match the request in everything except the video's hash (DEC-031)."""
+    req = request_for(cid, labels)
+    if Path(req["video"]).exists():
+        return client.cached(**req, repeat=repeat)
+    want, _ = GeminiClient._request(**{**req, "video": None}, repeat=repeat)
+    found = []
+    for p in sorted(client.cache_dir.glob("*.json")):
+        rec = json.loads(p.read_text())
+        if rec.get("tag") != tag_for(cid, repeat) or rec.get("model") != client.model:
+            continue
+        if {**rec["request"], "video_sha256": None} == want:
+            found.append(rec)
+    if len(found) > 1:
+        raise ValueError(f"{len(found)} cached records match {tag_for(cid, repeat)}")
+    return found[0] if found else None
+
+
 def answers(cid: str, labels: dict, client: GeminiClient, repeat: int = 0) -> dict | None:
     """Gemini's parsed answer plus derived frames, or None if this call isn't cached."""
-    rec = client.cached(**request_for(cid, labels), repeat=repeat)
+    rec = cached_record(cid, labels, client, repeat)
     return None if rec is None else parse_answer(rec, clip_meta(cid)["playback_fps"])
 
 
