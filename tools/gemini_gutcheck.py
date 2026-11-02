@@ -15,11 +15,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from eval.e4_prompt import PROMPT_VERSION, SCHEMA, build_prompt  # noqa: E402
+from eval.e4_prompt import SCHEMA_V1 as SCHEMA  # noqa: E402
+from eval.e4_prompt import build_prompt_v1 as build_prompt  # noqa: E402
 from kickcoach.llm import GeminiClient, RateLimited  # noqa: E402
 from kickcoach.llm.gemini import E4_MODEL  # noqa: E402
 
 OUT = ROOT / "results" / "gemini_gutcheck"
+PROMPT_VERSION = "e4-v1"
 # One lab clip (1080p, slow motion), the 240 fps Ronaldo clip, the real-time outdoor clip.
 DEFAULT_CLIPS = ["c10", "c19", "c25"]
 
