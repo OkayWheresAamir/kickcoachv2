@@ -10,9 +10,10 @@ Contact, in order of preference:
 1. ``ball_motion``: the ball is seen at rest, then seen moved on the very next frame.
 2. ``ball_bracket``: the ball is last seen at rest on frame L and next seen moved on frame N
    (or never). The touch is in [L, N - 1], hidden by the foot or the body; the frame where
-   one foot is fastest relative to the other inside that bracket picks it. On the tuning
-   clips this ran 0-3 frames early (median -2): the foot peaks just before it is pressed
-   into the ball. Left uncorrected; E3 (Phase 4) decides on the held-out clips.
+   one foot is fastest relative to the other inside that bracket picks it, moved
+   BRACKET_LEAD_FRAMES later and kept inside the bracket. The foot's speed peaks just before
+   it is pressed into the ball; uncorrected, the pick ran 0-4 frames early on the tuning
+   clips (median -2). E3 adopted the shift (DEC-022).
 3. ``foot_speed``: no resting ball found: where one foot is fastest relative to the other
    (the handoff's fallback, D9; unreliable, see kick.leg_from_speed).
 """
@@ -40,6 +41,10 @@ from kickcoach.signal.swaps import thigh_scale
 # heuristic: at contact the kicking ankle must be within this many thigh lengths of the
 # resting ball, or the ball-based contact is rejected (it was probably another round thing).
 REACH_THIGHS = 1.5
+# Calibrated on the 7 tuning clips with a bracket (E3, DEC-022): the speed peak led the
+# labelled contact by 0-4 frames (median 2; none late). Clamping to the bracket keeps the
+# shift small where the ball reappears quickly, e.g. on real-time video.
+BRACKET_LEAD_FRAMES = 2
 
 
 @dataclass(frozen=True)
@@ -62,7 +67,9 @@ def detect(
     *,
     kicking_leg_hint: str | None = None,
     kick_direction_hint: str | None = None,
+    bracket_lead_frames: int = BRACKET_LEAD_FRAMES,
 ) -> Events:
+    """``bracket_lead_frames`` exists so E3 can score the uncorrected bracket (0)."""
     notes: list[str] = []
     scale = thigh_scale(xy)
     rest = rest_position(ball_cands) if ball_cands else None
@@ -77,6 +84,8 @@ def detect(
         else:
             hi = (bc.next_seen if bc.next_seen is not None else len(xy)) - 1
             contact = kick_in(xy, bc.frame, hi, kicking_leg_hint)
+            if contact is not None:
+                contact = min(contact + bracket_lead_frames, hi)
             method, conf = "ball_bracket", bc.confidence
         kl = leg_at_contact(xy, contact, kicking_leg_hint) if contact is not None else None
         reach = (

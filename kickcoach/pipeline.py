@@ -28,18 +28,22 @@ def analyse(
     *,
     kicking_leg: str | None = None,
     kick_direction: str | None = None,
+    target_cpf: float | None | str = "auto",
 ) -> dict:
     """``meta`` is the ingest metadata (kickcoach.ingest): fps_trusted, seconds_per_frame,
     constant_frame_rate, repeated_frame_ratio. ``kicking_leg``/``kick_direction`` are
-    optional user inputs ("left"/"right"); otherwise they are detected."""
+    optional user inputs ("left"/"right"); otherwise they are detected. ``target_cpf``
+    overrides the cutoff, for E2's sensitivity check only."""
     spf = meta["seconds_per_frame"] if meta.get("fps_trusted") else None
-    first = clean(poses, seconds_per_frame=spf)
+    first = clean(poses, seconds_per_frame=spf, target_cpf=target_cpf)
     ev = events.detect(
         first.xy, ball_cands, kicking_leg_hint=kicking_leg, kick_direction_hint=kick_direction
     )
     cleaned = first
     if ev.contact_frame is not None:
-        cleaned = clean(poses, seconds_per_frame=spf, breaks=(ev.contact_frame,))
+        cleaned = clean(
+            poses, seconds_per_frame=spf, breaks=(ev.contact_frame,), target_cpf=target_cpf
+        )
         ev = replace(
             ev,
             backswing=max_backswing(knee_angle(cleaned.xy, ev.kicking_leg.leg), ev.contact_frame),

@@ -20,6 +20,9 @@ RATE_FILE = ROOT / "data" / "cache" / "gemini_last_call.txt"
 # heuristic: 12 s between calls (5 per minute), below any free-tier RPM seen for Flash models.
 MIN_INTERVAL_S = 12.0
 RETRY_WAITS_S = (30.0, 60.0, 120.0)
+# heuristic: a video call with high thinking took 6-8 min on 2026-10-31, and one hung for
+# over 30 min with the SDK's default of no timeout; a timeout is retried like a 503.
+TIMEOUT_MS = 15 * 60 * 1000
 
 DEV_MODEL = "gemini-3.5-flash-lite"  # cheapest free-tier model (pricing page, 2026-10-28)
 E4_MODEL = "gemini-3.8-flash"  # strongest free-tier model; 4-argon and 3.1-pro are paid-only
@@ -31,6 +34,12 @@ class NoApiKey(RuntimeError):
 
 class RateLimited(RuntimeError):
     pass
+
+
+class DailyQuotaExhausted(RateLimited):
+    """The free tier's requests-per-day quota for this model is used up (20 for
+    gemini-3.8-flash on 2026-10-31, from the 429's QuotaFailure). Retrying before it resets
+    at midnight Pacific is pointless, so the caller should stop."""
 
 
 def _sha256(data: bytes) -> str:
@@ -88,22 +97,25 @@ class GeminiClient:
             if not key:
                 raise NoApiKey("GEMINI_API_KEY is not set")
             from google import genai
+            from google.genai import types
 
-            self._client = genai.Client(api_key=key)
+            self._client = genai.Client(
+                api_key=key, http_options=types.HttpOptions(timeout=TIMEOUT_MS)
+            )
         return self._client
 
-    def generate_json(
-        self,
+    @staticmethod
+    def _request(
         *,
         prompt: str,
         schema: dict,
         video: Path | None = None,
         video_fps: float | None = None,
-        temperature: float = 0.0,
-        tag: str = "",
-    ) -> dict:
-        """Return {"parsed", "text", "response", "cached", "key"}; "parsed" is None if the
-        model's text is not valid JSON (that is a reportable outcome, not an exception)."""
+        temperature: float | None = 0.0,
+        media_resolution: str | None = None,
+        thinking_level: str | None = None,
+        repeat: int = 0,
+    ) -> tuple[dict, bytes | None]:
         video_bytes = Path(video).read_bytes() if video else None
         request = {
             "prompt": prompt,
@@ -112,11 +124,42 @@ class GeminiClient:
             "video_sha256": _sha256(video_bytes) if video_bytes else None,
             "video_fps": video_fps,
         }
+        # Added only when set, so cache keys made before these options existed stay valid.
+        for k, v in (
+            ("media_resolution", media_resolution),
+            ("thinking_level", thinking_level),
+            ("repeat", repeat or None),
+        ):
+            if v is not None:
+                request[k] = v
+        return request, video_bytes
+
+    def cached(self, **request_args) -> dict | None:
+        """The cached record for a request (generate_json's arguments, minus ``tag``), or None.
+        Never calls the API, so scoring runs without a key."""
+        request, _ = self._request(**request_args)
+        path = self._cache_path(self.cache_key(request))
+        return json.loads(path.read_text()) if path.exists() else None
+
+    def generate_json(self, *, tag: str = "", **request_args) -> dict:
+        """Return {"parsed", "text", "response", "cached", "key"}; "parsed" is None if the
+        model's text is not valid JSON (that is a reportable outcome, not an exception).
+
+        Arguments as ``_request``. ``temperature=None`` leaves it out: Gemini 3.8 Flash
+        ignores sampling parameters. ``media_resolution`` / ``thinking_level`` are SDK enum
+        names ("MEDIA_RESOLUTION_HIGH", "HIGH"). ``repeat`` > 0 asks the same question again
+        under a new cache key, to see how much the answer varies from call to call."""
+        request, video_bytes = self._request(**request_args)
+        temperature = request["temperature"]
+        video_fps = request["video_fps"]
+        media_resolution = request.get("media_resolution")
+        thinking_level = request.get("thinking_level")
         key = self.cache_key(request)
         path = self._cache_path(key)
         if path.exists():
             return {**json.loads(path.read_text()), "cached": True}
 
+        import httpx
         from google.genai import errors, types
 
         parts = []
@@ -127,11 +170,15 @@ class GeminiClient:
                     video_metadata=types.VideoMetadata(fps=video_fps) if video_fps else None,
                 )
             )
-        parts.append(types.Part(text=prompt))
+        parts.append(types.Part(text=request["prompt"]))
         config = types.GenerateContentConfig(
             temperature=temperature,
             response_mime_type="application/json",
-            response_json_schema=schema,
+            response_json_schema=request["schema"],
+            media_resolution=media_resolution,
+            thinking_config=(
+                types.ThinkingConfig(thinking_level=thinking_level) if thinking_level else None
+            ),
         )
         sdk = self._sdk()
         for attempt, backoff in enumerate((*RETRY_WAITS_S, None)):
@@ -143,13 +190,20 @@ class GeminiClient:
                     config=config,
                 )
                 break
-            except errors.APIError as e:
-                # 429 = rate limit, 503 = "model is experiencing high demand": both transient.
-                if e.code not in (429, 503):
+            except (errors.APIError, httpx.TimeoutException) as e:
+                # 429 = rate limit, 503 = "model is experiencing high demand", or no answer
+                # within TIMEOUT_MS: all transient.
+                code = getattr(e, "code", "timeout")
+                if code not in (429, 503, "timeout"):
                     raise
+                if code == 429 and "PerDay" in str(e):
+                    raise DailyQuotaExhausted(str(e)) from e
                 if backoff is None:
                     raise RateLimited(str(e)) from e
-                print(f"{e.code} from Gemini (attempt {attempt + 1}); waiting {backoff:.0f} s")
+                print(
+                    f"{code} from Gemini (attempt {attempt + 1}); waiting {backoff:.0f} s",
+                    flush=True,
+                )
                 self._sleep(backoff)
 
         text = resp.text or ""
@@ -161,7 +215,8 @@ class GeminiClient:
             "key": key,
             "tag": tag,
             "model": self.model,
-            "request": {k: v for k, v in request.items() if k != "prompt"} | {"prompt": prompt},
+            "request": {k: v for k, v in request.items() if k != "prompt"}
+            | {"prompt": request["prompt"]},
             "text": text,
             "parsed": parsed,
             "response": resp.model_dump(mode="json", exclude_none=True),
