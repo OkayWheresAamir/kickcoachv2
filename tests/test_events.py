@@ -32,11 +32,26 @@ def test_hidden_touch_is_bracketed_and_picked_by_foot_speed(fps):
     cands = ball_detections(k)
     hidden = range(k.contact_frame - 2, k.contact_frame + 3)  # the foot covers the ball
     cands = [np.zeros((0, 5)) if t in hidden else c for t, c in enumerate(cands)]
-    ev = events.detect(clean(k.poses).xy, cands)
+    xy = clean(k.poses).xy
+    raw = events.detect(xy, cands, bracket_lead_frames=0)
+    assert raw.contact_method == "ball_bracket"
+    # The foot peaks just before it meets the ball, so the raw pick runs up to 2 frames early
+    # (on the real tuning clips: 0-4, median 2). The shipped pick is moved 2 frames later.
+    assert -2 <= raw.contact_frame - k.contact_frame <= 0
+    ev = events.detect(xy, cands)
+    assert ev.contact_frame == raw.contact_frame + events.BRACKET_LEAD_FRAMES
+    assert -1 <= ev.contact_frame - k.contact_frame <= 2
+
+
+def test_bracket_shift_stays_inside_the_bracket():
+    k = make_kick(60, noise_px=0.5)
+    cands = ball_detections(k)
+    # The ball reappears moved one frame after contact: the bracket is [c - 3, c].
+    hidden = range(k.contact_frame - 2, k.contact_frame + 1)
+    cands = [np.zeros((0, 5)) if t in hidden else c for t, c in enumerate(cands)]
+    ev = events.detect(clean(k.poses).xy, cands, bracket_lead_frames=10)
     assert ev.contact_method == "ball_bracket"
-    # The foot peaks just before it meets the ball, so the bracket pick runs up to 2 frames
-    # early (also on the real tuning clips: median -2). Documented, not corrected (E3 decides).
-    assert -2 <= ev.contact_frame - k.contact_frame <= 0
+    assert ev.contact_frame == ev.ball_contact.next_seen - 1
 
 
 @pytest.mark.parametrize("fps", FPS)
