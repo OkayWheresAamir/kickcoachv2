@@ -18,10 +18,19 @@ from kickcoach.feedback.schema import RESPONSE_SCHEMA, Feedback, FeedbackItem
 from kickcoach.feedback.validate import Context, validate
 from kickcoach.llm import GeminiClient, NoApiKey, RateLimited
 from kickcoach.llm.gemini import DEV_MODEL
+from kickcoach.retrieval import corpus as coaching
+from kickcoach.retrieval.embed import Embedder
+from kickcoach.retrieval.retrieve import NEEDS, retrieve
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE_DIR = ROOT / "data" / "cache" / "feedback"
 PROMPT_VERSION = "feedback-v2"  # v2: each measured feature comes with its definition
+# v3 = v2 plus retrieved coaching passages (Phase 8, DEC-039). Without passages the prompt is
+# v2 word for word, so v2's cached answers stay valid.
+RAG_PROMPT_VERSION = "feedback-v3"
+# heuristic: passages per need (why / cue / drill) per fault, deduplicated; E6's MRR of 0.75
+# says the first is usually relevant, the second gives the wording some choice.
+PASSAGES_PER_NEED = 2
 SOURCES = {  # knowledge/sources.md keys a fault rule may cite
     "kellis_katis_2007": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
 }
@@ -66,7 +75,11 @@ def _years(text: str) -> list[int]:
 
 
 def build_context(
-    features: list[dict], fired: list[dict], comparisons: list[dict], norms: list[NormRow]
+    features: list[dict],
+    fired: list[dict],
+    comparisons: list[dict],
+    norms: list[NormRow],
+    passages: dict[str, list[coaching.Chunk]] | None = None,
 ) -> tuple[Context, dict]:
     """The validator's context and the citable sources, from exactly what the LLM is shown."""
     norm_by_id = {r.norm_id: r for r in norms}
@@ -74,6 +87,9 @@ def build_context(
     for f in fired:
         for c in f.get("citations", []):
             cites[c] = SOURCES.get(c) or _norm_line(norm_by_id.get(c))
+    for chunks in (passages or {}).values():
+        for ch in chunks:
+            cites[ch.id] = f"{ch.cite}, {ch.where}"
     for c in comparisons:
         if c.get("norm_ref"):
             cites[c["norm_ref"]] = _norm_line(norm_by_id.get(c["norm_ref"]))
@@ -106,7 +122,22 @@ def _norm_line(row: NormRow | None) -> str:
     return f"{row.source}, {row.page_or_table}: {row.variable} ({row.population.level or ''})"
 
 
+_RULES_V2 = """
+5. "what": what happened in this kick, in plain words. "why_it_matters": why it matters for
+   the kick. "cue": one short coaching cue. "drill": one practice drill, described in words.
+6. Short sentences a teenager would understand. No medical advice."""
+_RULES_V3 = """
+5. "coaching_passages" are short excerpts from coaching sources, found for each fault by a
+   search; some may not fit. Use a passage only where it really supports what you write,
+   say it in your own words, and add its ID to that item's citations. Copy no numbers or
+   names from a passage. A field no passage supports is written without a citation.
+6. "what": what happened in this kick, in plain words. "why_it_matters": why it matters for
+   the kick. "cue": one short coaching cue. "drill": one practice drill, described in words.
+7. Short sentences a teenager would understand. No medical advice."""
+
+
 def build_prompt(facts: dict, previous: str | None = None, errors: list[str] | None = None) -> str:
+    last_rules = _RULES_V3 if facts.get("coaching_passages") else _RULES_V2
     retry = ""
     if previous is not None:
         retry = (
@@ -126,14 +157,34 @@ Rules:
    percentages, times or list numbering.
 3. Never mention a feature listed in "not_measured", or anything it describes.
 4. "citations" may contain only IDs from "citable_sources", and only when the item uses that
-   source. An empty list is fine.
-5. "what": what happened in this kick, in plain words. "why_it_matters": why it matters for
-   the kick. "cue": one short coaching cue. "drill": one practice drill, described in words.
-6. Short sentences a teenager would understand. No medical advice.
+   source. An empty list is fine.{last_rules}
 
 Facts (JSON):
 {json.dumps(facts, indent=1)}{retry}
 """
+
+
+def retrieve_passages(
+    fired: list[dict], rules: list[FaultRule], embedder: Embedder | None = None
+) -> dict[str, list[coaching.Chunk]]:
+    """For each fired fault, the top passages for each need, deduplicated in rank order. Every
+    (rule, need) query is embedded in the committed cache (a test checks), so this needs no
+    key; if a query were missing and there were no key, feedback goes on without passages."""
+    by_id = {r.id: r for r in rules}
+    chunks, embedder = coaching.load(), embedder or Embedder()
+    out = {}
+    try:
+        for f in fired:
+            rule = by_id[f["fault_id"]]
+            found: dict[str, coaching.Chunk] = {}
+            for need in NEEDS:
+                for c, _ in retrieve(chunks, rule.id, rule.name, need, embedder,
+                                     k=PASSAGES_PER_NEED):  # fmt: skip
+                    found.setdefault(c.id, c)
+            out[rule.id] = list(found.values())
+    except NoApiKey:
+        return {}
+    return out
 
 
 def generate_feedback(
@@ -146,8 +197,12 @@ def generate_feedback(
     client: GeminiClient | None = None,
     use_llm: bool = True,
     rules: list[FaultRule] | None = None,
+    retrieval: bool = False,
+    embedder: Embedder | None = None,
 ) -> dict:
-    """The MVP response's ``feedback`` block, plus ``attempts`` and ``fallback_reason``."""
+    """The MVP response's ``feedback`` block, plus ``attempts`` and ``fallback_reason``.
+    With ``retrieval``, coaching passages for each fault go to the LLM (prompt v3) and the
+    block gains ``passages`` (IDs per fault) and ``sources`` (what each passage ID cites)."""
     rules = load_rules() if rules is None else rules
     out = {"items": [], "generated_by": "template", "validator_passed": None,
            "attempts": [], "fallback_reason": None}  # fmt: skip
@@ -155,7 +210,12 @@ def generate_feedback(
         out["fallback_reason"] = "no fault rule fired, so there is nothing to explain"
         return out
 
-    ctx, cites = build_context(features, fired, comparisons, norms)
+    passages = retrieve_passages(fired, rules, embedder) if retrieval and use_llm else {}
+    if passages:
+        out["passages"] = {fid: [c.id for c in cs] for fid, cs in passages.items()}
+        out["sources"] = {c.id: {"cite": c.cite, "where": c.where, "url": c.url}
+                          for cs in passages.values() for c in cs}  # fmt: skip
+    ctx, cites = build_context(features, fired, comparisons, norms, passages)
     template = template_feedback(fired, rules)
     template_errors = validate(template.model_dump(), ctx)[1]
 
@@ -193,6 +253,12 @@ def generate_feedback(
         ],
         "citable_sources": cites,
     }  # fmt: skip
+    if passages:
+        facts["coaching_passages"] = [
+            {"id": c.id, "for_fault": fid, "text": c.text}
+            for fid, cs in passages.items() for c in cs
+        ]  # fmt: skip
+    version = RAG_PROMPT_VERSION if passages else PROMPT_VERSION
     client = client or GeminiClient(DEV_MODEL, CACHE_DIR)
     previous, errors = None, None
     for attempt in (1, 2):
@@ -201,7 +267,7 @@ def generate_feedback(
                 prompt=build_prompt(facts, previous, errors),
                 schema=RESPONSE_SCHEMA,
                 temperature=None,
-                tag=f"{PROMPT_VERSION} attempt {attempt}",
+                tag=f"{version} attempt {attempt}",
             )
         except NoApiKey:
             return fallback("no GEMINI_API_KEY: template feedback (the app runs without one)")

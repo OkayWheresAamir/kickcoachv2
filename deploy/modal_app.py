@@ -57,7 +57,8 @@ image = (
     .env({"PYTHONPATH": APP, "KICKCOACH_PUBLIC": "1", "KICKCOACH_ORT_THREADS": ORT_THREADS})
     .add_local_dir(ROOT / "kickcoach", f"{APP}/kickcoach", ignore=SOURCE_IGNORE)
     .add_local_dir(ROOT / "api", f"{APP}/api", ignore=SOURCE_IGNORE)
-    .add_local_dir(ROOT / "knowledge", f"{APP}/knowledge", ignore=["papers"])
+    # The source papers and coaching texts stay local: only quoted excerpts are shipped.
+    .add_local_dir(ROOT / "knowledge", f"{APP}/knowledge", ignore=["papers", "coaching_sources"])
 )
 app = modal.App("kickcoach", image=image)
 

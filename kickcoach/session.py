@@ -36,9 +36,11 @@ def assess(
     use_llm: bool = True,
     client: GeminiClient | None = None,
     verified: list[norms.NormRow] | None = None,
+    retrieval: bool = True,
 ) -> dict:
     """Add comparisons, faults and feedback to a pipeline result. A refused clip gets none of
-    them: only the gate's reasons (MVP acceptance criterion 4)."""
+    them: only the gate's reasons (MVP acceptance criterion 4). ``retrieval`` hands the LLM
+    coaching passages (DEC-039); templates never use them."""
     verified = norms.verified_norms() if verified is None else verified
     out = dict(result)
     if not result["quality"]["accepted"]:
@@ -52,8 +54,9 @@ def assess(
     comps = engine.compare(result["features"], verified, level)
     fired, inactive = faults.evaluate(result["features"], verified)
     fb = generate_feedback(
-        result["features"], fired, comps, verified, level=level, client=client, use_llm=use_llm
-    )
+        result["features"], fired, comps, verified, level=level, client=client,
+        use_llm=use_llm, retrieval=retrieval,
+    )  # fmt: skip
     out.update(comparisons=comps, faults=fired, inactive_rules=inactive, feedback=fb)
     return out
 

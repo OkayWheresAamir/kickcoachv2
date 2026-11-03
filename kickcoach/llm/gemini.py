@@ -191,10 +191,11 @@ class GeminiClient:
                 )
                 break
             except (errors.APIError, httpx.TimeoutException) as e:
-                # 429 = rate limit, 503 = "model is experiencing high demand", or no answer
-                # within TIMEOUT_MS: all transient.
+                # 429 = rate limit, 503 = "model is experiencing high demand", 500 = "Internal
+                # error encountered" (Gemma 4, 3 Nov), or no answer within TIMEOUT_MS: all
+                # transient.
                 code = getattr(e, "code", "timeout")
-                if code not in (429, 503, "timeout"):
+                if code not in (429, 500, 503, "timeout"):
                     raise
                 if code == 429 and "PerDay" in str(e):
                     raise DailyQuotaExhausted(str(e)) from e
@@ -224,3 +225,35 @@ class GeminiClient:
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(record, indent=1))
         return {**record, "cached": False}
+
+    def embed_texts(self, texts: list[str], dims: int) -> list[list[float]]:
+        """One vector per text, uncached (kickcoach.retrieval.embed caches them).
+
+        gemini-embedding-2 merges a plain list of strings into ONE embedding (embeddings doc,
+        2026-11-03), so each text goes in as its own Content, and the count is checked."""
+        from google.genai import errors, types
+
+        sdk = self._sdk()
+        contents = [types.Content(parts=[types.Part(text=t)]) for t in texts]
+        for attempt, backoff in enumerate((*RETRY_WAITS_S, None)):
+            self._wait_turn()
+            try:
+                resp = sdk.models.embed_content(
+                    model=self.model,
+                    contents=contents,
+                    config=types.EmbedContentConfig(output_dimensionality=dims),
+                )
+                break
+            except errors.APIError as e:
+                if e.code not in (429, 500, 503):
+                    raise
+                if e.code == 429 and "PerDay" in str(e):
+                    raise DailyQuotaExhausted(str(e)) from e
+                if backoff is None:
+                    raise RateLimited(str(e)) from e
+                print(f"{e.code} from Gemini (attempt {attempt + 1}); waiting {backoff:.0f} s")
+                self._sleep(backoff)
+        vectors = [list(e.values) for e in resp.embeddings or []]
+        if len(vectors) != len(texts):
+            raise RuntimeError(f"asked for {len(texts)} embeddings, got {len(vectors)}")
+        return vectors

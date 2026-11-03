@@ -339,6 +339,10 @@
         const names = m[1].split("_").map((n) => n[0].toUpperCase() + n.slice(1));
         return `${names.length > 2 ? names[0] + " et al." : names.join(" & ")} (${m[2]})`;
       }
+      function citeHtml(id, d) { // a coaching passage (K-12) links to its source, page included
+        const s = ((d.feedback || {}).sources || {})[id];
+        return s ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(`${s.cite}, ${s.where}`)}</a>` : esc(citation(id, d));
+      }
       const plain = (s) => String(s ?? "").replace(/\s*\((?:DEC|D)-?\d+(?:, ?(?:DEC|D)-?\d+)*\)/g, ""); // drop internal decision refs
       function loadSessions() {
         try { const v = JSON.parse(localStorage.getItem(STORE) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; }
@@ -549,7 +553,7 @@
           return `<div class="fault"><div class="fault-head"><h4>${esc(f.name)}</h4>
               <span class="badge ${heuristic ? "b-warn" : "b-ok"}">${heuristic ? "heuristic threshold" : "cited threshold"}</span></div>
             <p class="evidence">${esc((FEATURES[fid] || [fid])[0])} ${num(val, f.unit)}; this rule fires ${esc(f.fires_when)} ${num(f.threshold, f.unit)}.</p>
-            ${i ? `<dl class="fb"><dt>What</dt><dd>${esc(i.what)}</dd><dt>Why</dt><dd>${esc(i.why_it_matters)}</dd><dt>Cue</dt><dd class="cue">${esc(i.cue)}</dd><dt>Drill</dt><dd>${esc(i.drill)}</dd>${i.citations.length ? `<dt>Sources</dt><dd class="small">${i.citations.map((c) => esc(citation(c, d))).join("; ")}</dd>` : ""}</dl>` : ""}
+            ${i ? `<dl class="fb"><dt>What</dt><dd>${esc(i.what)}</dd><dt>Why</dt><dd>${esc(i.why_it_matters)}</dd><dt>Cue</dt><dd class="cue">${esc(i.cue)}</dd><dt>Drill</dt><dd>${esc(i.drill)}</dd>${i.citations.length ? `<dt>Sources</dt><dd class="small">${i.citations.map((c) => citeHtml(c, d)).join("; ")}</dd>` : ""}</dl>` : ""}
             <details class="more"><summary>Where the threshold comes from</summary><ul><li>${esc(f.threshold_source)}</li></ul></details></div>`;
         }).join("");
         const body = faults || `<p class="muted" style="margin-top:8px">No fault rule fired on this kick.</p>`;
