@@ -1,0 +1,99 @@
+{
+ "key": "18029df367837162ca1ab67b",
+ "tag": "judge-v1 c11-F-PLANT-FAR-BEHIND-template",
+ "model": "gemma-4-31b-it",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Plant foot far behind the ball\",\n   \"feature\": \"plant_foot_offset\",\n   \"value\": -0.37,\n   \"unit\": \"leg_lengths\",\n   \"fires_when\": \"below\",\n   \"threshold\": -0.25,\n   \"threshold_source\": \"heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it).\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 126.53,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 77.78,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -1.76,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": -0.37,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"no_comparable_norm\",\n    \"norm_ref\": null,\n    \"norm_mean\": null,\n    \"norm_sd\": null,\n    \"population\": null\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your plant foot landed well behind the ball (0.37 leg lengths behind its centre).\",\n  \"why_it_matters\": \"Coaches commonly teach planting beside the ball, so the kicking foot meets it near the bottom of its swing.\",\n  \"cue\": \"Plant your standing foot beside the ball, pointing at the target.\",\n  \"drill\": \"Place a marker beside the ball and practise your approach so your standing foot lands on it before striking.\"\n },\n \"cited_sources\": []\n}\n"
+ },
+ "text": " {\n  \"correctness\": 5,\n  \"specificity\": 5,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reflects the measured plant foot offset, provides a specific cue and a simple, actionable drill based on that measurement.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 5,
+  "actionability": 5,
+  "reason": "The feedback accurately reflects the measured plant foot offset, provides a specific cue and a simple, actionable drill based on that measurement."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 03 Nov 2026 18:00:38 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=68062",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": " {\n  \"correctness\": 5,\n  \"specificity\": 5,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reflects the measured plant foot offset, provides a specific cue and a simple, actionable drill based on that measurement.\"\n}"
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemma-4-31b-it",
+  "response_id": "AyHqatLiGuTu694P4LH50Ak",
+  "usage_metadata": {
+   "candidates_token_count": 60,
+   "prompt_token_count": 1062,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1062
+    }
+   ],
+   "total_token_count": 1122
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 5,
+   "actionability": 5,
+   "reason": "The feedback accurately reflects the measured plant foot offset, provides a specific cue and a simple, actionable drill based on that measurement."
+  }
+ }
+}

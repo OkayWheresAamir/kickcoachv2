@@ -1,0 +1,101 @@
+{
+ "key": "06bb35f84a073546cbf3c3f6",
+ "tag": "judge-v1 c07-F-SHALLOW-BACKSWING-llm_rag",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Shallow knee bend in the backswing\",\n   \"feature\": \"max_knee_flexion_backswing\",\n   \"value\": 98.04,\n   \"unit\": \"deg\",\n   \"fires_when\": \"above\",\n   \"threshold\": 89.61,\n   \"threshold_source\": \"Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 132.59,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 98.04,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -11.6,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": -0.32,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"simultaneous\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"above_norm\",\n    \"norm_ref\": \"N-032\",\n    \"norm_mean\": 77.29,\n    \"norm_sd\": 6.16,\n    \"population\": \"elite, adults, mixed\"\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your kicking leg did not bend enough during the backswing.\",\n  \"why_it_matters\": \"A shallow backswing reduces the stretch in your leg muscles, which decreases your kicking power.\",\n  \"cue\": \"Bend your knee more as you swing back.\",\n  \"drill\": \"Practice pulling your heel back toward your glutes during the backswing phase before every kick.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"N-032\",\n   \"label\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1\",\n   \"text\": \"kicking_knee_max_flexion: 102.71 \u00b1 6.16 deg (elite, n = 26). Paper's words: \\\"Swing KF 102.71 \u00b1 6.16 77.04 \u00b1 12.63 437.11 \u00b1 108.87\\\"\"\n  },\n  {\n   \"id\": \"kellis_katis_2007\",\n   \"label\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review\",\n   \"text\": \"Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987).\"\n  },\n  {\n   \"id\": \"K-35\",\n   \"label\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review, p. 158\",\n   \"text\": \"This movement is accompanied by a stretch of the knee extensor musculature during backswing followed by immediate shortening during forward shank movement. It has been shown that kicking speed is significantly higher when the knee extensor musculature is stretched and then shorten compared with kicks involving only concentric actions (Bober et al., 1987).\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 4,\n  \"reason\": \"The feedback accurately reflects the measured backswing knee bend fault and cited mechanics literature, offering a clear, actionable drill tailored specifically to fixing knee flexion.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 4,
+  "actionability": 4,
+  "reason": "The feedback accurately reflects the measured backswing knee bend fault and cited mechanics literature, offering a clear, actionable drill tailored specifically to fixing knee flexion."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 03 Nov 2026 08:48:51 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=5468",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 4,\n  \"reason\": \"The feedback accurately reflects the measured backswing knee bend fault and cited mechanics literature, offering a clear, actionable drill tailored specifically to fixing knee flexion.\"\n}",
+       "thought_signature": "EvsUCvgUAWkUfRNQVGqb4pPp35Od3H1JV_Ax3vfTMv9K1dNOx6i_gxsPRCf3vF84qlHrIseSFz64HsDtymOpH8ZQc9BQgH-sOPl4PExSdPkTUX_-F6Tg0Z5gC5r2uN1XsB1sf1JSNK2CGzetnpRckDY0eflcbI0mR5rjWTe1bWNJguMAMALbIeoBvChVclJJEN_neRjJ-vvZXbEs1gDEJpgCce4t7Qh8WmCPms6hPJ-he1XrU1dLa_pa9ls5K0w6wpcsWL6mKNybY5Fc68dN7PqWnhx8TOiGdTrlq9xbT3T8dVlLlemjrLzTbtrN95z0BdeAnXclEnCP-Np5McWk0xVeiqOFscWZBvvnQe_peax7UPId_CHE2zDoD7egQwQLgg5GrxOah8CPoUu1EFppCeDswVnHOete6owD44HHNqq6pAQxevqEk11jFLa-597tDlu9AxTLkv9V-WpM6mOAXIZj21QofH9QVTDkhhLvyb7VHi_vcN6biPOBNdCfcjH5A3hqyeDQ2NTFXKdh9ubTYUQbVLmRRkKTKg2wNrk5oLO5vBS80zXhd-KnG_lp-MEmTR7plucq9jZQL4nXtINmZAC0Ify33J0SiyNI-WPGj6G34xQuMbGI3WHErEI3u4CsxHhs-32Hd02uHFLXUlDOWCSKs8G93fI4u7OUVby9iRcD5CgM62my1lQix1lSfQ9-Xxr9oV5719RnD0_Duk6NNsa9e_A8xh70Q5w1f0R9yNXfPg18Ko1daxahdFw8Vs9uJpCo6EFv5QXDKw3Po3k98SxIqbmDzC14KdYKngmiAUeARdyJuBXturEx0TY_ksNh8VH6KuQRS9Hcqann3dkaNzbJ2KOAaGqHdb4zVyXz0_c8kmnXhnX3uNOrylraGRUs2g5FGkovCuOAM_yz3AhSMhHZZXT-P2ESn9UiU4DpHVSj5KRfaYfXBNTPWF416SKtsDmZ_DgyLMXkl3T314Ic1f3wPRJ3P8s53CluPbJrTWEQUmBOeFkat1nhlLtogXPbzssvo3BjDoy4yJvE2N0LXObIxE2bf3C52-e0mZ6TvCsrE0bHamhS-o3QjlLP1Op5VRg3CU1_9NtSV7okurKDlFqJTMqlzh6kDgLITJ25H2MELGUx50jk0IYTiLjXqEPgKg6IFcMRPoW57c-hwKeNiwXcdCdFAZ6KwTT1GCrNdptAP_AEZOJVKz0s30EohQp29v9tFZc39Bl-CGvS8qrNqyv0uT6i0KYv2-ZVjF1MzzM5GmU0-3SoqVFt5GFaV18XUp4aP1EfC8jWM2trZYK6jz5q7EPy8cTxewtkFqbqG0bKfPTrmg2XBLl23VT9-qx_4l8fblD26YopdLuF09LldLcPsAWa5lPBqOTB1IdAwLxRd-LCefa5C2t4uj30UQBrF_NK1HuUW4ewx7HMCK90rZ2978RXQDUZ_prjijXzvBdVewPqqHN9tfhJtX40WR4KF_FUm6DCVEhpzqDTfOB6dUSgcqjOrbBAeatubmEseT1ekrQBR2PTSHU3khqJF6oGFFrOjbWfp_fAX5VKYEY1jARGkIBuA_xVYh07T-jF7ckQeD9XKszyZfbSySoZUTafhX_u6tjNYhCoQoyLMdSdfFCRb782eopR8HhEiCaa1jO85oDTBbBKWxSzBw2RDP1hIqTX-7829n0PHBpj_QZWvorsYJYdcRdv5zbxPu8gxgwwtD-GeV0CfmDUB_G1uJV3_iOvAZXFzDKSBc0MEd3T7_6WdjODaWsRrPF1z_xfvMg2pOsnkCkCwU7zForZLOnbE065OdRsT3DtcX_sxGoMGE-XDDR5oBDq2qzPTF6quCJ8YScr-PqjfxaBzzRT2HDxbF9EavqQax2x05KeW9LLfoaBPZoNQ5h7rxUghMX0oi-q5eCH0U2UrcA9qk8sZjKyMXkwiPD2klUWddFcDKJKsUso9gQ3pmXFVUFtqsZc7RKGxFQg1QQ_4UYM8az8uqt_H5eslpIwnC0ecYN0kGnugGeYKwiXBHv-k85nM41SPenkyX_hE-d5I9w5yvGvE3im2ynKaTFkGK2Wq7hLX8jgoCCTdg-0auIefWtatZr5ktXR3A7lhy8serbnGcGK4iFVbhLPx7cSgTRaF9Wq69BejAsQVWYXtxI9RVUTtat6UmRr8Fx2xjhAOfKwSQhJCGTmHC50vaxZ8VzapU0p4LWt3QHrxLdKcIg_LSnzvE7Gb27AfMJxSgvJOB3pzLMNa6eiZy5tbqEHgTa1vWa7wHLuGpK3F7Qbfi850GIrfDD09Ak7o3OD9GbtzL4CQi-W9URdbw4nt2gAMcJy5MF5LWyNNzRuyAM8_Ah14JhH4UPSVO6TLWGlBDCwh6IyeOFxL-sCbNeyNKxQ1IURyBRvxVDjit3gIT0I9jmQlqCCkcvddX78zNNRwKSHeVI0one3-fqVXU8e5k-wCogltKSBMCODFlNNV9I3RzTmXYDflOcwasAHSCI88YAo7V7Jflmeaicsw1i258Ct5cDDXgtrruyVWab3PmEE-YCZgupIBGp-IgHqdy6UsXRaPveSx17xhC0wN2WOB22Z_C2KDAfBzgD8dWJA1e8sNgKWYeG5rGY9nEfrMjvBJFdBvRw1LjP8DtcBh37jKuc9I6Y1rj13oYB-_R8AafSceGgaDd_swtvWi8NgASeRwceglzix7OFdCFN0mPWIHL87waDZjW-q8PsOhC2Th92ARW7cbhDExlaVcucmNsJCdi-w2BO3OVSrgPUPx7CNudyNyZh2lZyWvRaKpnHnjP1NQn6eObvzdoDxVLg0h_UQG8pCL-udGjiimFoorU1j8b1ElC8B2rfIDLUCnNLZeyng2o4nhYIdNriCoXICAKYHtZEqV1zkhiw6d5926GIah0lEbz5iQYBsPQyknehDNZsBkz6Ty-i4jbWn0vOJIpqRwai46bHYbOYJJDIHmBdzVvELsuxRlk1qWt1DQzL2C-JTRwACCWo7O0OdKcdP_iSLxqvMgbh_syw3ieI9fyCL6iEtPFXP6GkHv35ZjoaCa7u4DzDc9iYvh3cX3caWOmne1ncxjILGxwu57ntqgEhYkZMblrBKdLB8gD7VokVydq_9xmGmoTSbspLrSoYJsepsfGoqvATTLM6QX92DTK-PyDea9Uy-Iz2Cebzl3LMAxDwWu2on17VdL0rv-FKcyMHJAnjhRW8M9-Eua54BAjzHX69P29yCtC2Bb6tZKCqRlnalpYueAs2zJxTEArVW-WOZbEs3_wMODcbKQo3cYSBAfItZTSkwFaK0UCuLpttd573iuwlnvYlyJkwx11RVkCYE7xi2_fLehf6SLibFeM4rKf2lv_rbiqziD3gMRO7HeNiqICKGd7u31HN7x9MsKRmprrqVYoIuDydRC9_5_5yZ0yDbcHB06aNadS5TFlioxNdazMyDtxUeCt9QxhArGeqgZtzlD0sboKeFjzS9EG_a_qJ8V5C3iNF_84ylOxQbn9a8BY8FDi-2iHf9vGWATZs18ihraMAF9IAuMYsDclFVVmXOUpe-0qkrwqeWoJHinQvmzTBWIBOTaofX1VDGgV8Mz_jICkzupbDhWg=="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "75_pau1P36Tr3g_b37yQBg",
+  "usage_metadata": {
+   "candidates_token_count": 64,
+   "prompt_token_count": 1489,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1489
+    }
+   ],
+   "thoughts_token_count": 677,
+   "total_token_count": 2230
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 4,
+   "actionability": 4,
+   "reason": "The feedback accurately reflects the measured backswing knee bend fault and cited mechanics literature, offering a clear, actionable drill tailored specifically to fixing knee flexion."
+  }
+ }
+}

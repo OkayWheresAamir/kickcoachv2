@@ -1,0 +1,4333 @@
+{
+ "seed": 20261103,
+ "rubric": {
+  "correctness": {
+   "question": "Is everything it says true to the facts and the sources it cites?",
+   "5": "Every statement matches the measurements and the cited sources; nothing invented.",
+   "3": "Mostly right, but one claim is unsupported, overstated or slightly off.",
+   "1": "Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources."
+  },
+  "specificity": {
+   "question": "Is it about this kick, not football in general?",
+   "5": "Built on this kick's measurement and fault; it couldn't be pasted onto another kick.",
+   "3": "Names the fault, but the rest would fit any player.",
+   "1": "Generic advice that ignores what was measured."
+  },
+  "actionability": {
+   "question": "Could the player act on the cue and drill at their next session?",
+   "5": "A clear cue and a drill you could set up and do alone, without asking anyone.",
+   "3": "Understandable, but vague about what to do or how to practise it.",
+   "1": "No usable instruction."
+  }
+ },
+ "sample": [
+  "c05-F-LEAN-BACK-llm_rag",
+  "c24-F-SHALLOW-BACKSWING-llm",
+  "c04-F-LEAN-BACK-llm",
+  "c18-F-LEAN-BACK-template",
+  "c02-F-LEAN-BACK-template",
+  "c04-F-LEAN-BACK-llm_rag",
+  "c24-F-LEAN-BACK-llm_rag",
+  "c24-F-SHALLOW-BACKSWING-llm_rag",
+  "c05-F-LEAN-BACK-llm",
+  "c16-F-PLANT-FAR-BEHIND-llm_rag",
+  "c16-F-PLANT-FAR-BEHIND-llm",
+  "c14-F-SHALLOW-BACKSWING-llm",
+  "c07-F-SHALLOW-BACKSWING-llm",
+  "c20-F-SHALLOW-BACKSWING-template",
+  "c07-F-PLANT-FAR-BEHIND-llm",
+  "c11-F-PLANT-FAR-BEHIND-template",
+  "c14-F-SHALLOW-BACKSWING-llm_rag",
+  "c07-F-SHALLOW-BACKSWING-llm_rag",
+  "c07-F-PLANT-FAR-BEHIND-llm_rag",
+  "c24-F-LEAN-BACK-llm"
+ ],
+ "items": [
+  {
+   "item_id": "c02-F-LEAN-BACK-llm_rag",
+   "clip_id": "c02",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -19.79,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 129.48,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 82.67,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -19.79,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.14,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward at the moment you made contact with the ball.",
+    "why_it_matters": "Leaning back makes it hard to keep your shots low and reduces your power and accuracy.",
+    "cue": "Keep your head and kicking knee over the ball.",
+    "drill": "Practice your shots by focusing on placing your non-kicking foot right next to the ball and keeping your upper body forward."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    },
+    {
+     "id": "K-09",
+     "label": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)",
+     "text": "Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball."
+    }
+   ]
+  },
+  {
+   "item_id": "c02-F-LEAN-BACK-llm",
+   "clip_id": "c02",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -19.79,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 129.48,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 82.67,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -19.79,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.14,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk lean at contact was measured at -19.79 degrees, which means you were leaning back.",
+    "why_it_matters": "Leaning back makes it hard to keep your shot low and powerful.",
+    "cue": "Chest over the ball.",
+    "drill": "Practice striking while focusing on keeping your upper body tilted forward over the ball."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c02-F-LEAN-BACK-template",
+   "clip_id": "c02",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -19.79,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 129.48,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 82.67,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -19.79,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.14,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (20 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c03-F-SHALLOW-BACKSWING-llm_rag",
+   "clip_id": "c03",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-35",
+    "K-32",
+    "K-02"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 90.44,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 117.51,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 90.44,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -6.34,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.02,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee bent to 90 degrees in the backswing, which is too little bend.",
+    "why_it_matters": "Bending your knee more stretches your leg muscles so you can kick with more power.",
+    "cue": "Bend your knee more as you swing back.",
+    "drill": "Practice swinging your leg back while bending your knee fully before every kick."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c03-F-SHALLOW-BACKSWING-llm",
+   "clip_id": "c03",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 90.44,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 117.51,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 90.44,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -6.34,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.02,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee angle was too large at the backswing peak.",
+    "why_it_matters": "Bending your knee too little during the backswing limits the power you can build for your shot.",
+    "cue": "Bend your knee more as you pull your leg back.",
+    "drill": "Practice slow backswings focusing on pulling your heel closer to your body before you swing forward to kick the ball."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c03-F-SHALLOW-BACKSWING-template",
+   "clip_id": "c03",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 90.44,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 117.51,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 90.44,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -6.34,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.02,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "At its most bent in the backswing, your kicking knee still made a 90 deg angle between thigh and shin; the studied players bent it further.",
+    "why_it_matters": "A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks that use this stretch are faster (Kellis & Katis 2007).",
+    "cue": "Let your heel swing up towards your backside before you swing through.",
+    "drill": "Standing leg swings holding a wall: bring the heel high behind you, then swing through slowly, feeling the knee fold and unfold."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c04-F-LEAN-BACK-llm_rag",
+   "clip_id": "c04",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -17.35,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 136.64,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 82.65,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -17.35,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.06,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body was leaning away from the ball when you made contact.",
+    "why_it_matters": "Leaning back makes it hard to keep your shots low and powerful.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow kicks while focusing on keeping your head and knee directly above the ball when you strike it."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c04-F-LEAN-BACK-llm",
+   "clip_id": "c04",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -17.35,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 136.64,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 82.65,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -17.35,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.06,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk lean at contact was measured at -17 deg, which means you leaned back when you struck the ball.",
+    "why_it_matters": "Leaning back causes your shots to rise too high and lose power.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice place kicks while focusing on keeping your upper body forward and over the ball throughout the swing."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c04-F-LEAN-BACK-template",
+   "clip_id": "c04",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -17.35,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 136.64,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 82.65,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -17.35,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.06,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (17 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c05-F-LEAN-BACK-llm_rag",
+   "clip_id": "c05",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.65,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 133.33,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 86.03,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.65,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned back away from the ball when you made contact.",
+    "why_it_matters": "Leaning back makes it hard to keep your shots low and accurate.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow kicks while focusing on keeping your head and knee directly over the ball."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c05-F-LEAN-BACK-llm",
+   "clip_id": "c05",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.65,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 133.33,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 86.03,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.65,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "You leaned back at contact with a trunk lean of -13 degrees.",
+    "why_it_matters": "Leaning back makes your shot go too high instead of staying low and powerful.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice striking the ball while focusing on keeping your upper body pushed forward over your kicking foot."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c05-F-LEAN-BACK-template",
+   "clip_id": "c05",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.65,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 133.33,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 86.03,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.65,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (13 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c07-F-LEAN-BACK-llm_rag",
+   "clip_id": "c07",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": false,
+   "first_try_errors": [
+    "F-SHALLOW-BACKSWING: citation 'Kilic_2021' is not one of the given IDs"
+   ],
+   "n_attempts": 2,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -11.6,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward at the moment of contact with the ball.",
+    "why_it_matters": "Leaning back causes your shots to rise too high and lose power.",
+    "cue": "Keep your head and chest over the ball.",
+    "drill": "Practice walking up and stopping with your kicking knee directly over the ball before swinging."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c07-F-LEAN-BACK-llm",
+   "clip_id": "c07",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -11.6,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back at -12 deg when you made contact with the ball.",
+    "why_it_matters": "Leaning back makes the ball go too high instead of staying low.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow kicks while focusing on moving your chest forward over the ball as you kick."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c07-F-LEAN-BACK-template",
+   "clip_id": "c07",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -11.6,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (12 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c07-F-SHALLOW-BACKSWING-llm_rag",
+   "clip_id": "c07",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": false,
+   "first_try_errors": [
+    "F-SHALLOW-BACKSWING: citation 'Kilic_2021' is not one of the given IDs"
+   ],
+   "n_attempts": 2,
+   "passages_given": [
+    "K-35",
+    "K-32",
+    "K-02"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 98.04,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your kicking leg did not bend enough during the backswing.",
+    "why_it_matters": "A shallow backswing reduces the stretch in your leg muscles, which decreases your kicking power.",
+    "cue": "Bend your knee more as you swing back.",
+    "drill": "Practice pulling your heel back toward your glutes during the backswing phase before every kick."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    },
+    {
+     "id": "K-35",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review, p. 158",
+     "text": "This movement is accompanied by a stretch of the knee extensor musculature during backswing followed by immediate shortening during forward shank movement. It has been shown that kicking speed is significantly higher when the knee extensor musculature is stretched and then shorten compared with kicks involving only concentric actions (Bober et al., 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c07-F-SHALLOW-BACKSWING-llm",
+   "clip_id": "c07",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 98.04,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee bend in the backswing was 98 deg.",
+    "why_it_matters": "Not bending your knee enough reduces the power in your kick.",
+    "cue": "Bend your knee more.",
+    "drill": "Practice the backswing motion slowly while bending your knee further back before you swing forward."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c07-F-SHALLOW-BACKSWING-template",
+   "clip_id": "c07",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 98.04,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "At its most bent in the backswing, your kicking knee still made a 98 deg angle between thigh and shin; the studied players bent it further.",
+    "why_it_matters": "A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks that use this stretch are faster (Kellis & Katis 2007).",
+    "cue": "Let your heel swing up towards your backside before you swing through.",
+    "drill": "Standing leg swings holding a wall: bring the heel high behind you, then swing through slowly, feeling the knee fold and unfold."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c07-F-PLANT-FAR-BEHIND-llm_rag",
+   "clip_id": "c07",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": false,
+   "first_try_errors": [
+    "F-SHALLOW-BACKSWING: citation 'Kilic_2021' is not one of the given IDs"
+   ],
+   "n_attempts": 2,
+   "passages_given": [
+    "K-40",
+    "K-38",
+    "K-09",
+    "K-10"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.32,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed too far behind the ball.",
+    "why_it_matters": "Placing your foot too far back makes it difficult to strike the ball cleanly and reduces your shooting power.",
+    "cue": "Plant your foot right beside the ball.",
+    "drill": "Place markers on the ground next to the ball and practice stepping evenly beside them before kicking."
+   },
+   "cited": [
+    {
+     "id": "K-09",
+     "label": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)",
+     "text": "Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball."
+    }
+   ]
+  },
+  {
+   "item_id": "c07-F-PLANT-FAR-BEHIND-llm",
+   "clip_id": "c07",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.32,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed at -0.32 leg lengths behind the ball.",
+    "why_it_matters": "Planting too far behind the ball makes it hard to strike cleanly.",
+    "cue": "Step closer to the ball.",
+    "drill": "Practice stepping up to a stationary ball and placing your plant foot closer before kicking."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c07-F-PLANT-FAR-BEHIND-template",
+   "clip_id": "c07",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.32,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.59,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 98.04,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.6,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.32,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "simultaneous",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed well behind the ball (0.32 leg lengths behind its centre).",
+    "why_it_matters": "Coaches commonly teach planting beside the ball, so the kicking foot meets it near the bottom of its swing.",
+    "cue": "Plant your standing foot beside the ball, pointing at the target.",
+    "drill": "Place a marker beside the ball and practise your approach so your standing foot lands on it before striking."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c08-F-LEAN-BACK-llm_rag",
+   "clip_id": "c08",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -11.37,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 128.12,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 78.79,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.37,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward at the moment you made contact with the ball.",
+    "why_it_matters": "Leaning back makes it hard to keep your shots low and accurate.",
+    "cue": "Keep your head and chest over the ball.",
+    "drill": "Practice slow kicks while focusing on keeping your upper body pushed forward over the ball."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c08-F-LEAN-BACK-llm",
+   "clip_id": "c08",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -11.37,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 128.12,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 78.79,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.37,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk angle was measured at -11 deg when you made contact with the ball.",
+    "why_it_matters": "Leaning back makes your shot rise too high and lose power.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice striking the ball while focusing on keeping your upper body forward."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c08-F-LEAN-BACK-template",
+   "clip_id": "c08",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -11.37,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 128.12,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 78.79,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -11.37,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (11 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c09-F-LEAN-BACK-llm_rag",
+   "clip_id": "c09",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -13.05,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 137.78,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 81.08,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -13.05,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.02,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "You leaned back when you made contact with the ball.",
+    "why_it_matters": "Leaning back makes it hard to keep your shots low and powerful.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice kicking while focusing on keeping your head and upper body positioned directly above the ball."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c09-F-LEAN-BACK-llm",
+   "clip_id": "c09",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -13.05,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 137.78,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 81.08,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -13.05,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.02,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk lean at contact was measured at -13.05 degrees, meaning you were leaning backward when you struck the ball.",
+    "why_it_matters": "Leaning back causes your shots to rise too high or lose power because your weight is moving away from the target.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice striking the ball while focusing on pressing your chest forward over your laces."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c09-F-LEAN-BACK-template",
+   "clip_id": "c09",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -13.05,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 137.78,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 81.08,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -13.05,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.02,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (13 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c11-F-PLANT-FAR-BEHIND-llm_rag",
+   "clip_id": "c11",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-40",
+    "K-38",
+    "K-09",
+    "K-10"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.37,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 126.53,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 77.78,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -1.76,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.37,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed too far behind the ball.",
+    "why_it_matters": "Placing your support foot too far back causes you to lose power and accuracy on your shot.",
+    "cue": "Plant your foot next to the ball.",
+    "drill": "Stand with your non-kicking foot next to the ball and practice phantom kicks."
+   },
+   "cited": [
+    {
+     "id": "K-40",
+     "label": "Kapidžić, Huremović & Biberovic (2014), J Hum Kinet 42:81-90, Introduction, para. 3",
+     "text": "When using their preferred leg to perform an instep kick, soccer players practise a straighter approach to the ball, place their standing foot closer to the ball, and kick the ball with greater pelvic tilt and greater knee extension of the kicking leg. Variations in the placement of the support leg impact the speed of the ball."
+    },
+    {
+     "id": "K-09",
+     "label": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)",
+     "text": "Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball."
+    },
+    {
+     "id": "K-10",
+     "label": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (drill)",
+     "text": "1. Have player stand with non-kicking foot next to the ball. 2. Phantom kick the ball with kicking foot."
+    }
+   ]
+  },
+  {
+   "item_id": "c11-F-PLANT-FAR-BEHIND-llm",
+   "clip_id": "c11",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.37,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 126.53,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 77.78,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -1.76,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.37,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed behind the ball at a distance of -0.37 leg lengths.",
+    "why_it_matters": "Landing too far back makes it hard to strike the ball cleanly and puts your body weight in the wrong place.",
+    "cue": "Step closer to the ball.",
+    "drill": "Practice walking up and placing your plant foot right next to the ball without kicking."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c11-F-PLANT-FAR-BEHIND-template",
+   "clip_id": "c11",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.37,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 126.53,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 77.78,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -1.76,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.37,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed well behind the ball (0.37 leg lengths behind its centre).",
+    "why_it_matters": "Coaches commonly teach planting beside the ball, so the kicking foot meets it near the bottom of its swing.",
+    "cue": "Plant your standing foot beside the ball, pointing at the target.",
+    "drill": "Place a marker beside the ball and practise your approach so your standing foot lands on it before striking."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c14-F-SHALLOW-BACKSWING-llm_rag",
+   "clip_id": "c14",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-35",
+    "K-32",
+    "K-02"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 101.38,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 127.13,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 101.38,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": 1.13,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.2,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee stayed too straight during the backswing, reaching an angle of 101 degrees instead of bending more.",
+    "why_it_matters": "Bending your knee more stretches your muscles so you can kick with much more power.",
+    "cue": "Bend your knee more as you swing back.",
+    "drill": "Practice pulling your heel up high behind you in a slow motion backswing before you step and strike the ball."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c14-F-SHALLOW-BACKSWING-llm",
+   "clip_id": "c14",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 101.38,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 127.13,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 101.38,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": 1.13,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.2,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee bend in the backswing was 101 degrees, which is too straight.",
+    "why_it_matters": "Bending your knee more stores energy so you can kick harder.",
+    "cue": "Bend your knee more.",
+    "drill": "Practice pulling your heel close to your body during the backswing before striking the ball."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c14-F-SHALLOW-BACKSWING-template",
+   "clip_id": "c14",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 101.38,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 127.13,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 101.38,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": 1.13,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.2,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "At its most bent in the backswing, your kicking knee still made a 101 deg angle between thigh and shin; the studied players bent it further.",
+    "why_it_matters": "A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks that use this stretch are faster (Kellis & Katis 2007).",
+    "cue": "Let your heel swing up towards your backside before you swing through.",
+    "drill": "Standing leg swings holding a wall: bring the heel high behind you, then swing through slowly, feeling the knee fold and unfold."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c16-F-PLANT-FAR-BEHIND-llm_rag",
+   "clip_id": "c16",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-40",
+    "K-38",
+    "K-09",
+    "K-10"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.36,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 137.23,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 71.22,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": 5.36,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.36,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed too far behind the ball.",
+    "why_it_matters": "Placing your foot too far back reduces your power and accuracy.",
+    "cue": "Plant your foot next to the ball.",
+    "drill": "Stand with your non-kicking foot next to the ball and practice a phantom kick."
+   },
+   "cited": [
+    {
+     "id": "K-40",
+     "label": "Kapidžić, Huremović & Biberovic (2014), J Hum Kinet 42:81-90, Introduction, para. 3",
+     "text": "When using their preferred leg to perform an instep kick, soccer players practise a straighter approach to the ball, place their standing foot closer to the ball, and kick the ball with greater pelvic tilt and greater knee extension of the kicking leg. Variations in the placement of the support leg impact the speed of the ball."
+    },
+    {
+     "id": "K-09",
+     "label": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)",
+     "text": "Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball."
+    },
+    {
+     "id": "K-10",
+     "label": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (drill)",
+     "text": "1. Have player stand with non-kicking foot next to the ball. 2. Phantom kick the ball with kicking foot."
+    }
+   ]
+  },
+  {
+   "item_id": "c16-F-PLANT-FAR-BEHIND-llm",
+   "clip_id": "c16",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.36,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 137.23,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 71.22,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": 5.36,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.36,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed behind the ball at a distance of -0.36 leg lengths.",
+    "why_it_matters": "Landing too far back makes your body lean away from the ball and reduces your power.",
+    "cue": "Step closer to the ball.",
+    "drill": "Place a marker next to the ball and practice stepping beside it before you kick."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c16-F-PLANT-FAR-BEHIND-template",
+   "clip_id": "c16",
+   "fault_id": "F-PLANT-FAR-BEHIND",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Plant foot far behind the ball",
+     "feature": "plant_foot_offset",
+     "value": -0.36,
+     "unit": "leg_lengths",
+     "fires_when": "below",
+     "threshold": -0.25,
+     "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 137.23,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 71.22,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": 5.36,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.36,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your plant foot landed well behind the ball (0.36 leg lengths behind its centre).",
+    "why_it_matters": "Coaches commonly teach planting beside the ball, so the kicking foot meets it near the bottom of its swing.",
+    "cue": "Plant your standing foot beside the ball, pointing at the target.",
+    "drill": "Place a marker beside the ball and practise your approach so your standing foot lands on it before striking."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c17-F-LEAN-BACK-llm_rag",
+   "clip_id": "c17",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.4,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.23,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 89.25,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.4,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward at the moment of ball contact.",
+    "why_it_matters": "Leaning back makes it hard to keep your shots low and accurate.",
+    "cue": "Keep your head and knee over the ball.",
+    "drill": "Practice passing against a wall while focusing on keeping your chest forward and directly above the ball when you kick."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c17-F-LEAN-BACK-llm",
+   "clip_id": "c17",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.4,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.23,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 89.25,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.4,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned back at a trunk angle of -12 deg when you made contact with the ball.",
+    "why_it_matters": "Leaning back makes your shot lift into the air too much and lose power.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow kicks while focusing on keeping your chest positioned directly above the ball."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c17-F-LEAN-BACK-template",
+   "clip_id": "c17",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.4,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 132.23,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 89.25,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.4,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.03,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (12 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c18-F-LEAN-BACK-llm_rag",
+   "clip_id": "c18",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -16.67,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 122.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 69.26,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -16.67,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.16,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward away from the ball when you made contact.",
+    "why_it_matters": "Leaning back makes the ball fly too high instead of staying low on the ground.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice passing against a wall while focusing on keeping your head and chest forward."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c18-F-LEAN-BACK-llm",
+   "clip_id": "c18",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -16.67,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 122.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 69.26,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -16.67,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.16,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk lean at contact was measured at -17 degrees, meaning you leaned back.",
+    "why_it_matters": "Leaning back makes your shot go too high instead of staying low and powerful.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice kicking while focusing on keeping your upper body pushed forward over the ball."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c18-F-LEAN-BACK-template",
+   "clip_id": "c18",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -16.67,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 122.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 69.26,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -16.67,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.16,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (17 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c20-F-SHALLOW-BACKSWING-llm_rag",
+   "clip_id": "c20",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-35",
+    "K-32",
+    "K-02"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 93.67,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 154.19,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 93.67,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -8.58,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.14,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee angle reached 94 degrees during the backswing.",
+    "why_it_matters": "Bending your knee more stretches your leg muscles so you can kick with more force.",
+    "cue": "Bend your knee back further.",
+    "drill": "Practice swinging your kicking leg back and forth while focusing on bending your knee as high as you can."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    },
+    {
+     "id": "K-35",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review, p. 158",
+     "text": "This movement is accompanied by a stretch of the knee extensor musculature during backswing followed by immediate shortening during forward shank movement. It has been shown that kicking speed is significantly higher when the knee extensor musculature is stretched and then shorten compared with kicks involving only concentric actions (Bober et al., 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c20-F-SHALLOW-BACKSWING-llm",
+   "clip_id": "c20",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 93.67,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 154.19,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 93.67,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -8.58,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.14,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee did not bend enough during the backswing.",
+    "why_it_matters": "Bending your knee more stores more energy to strike the ball with power.",
+    "cue": "Bend your knee back further.",
+    "drill": "Stand near a wall and pull your kicking heel up toward your glutes repeatedly before kicking a stationary ball."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c20-F-SHALLOW-BACKSWING-template",
+   "clip_id": "c20",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 93.67,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 154.19,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 93.67,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -8.58,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": -0.14,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "At its most bent in the backswing, your kicking knee still made a 94 deg angle between thigh and shin; the studied players bent it further.",
+    "why_it_matters": "A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks that use this stretch are faster (Kellis & Katis 2007).",
+    "cue": "Let your heel swing up towards your backside before you swing through.",
+    "drill": "Standing leg swings holding a wall: bring the heel high behind you, then swing through slowly, feeling the knee fold and unfold."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c24-F-LEAN-BACK-llm_rag",
+   "clip_id": "c24",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.57,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 145.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 100.89,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.57,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.15,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward when you made contact with the ball.",
+    "why_it_matters": "Leaning back makes it hard to keep the ball on the ground and reduces control.",
+    "cue": "Keep your head over the ball.",
+    "drill": "Practice passing against a wall while focusing on keeping your upper body forward over the ball."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c24-F-LEAN-BACK-llm",
+   "clip_id": "c24",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.57,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 145.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 100.89,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.57,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.15,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "You leaned back at -13 degrees when you struck the ball.",
+    "why_it_matters": "Leaning back makes your shot rise too high and lose power.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow-motion kicks while focusing on keeping your upper body forward."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c24-F-LEAN-BACK-template",
+   "clip_id": "c24",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -12.57,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 145.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 100.89,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.57,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.15,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (13 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c24-F-SHALLOW-BACKSWING-llm_rag",
+   "clip_id": "c24",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-35",
+    "K-32",
+    "K-02"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 100.89,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 145.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 100.89,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.57,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.15,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee was not bent enough during the backswing.",
+    "why_it_matters": "A shallow knee bend limits the stretch in your muscles, which reduces the power and speed of your kick.",
+    "cue": "Bend your knee more as you swing back.",
+    "drill": "Practice slow-motion swings focusing on pulling your heel back toward your glutes before moving forward."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c24-F-SHALLOW-BACKSWING-llm",
+   "clip_id": "c24",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 100.89,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 145.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 100.89,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.57,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.15,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your knee bend in the backswing was 101 degrees.",
+    "why_it_matters": "A shallow backswing reduces the power you can generate.",
+    "cue": "Bend your knee more as you wind up.",
+    "drill": "Practice standing leg curls to build comfort with a deeper knee bend."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c24-F-SHALLOW-BACKSWING-template",
+   "clip_id": "c24",
+   "fault_id": "F-SHALLOW-BACKSWING",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Shallow knee bend in the backswing",
+     "feature": "max_knee_flexion_backswing",
+     "value": 100.89,
+     "unit": "deg",
+     "fires_when": "above",
+     "threshold": 89.61,
+     "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 145.7,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 100.89,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -12.57,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "plant_foot_offset",
+      "value": 0.15,
+      "unit": "leg_lengths",
+      "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "above_norm",
+      "norm_ref": "N-032",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "population": "elite, adults, mixed"
+     }
+    ]
+   },
+   "feedback": {
+    "what": "At its most bent in the backswing, your kicking knee still made a 101 deg angle between thigh and shin; the studied players bent it further.",
+    "why_it_matters": "A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks that use this stretch are faster (Kellis & Katis 2007).",
+    "cue": "Let your heel swing up towards your backside before you swing through.",
+    "drill": "Standing leg swings holding a wall: bring the heel high behind you, then swing through slowly, feeling the knee fold and unfold."
+   },
+   "cited": [
+    {
+     "id": "N-032",
+     "label": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+     "text": "kicking_knee_max_flexion: 102.71 ± 6.16 deg (elite, n = 26). Paper's words: \"Swing KF 102.71 ± 6.16 77.04 ± 12.63 437.11 ± 108.87\""
+    },
+    {
+     "id": "kellis_katis_2007",
+     "label": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review",
+     "text": "Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987)."
+    }
+   ]
+  },
+  {
+   "item_id": "c25-F-LEAN-BACK-llm_rag",
+   "clip_id": "c25",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm_rag",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [
+    "K-12",
+    "K-26",
+    "K-09"
+   ],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -20.62,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 94.38,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 47.78,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -20.62,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "plant_foot_offset",
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your upper body leaned backward at the moment you hit the ball.",
+    "why_it_matters": "Leaning back makes the ball fly too high instead of staying low on the ground.",
+    "cue": "Keep your head over the ball.",
+    "drill": "Practice striking the ball while focusing on keeping your chest positioned directly above your foot upon contact."
+   },
+   "cited": [
+    {
+     "id": "K-12",
+     "label": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+     "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back."
+    }
+   ]
+  },
+  {
+   "item_id": "c25-F-LEAN-BACK-llm",
+   "clip_id": "c25",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "llm",
+   "generated_by": "llm",
+   "first_try_passed": true,
+   "first_try_errors": [],
+   "n_attempts": 1,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -20.62,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 94.38,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 47.78,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -20.62,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "plant_foot_offset",
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk leaned back at contact.",
+    "why_it_matters": "Leaning back makes your shot rise too high and lose power.",
+    "cue": "Chest over the ball",
+    "drill": "Practice kicking while keeping your upper body tilted forward over the ball."
+   },
+   "cited": []
+  },
+  {
+   "item_id": "c25-F-LEAN-BACK-template",
+   "clip_id": "c25",
+   "fault_id": "F-LEAN-BACK",
+   "variant": "template",
+   "generated_by": "template",
+   "first_try_passed": null,
+   "first_try_errors": [],
+   "n_attempts": 0,
+   "passages_given": [],
+   "facts": {
+    "fault": {
+     "name": "Leaning back at contact",
+     "feature": "trunk_lean_contact",
+     "value": -20.62,
+     "unit": "deg",
+     "fires_when": "below",
+     "threshold": -10.0,
+     "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+    },
+    "measured": [
+     {
+      "id": "knee_angle_contact",
+      "value": 94.38,
+      "unit": "deg",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight"
+     },
+     {
+      "id": "max_knee_flexion_backswing",
+      "value": 47.78,
+      "unit": "deg",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee"
+     },
+     {
+      "id": "trunk_lean_contact",
+      "value": -20.62,
+      "unit": "deg",
+      "definition": "trunk angle from vertical at contact; negative = leaning back"
+     },
+     {
+      "id": "segment_sequence_order",
+      "value": "proximal_to_distal",
+      "unit": "order",
+      "definition": "whether the thigh's speed peaked before the shank's"
+     }
+    ],
+    "not_measured": [
+     "plant_foot_offset",
+     "peak_knee_ext_velocity"
+    ],
+    "norm_comparison": [
+     {
+      "verdict": "no_comparable_norm",
+      "norm_ref": null,
+      "norm_mean": null,
+      "norm_sd": null,
+      "population": null
+     }
+    ]
+   },
+   "feedback": {
+    "what": "Your trunk was leaning back (21 deg from upright) when your foot met the ball.",
+    "why_it_matters": "Coaches commonly link leaning back at contact with the ball rising instead of being driven low and hard.",
+    "cue": "Keep your chest over the ball as you strike it.",
+    "drill": "Slow walk-up strikes against a wall, freezing at contact to check your shoulders are level with or ahead of your hips."
+   },
+   "cited": []
+  }
+ ]
+}

@@ -1,0 +1,101 @@
+{
+ "key": "2342fc488d1adb35c88b4672",
+ "tag": "judge-v1 c07-F-LEAN-BACK-llm_rag",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Leaning back at contact\",\n   \"feature\": \"trunk_lean_contact\",\n   \"value\": -11.6,\n   \"unit\": \"deg\",\n   \"fires_when\": \"below\",\n   \"threshold\": -10.0,\n   \"threshold_source\": \"heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 132.59,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 98.04,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -11.6,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": -0.32,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"simultaneous\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"no_comparable_norm\",\n    \"norm_ref\": null,\n    \"norm_mean\": null,\n    \"norm_sd\": null,\n    \"population\": null\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your upper body leaned backward at the moment of contact with the ball.\",\n  \"why_it_matters\": \"Leaning back causes your shots to rise too high and lose power.\",\n  \"cue\": \"Keep your head and chest over the ball.\",\n  \"drill\": \"Practice walking up and stopping with your kicking knee directly over the ball before swinging.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"K-12\",\n   \"label\": \"Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes\",\n   \"text\": \"To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back.\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 4,\n  \"specificity\": 4,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately identifies the measured fault and provides a clear, solo drill, though claiming that leaning back causes a loss of power goes slightly beyond the cited source.\"\n}",
+ "parsed": {
+  "correctness": 4,
+  "specificity": 4,
+  "actionability": 5,
+  "reason": "The feedback accurately identifies the measured fault and provides a clear, solo drill, though claiming that leaning back causes a loss of power goes slightly beyond the cited source."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 03 Nov 2026 08:48:22 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=12200",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 4,\n  \"specificity\": 4,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately identifies the measured fault and provides a clear, solo drill, though claiming that leaning back causes a loss of power goes slightly beyond the cited source.\"\n}",
+       "thought_signature": "EvMYCvAYAWkUfRM0UpaiS77rDJ1ipTRhUQw87HH52_ahmpVPdytsny-j6pTzufUJ-H-y6_BAVYNbnhCMmYFokC_ZSoL6tfLA9GYf7Xc4B0l94vvYVqUSFA-x4FsyxWmuWYegJvBxjzVGZuHdBhss2EXeVtwTqnHOOZ0JD0dtFaOfAYkpZYmR280zkvS66lyaMQK_rllU8C_sh4D0a9yIpoO6uZTwhZuJcaQmtt7uJCOxUvHpLNWvXIhTBGm6izGHPRtsdjVJMuqMGULZaVqDis45-aHtpS3kjo1volAc0KgUemWZbW3e3e_uG30iCa9ED-fbZp-TsnzeK8A9wJFihXFGEIyhVZhQxtY5ufcxsOk35s7E2OaJpnHQ2_3cY9Y3ap7nqlM4FgYVuq9aQDoc_s9i3bh2wM_VoOiThKJ8HzjHMp-wEnilBdb_QHLulazn5ZWL-fhGev2eph-JMycU4GeKA0nD3NsdbnKZoHQWYf2_VW_b0cdw0vZhzuPRZVprZgy8OR9yiCsTZypaVWnLQSZL0hG-LbnAd9zZngYBnuGr9G1MhGBqz_Ze0EEvCTbG8ZlSDgMuYzPc6qWhrO1mmyp4Sb1wBAJ11gurcvg0yX156w2_im_m1jCXdjZ0XIqdJPyTI4wAEOW2dYgTNWCJdTa2aa4lZ5LfEw26H2-Ej-7nq-MVID9-dMGB-BdLkwq6CXAMtUdDy46wFslUSfRkYMk5lBBBs8k0QgPSRgnJoAgotkRCknHq6W-5xSc4LEBpVoVEYR4TF3O5mj5jvsBhd2F_8SpuD1QXTZJisHyvHYHFWMu5UIU2SlSphakoxTwd2ONSEVbT0jjfLqDn5OmJ_LY4vQwmH7eKVgPlUSiwL3L5-0K39c2Q99xYQiXJFzIAe15f0tluGsvWLEl4G8CVtRGhURAebbD3wzWi9_YTeiNN3CTKMAdRh7Bt9r_XUkJyKKuZHpP38xEBHj_EhAUuz0eC8_tNqVAxpcJ0TKHyZDhjcBNVsENWt8ke2SoODv6jfI8JqfhJGCeEH_muDSLg-jsnIetKHugDFhJe_yqqiz_DgjIFCz7WY-cBlD8zpD2HWs2NBGJ0wLAYZGee5U42c5QIDOOIkqxUepLrcSdcpsSd792NY3MwUgU3VPEDrMT23lLqCw-3gulbw_bmfoqabT-cEaruevAZ0B2EaD-0b24jq7zkGQPMFL97qWy2fTORZdK4VfNBPLSti6Nvv4CsbBzhoB3ar47O9FVw7-4Az75LM9NpHn0Y0AsxJAANHmHl1uazUaDd7F_qKqZ6un30ClK5pDBOTbbZa-kx3KW4Q-BrHLbq9IQcCZEVygtU8taB2_4XA9pPUbueqFw398CNaULDOqKsQzTwODvHFNZ_JA8eDprlwRUb6gpRAa6Mdt6fXtgPUDBEWi_9Xd43SByAO7NN_Ayqi8cb9v0kX1yc7hDjlx3ICBFL553Zdk0kJChq7_M5J6vB3qC9X-AUQcH1jwHtNCF4RUQLK_PClYvndHOjiHo593zwR70N3TPBwUhN3-9cxvVnb7BRIF-HwCP7MAY3GlOT9bQhXKF86jZlSDgk7Ia2-Y8UxBlTTgKog4LCkjOVYCKLjTiLRXetHO0cj_tyVZstTFPWW-S_6f09ZimDxxBSYkBqo8I43AfHe1bv_hpJOFa4YcHfJ35G-dPR7_F18pX18nrVkKEBe8VtLIFIUT-gfEgRRttozG8xAnIRU9vIkQbichbYo_XrByBjgSpFeroR5DkK8p6CO2tz19s5S-HNf0ktrCWb63IXOSX1RSlcbTEJblGpWzZCtIqMfabNtIFSoJrcHFuvi1cIst1MZ2jSj8KzPIzMSssp47M7WjsVkKc9_UF1tXqv3XSIMWnhTm__OaC9ROSJ9V_8QdXCUaCswhvUBhN_PnZS4br0SrIjxIphwA2HqvIXls_jlce_GYOzi8eJuNN3bACmayChWjSeboivQDi0X1e_gESzWR-3NKOeE0EetRjDL5LiBkP04bhq2m8SVU4WiZUIb1vVBvbHsX3qa-P24ncykR2BNfNpF_aobxgOA1taMdvp8DWSc3fL_dkoWC5E3oasbvM437lGuFjYLIUnmLip5-IIl370U-KC96Kn8FVyjpP6aPlvSkp8tu6uTJ9VnC-kPlw_dj1wZRaL1F0BqK6jlnwbBUf4L-eQ3KWl_7MMplhiw5RqroyuI-sjLlcbm2j5e_zxzMAd9jwgM3bk09B6aCN_L0HtpSGR05M3Y8GFPJo6kdzeA9ulMMO3hSvFo7TgLJS29AxK2I9lpxpRgARezdt9UxUvz4Xk-tvW3Di4n-TQ_dq78P2Tza_yFmqx7cmGA9FUldDWildkei01hMhfXXw97LHXYb_IIH0T4hBH1kb3G1ULQ1sz5IWe8cYldfMTLJ1KpziZEUDKqdkTj4GlPSARou8X_D4szcQLrF8Li2Hkrb_X5q8gIIRPUgAMZv6xZIimbMsh98gmgN0bYnhWs9k6ELvxL6pxBHkXx_rk2Vk4_hrmqPRZHec7RNG6_zed-UrciDWD3vAo-fj7YZ4jvNSY6c8YBM3HI9DQtHytCZnwvhTQzo8ysoaKB5JmTAt1Jb-bvWoXKK6QCG-siP-pmI49SzBrBrLGz8UIzzbzJXPjhxmSY-5jRJV5QPTCrtCs4DR2NImYZj5_XdDw9yMVTLlDJAnpeJyY1AE889yk_zznDckW-mPfGL2XgtmL1buE50DXN-4EtDOaNjqxIAFpIob6WH7v9kMstroANfAuVVdf-zAwysvOBduxbRJzfyafje07SSjjnFypkUi23fgNAStglUYpoPL9K8YjBBQstKkHwSlMxdKf6AtPHhgMKsR4ZukALhb2Ch8p9O4wGUvoDHFuIfoFI7vmqv9IEzjKmNwK_nmzSrdWTfakS8oz9h6UZObK5BpLVld9XnsomyrqgbqvfHHu0pZuZj99FBt2w240qAeVYurVf6a_uGSPJQOydsCqOBoMk2V_RAr1Pw39Dr3GyfUQHuw6NfNk0lyjh6orfmt1yN_pJfTrQ2e6uX77xRs1JMBxKN8o-sqFy12iKss8bzkD0nh4KXgvAKvdqh4oCURFRX4Isc3gMfIRZFi6oH7eltDtUxOAF0OR_8eh8LCcNRE7TOm1m-IsSfqdLdVPrw_whrjsxUisp03IpLotq0YEEhJFBuWU_rFiJG9k-4kSvmbrXLBf_j8-vkvCA6G-VVJ3_k66L-fS_LFeGESzTq1o0Nn1soaOUH5w-Biggs9vAluu5A0YGlzjamzr9hC1xjpU_38GSl9L1_ukmLCI3NTjuW31oydxUw_DTec_JETujhV6UuayDWIug3JBaqELYucYFG_E55vLpmDCfRKpbV5uIxYRNeLJnQhapoZBvRLpfrjYF8vWz6FvQRyFZGfIuDKMO24rBEFbHeEC1VWidZ6z6ssCE4kNuAeMVlS164_cUsG2WH2MW7Vz5iRG8TsqILNPRe2AfXmNikC7-BdpS29atxSkVY1rUBXQxyBR-ZGbqCWppcYAJJ-hKD2H5T1-oE8BP6AX32GU8iRpEEHIqEZugtQqtW0G2ptvyEQjM81PfEEEulHIV63frZBLBXErfQ2Zqy24jZcx13EPfyOdUX2mpir1jZG5bp3TCQ73ao5hLU6qkXhWshrpr1zkpJKcmB__YlTDIA7ssALjKkJ3oHkUxHA-NLblMJnwOZoGMWecUbLv7nlYFysKilPqsHttjFKtA14NY8Tl6JkRtgmJ-hQAtmB8gC7XDVe8A51___oNTmdgo5CmThoelBpqd65M9L_2xFqqoLp6rSkgX1tv0dPyUvvCRSx7sn4uFtx1ccwr7A4eEZ9nzMZ3nO8-iT7ZBEseuTNSeDEI_9EQ7kzlbuCWrRvU43MNKttc0DunzcPcd42EMdgUzhO4Qdb9PA_iJlElwF7XXrnQO5hcMxq2hCChfurOkPwjRI_B9Jjj4NAtxI82mFXWMbRqE8brj1CzvvI_F7JvzBPbeXQX58jMmditskde7-t9e1lfsGAsBKXo67qTrUytgcJtS2hCH3eyOdQQrXp9RKiDl-l-DI9mCRO8bYmxmHBj2HTk8JqD4wlx7QdtB5xYkZCJL1H9OrG-m0vCgw-8sQOWTcU_ZZVM9tir5srI_C0Px64dnIp0O06ArgJ3gVy5v0ojj7Wsmj0Z3MkUf0RasRufH8rPYsFnPLEyx8UHZWfhDQOXVJJ6e54WEFVkMKvrLdwJRNH49t2Ezd1LyGXi7Q=="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "yp_pav3uItX7694P0LWm6AM",
+  "usage_metadata": {
+   "candidates_token_count": 67,
+   "prompt_token_count": 1093,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1093
+    }
+   ],
+   "thoughts_token_count": 781,
+   "total_token_count": 1941
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 4,
+   "specificity": 4,
+   "actionability": 5,
+   "reason": "The feedback accurately identifies the measured fault and provides a clear, solo drill, though claiming that leaning back causes a loss of power goes slightly beyond the cited source."
+  }
+ }
+}

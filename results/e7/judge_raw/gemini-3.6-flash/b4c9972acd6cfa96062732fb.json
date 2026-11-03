@@ -1,0 +1,101 @@
+{
+ "key": "b4c9972acd6cfa96062732fb",
+ "tag": "judge-v1 c02-F-LEAN-BACK-llm",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Leaning back at contact\",\n   \"feature\": \"trunk_lean_contact\",\n   \"value\": -19.79,\n   \"unit\": \"deg\",\n   \"fires_when\": \"below\",\n   \"threshold\": -10.0,\n   \"threshold_source\": \"heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 129.48,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 82.67,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -19.79,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": 0.14,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"no_comparable_norm\",\n    \"norm_ref\": null,\n    \"norm_mean\": null,\n    \"norm_sd\": null,\n    \"population\": null\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your trunk lean at contact was measured at -19.79 degrees, which means you were leaning back.\",\n  \"why_it_matters\": \"Leaning back makes it hard to keep your shot low and powerful.\",\n  \"cue\": \"Chest over the ball.\",\n  \"drill\": \"Practice striking while focusing on keeping your upper body tilted forward over the ball.\"\n },\n \"cited_sources\": []\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 3,\n  \"reason\": \"The feedback accurately reports the measured trunk lean value of -19.79 degrees, but the drill lacks a specific setup or clear practice structure.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 4,
+  "actionability": 3,
+  "reason": "The feedback accurately reports the measured trunk lean value of -19.79 degrees, but the drill lacks a specific setup or clear practice structure."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 03 Nov 2026 08:46:02 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=4790",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 3,\n  \"reason\": \"The feedback accurately reports the measured trunk lean value of -19.79 degrees, but the drill lacks a specific setup or clear practice structure.\"\n}",
+       "thought_signature": "EvYSCvMSAWkUfRPCOwdEkRfp8uyIirew8QNygC7vHDQyUBbFtfTKpkGGQeyNOg3TgjaG9UGFU-cSCFL_eU-UN7zuU3H9Ryh7rdFfyHqOaduOKt2HvsZv8gteEWeBPMongL6Qk_R7B4mZlcEqt1GmZr_q2XmhskpFLaLK5C902aIBAYuc9WUwUZBpSybyNSmArjaAqEyJdVVAP_q_scc3Bc1T26-N_b2QM900JO6iWcOepseK4O4FwEzS-r6O87N6-Cr0BhBmr8Z835eTwjj7eN4h7mIK2SIe02Spoo5fVGDueCJKYwhkkVRxDZ1RZTpHZIewS7k3Tsp0HaROUMXmenW7NM7SSShJ1-3N6uEvLN5QhIaePLjiyexVIWfUpn24xRJ3Er5_K7pZ3TXz4oVlA7_eGAZAmriy2eV1iBZNJm3JhMvITN0_P9-T2Dyea2rtvFnHsAlLcsmfmMm2-Frh3rBsOBiE0YQomWaWukmK3ysyp4iE6a3Vh6sR0AohVSgTT3JAnJA8XTCdxr9PRpt0OgkNkJxdKFxxo_IVJbjUUgQrrgRRrUzEYcy9gMHtiu_SBLVYfdxk4_Cyia2wh_3dszhTnBSORCufCaTrftU6ExjyHvzBZSY_4Z8Jyltgy44eatI4U49P-W3yXGKiKutmjGKSK_Jrk9gp5d2OcrHS15mIxxB4irL_CN8H_mDmusG9pRwdqPW9gldj2VRgMhMP9q5HbviAsPLys-VWTDHA_5dI8acNsQHk6UTikz3Ed0a3OF66t9SbBzzkP9Ze-cW4HsXpf5jsTs_KyDQLy2sBIzBUiVMz2Z0QovVTzdm2tXfXzzY_jdrSpTcwDOilmu85CAsk8FVApxWzlCCM2gxMf-nfjBWIJ1KIAhoTT9teOIJe0sJxcE3H3ahZt0xdbXpjA0ZZiVK_23JGf95RlxErb_iGS4thES1_-JJfzu32x9N0NnyJ0YlC5eS6MnPTMgAViX7XYRMKpAM2ZaDdNVEDbYLc5nNhr_Ab8CgTfveWPG5Zy9K4b3Q60k3n9GEdiUT1p22S6vUyTTLTDi85BjT5wDyp6bsplPlL0a1zYv3f8wJWtsiR1Eehx7HHQsHnEmF5EKg0x0Vc2IwgXtKa5CPQC_mczrhiTDlOkgFv00wvX-ZPTuWbvnku-A4AkZe7pgpBQhJ10B06ij97lMpdTS2IqXLC-Z6CWA9EAKX5gdGdcTERh76kJcKD_lOXWomz7YTSbPv-HEDsufOgq-xqmgdiGTiMoC5kuBoGlmu3c_Cxg-h_ds0WILRCDYmVdBPJedgp-i5bbpop1Du-XWJtu8ADa-Uhau4mHsFK0b8v_MTBMOP5EM_ERi2r1rybhIDmTjQXVOZUKldcOGSQj0zSydZL8D9xA-LQkKJ3RdjMnVOuRtwLbmo6ozv5Q4ft48jJByJGoIQ0JWcIg16evGMENmZfCZ586cm2oDyM0XmMK_1ibdM2uO7_0b8s44nVji6kRePTdKwj_RakelzcNLRyzlVSJNXIQ7YBeVeFImNNSsM4oftlUT7wa1ByYLOSqRWaFcsMpueNraBLJRcr0R8bmZ2hgfRVR-77cRg9mO0gpvaRlVEa4Z46p7B8mGbNH8QZwojPnx-pmMFpKZ9ikIOFK7W7zYiF7FDIIGb6as7W49pi8AEZee97UV_Fwjrm7vx_zjXJj1HkWiYfbC4MfbIjbbNOwSPW9WnZv0eRAZ5u1mO7czHQXx7sMTXFXQWy8KUMWW0aszA4jGrqRU-Dlqg3IxRe6X7260PnBNIyBYmB-jsMclbk7WKmxQIrknMM3m8cLIoJQ8nGkmKTzihKx-44KQJHXtjZlB_zkQenRAHrt454HDndd_SVlD07cGUQSgdDvv4AzAsgNlLO1ZEJ2tiNIPlg1cl0qgoQ8vOghWgi7TivRWGIi0HTKA02UDHNqzeyEWd8v9lLFZze9A_HspirszCP4I6XRepnxs1Ah7tui_LSpRYPODkd8Jh6HiGg5MhUe3rmnM_Qkkg6AwELS2XhjS2XXfNwoWU9kmVfbZMqgjLkdaTm7lvPQWjplc3qGHLE0W_LpMd7gtLHyBOHSkPRiOKRFYLCmXkRQX7GeaZ9A5l-tjKgRnzZdI1JCY8B4x2C190kRKmodKs86oWIXY3S_-c6rbz7RVBVEc_gEegxT9S-5M9DN9Q4FrKGJaIXYyJ1hGahTb8ISXpiXDsvXSsF8DAfaL2TbMhRLVsSMic7o4lF_ZNM9wE_nQ9dnp8g0cBPDC83EESJDy_rQxkXugQDASddGOS8ZWPUWKpCly8DOoLax7GF1E1mTLqFsJaYSHyUq7P8D_-7YB0z6sKxgTQOugrm71b3cEP87PFeYiOIJ2956AYL18cak1fKPZAG_E0PYcMBtlzv5iiaVlE-WSIuKXszjNWoJfk01FnnMhtULa3WKQn_CaWZIN26jxdHdetIN6aByt6IZOomp2jdLHp9WjM_FhBiUnJGaEAsAlHhRI9zTWtExmLKfHy8hWVv8sSCyGzSA-p67972MnY6kBfct1hXq7DGR00_2LCjGknmnjtgxm9gheXAnTUNnEmop9pd09YQv7a7Ii1EwpI_r8Ku2IaQA5QoCj355ZkAQQn-ed1puTcAzuWYOxyImInVKCZN42pf_qIYx3KbU9hk-qOIIOLdnQROk7nFSTDpYgO72vjxT8rjyyyz9aK14FAS900tI_U--vFBQ3gwFhOuT4qzDfU9Awu32gAu1NKWumi5-c_QcLB5aHEyizI9CxQB-8GhwtFBfMWh56j_12fDhWAtCYSp6kNE6aLn_qgy3ex2loAjCymjdTnv5E8l080ltHtAwyzyKOuQcdN0S5PUXQT6ZGGZTImrY0rb1bwXgrJqzyIkaBj07JxNH7wDF5P71MCq-s2PqvbNMlG8V1urTX3nE90jYE6n_BQLIBExwzPpGnTiZl4ZgHAGGIZW9wnUDHDrxAl_vwF9p3WJeyk7rWf6rHKc-S_SKRgF7xDAFIqIaY6ECQlLaJJFteQAJdzeDSK2xcLZYhVG98_XooD5iXqJLno1DaczYiVQ7oiDEhWTwfOwhT7hLtVuAz8XfWYtqgNObyMyhW_JBbgi0IatjKLXYrcyeqYSpdfbFh5P1GgwybRi1mMK6CSWl5J6KtreXr3zuMKl3px3x57iACANs7KV_5jGWkjqDkAr65Wjni8jSmlERxRhRAjTsdLStMD6X-MNi_WmcRs9HU9-XdtLHw=="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "Rp_paoPiItH8694PverE2QQ",
+  "usage_metadata": {
+   "candidates_token_count": 65,
+   "prompt_token_count": 1018,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1018
+    }
+   ],
+   "thoughts_token_count": 581,
+   "total_token_count": 1664
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 4,
+   "actionability": 3,
+   "reason": "The feedback accurately reports the measured trunk lean value of -19.79 degrees, but the drill lacks a specific setup or clear practice structure."
+  }
+ }
+}

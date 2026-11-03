@@ -26,7 +26,9 @@ evaluation are in its own `results/e*_summary.md`.
 | Impossible values (E8) | values beyond a sanity bound: v2 0 of 88; v1 6 of 78 | 26 clips |
 | Velocities (E8) | reported only when the real capture rate is known: right on 26 of 26 clips (v1 2 of 26) | 26 clips |
 | Camera-angle gate (E8) | refused 4 of 4 clips filmed from the wrong angle and 0 of 21 good ones (in-sample) | 25 clips |
-| LLM feedback | passed the deterministic validator first try on 15 of 15 | 15 clips with a fault |
+| Retrieval of coaching passages (E6) | filter + embeddings: Recall@3 0.56, MRR 0.75; the fault filter alone 0.46 / 0.61; embeddings alone 0.29 / 0.50 | 9 queries (relevance labelled by Claude) |
+| LLM feedback with retrieved passages | passed the deterministic validator first try on 14 of 15 | 15 clips with a fault |
+| Feedback quality (E7) | not rated yet (Aamir's 20 ratings) | – |
 | Labelling floor | not measured yet (the blind relabel hasn't been done) | – |
 
 ## Labelling repeatability (the floor)
@@ -112,9 +114,14 @@ tuning clip, so its recall is in-sample.
 
 - 22 clips accepted, 4 refused by the gate.
 - Knee at contact below the cited band (Scurr & Hall, ±1 SD, heuristic band) on 19 of 22: an open question (README, Limitations).
-- A fault rule fired on 15 of 22; LLM feedback passed the
-  validator first try on 15 of 15 (the validator checks numbers
-  and IDs, not meaning).
+- A fault rule fired on 15 of 22; LLM feedback (with
+  retrieved passages) passed the validator first try on 14 of 15
+  (the validator checks numbers and IDs, not meaning).
+
+## E6 and E7: retrieval and feedback quality
+
+- **E6:** 9 queries with a relevant chunk; 3 more have none (no approved source had a drill for those faults). Details: `results/e6_summary.md`.
+- **E7:** not rated yet (Aamir's 20 ratings). Details: `results/e7_summary.md`.
 
 ## Failure analysis
 

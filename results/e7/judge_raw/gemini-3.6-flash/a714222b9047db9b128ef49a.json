@@ -1,0 +1,101 @@
+{
+ "key": "a714222b9047db9b128ef49a",
+ "tag": "judge-v1 c02-F-LEAN-BACK-llm_rag",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Leaning back at contact\",\n   \"feature\": \"trunk_lean_contact\",\n   \"value\": -19.79,\n   \"unit\": \"deg\",\n   \"fires_when\": \"below\",\n   \"threshold\": -10.0,\n   \"threshold_source\": \"heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 129.48,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 82.67,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -19.79,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": 0.14,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"no_comparable_norm\",\n    \"norm_ref\": null,\n    \"norm_mean\": null,\n    \"norm_sd\": null,\n    \"population\": null\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your upper body leaned backward at the moment you made contact with the ball.\",\n  \"why_it_matters\": \"Leaning back makes it hard to keep your shots low and reduces your power and accuracy.\",\n  \"cue\": \"Keep your head and kicking knee over the ball.\",\n  \"drill\": \"Practice your shots by focusing on placing your non-kicking foot right next to the ball and keeping your upper body forward.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"K-12\",\n   \"label\": \"Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes\",\n   \"text\": \"To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back.\"\n  },\n  {\n   \"id\": \"K-09\",\n   \"label\": \"Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)\",\n   \"text\": \"Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball.\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 4,\n  \"reason\": \"The feedback accurately reflects the measured leaning back fault and cited sources, offering a clear cue and actionable drill tailored to fixing trunk lean.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 4,
+  "actionability": 4,
+  "reason": "The feedback accurately reflects the measured leaning back fault and cited sources, offering a clear cue and actionable drill tailored to fixing trunk lean."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 03 Nov 2026 08:45:52 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=6106",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 4,\n  \"reason\": \"The feedback accurately reflects the measured leaning back fault and cited sources, offering a clear cue and actionable drill tailored to fixing trunk lean.\"\n}",
+       "thought_signature": "Es4TCssTAWkUfRMGZszOwlzYmrS7jknNhPzqjMxzU2YJebfcIrtT0XUFFOf4MqI1F3WmfOEmIPF7rzDeHnV6WsujxMGO04ZUleuV1fgwoz_rGLb2k8K0pvXUhNux2xbayBnmN-AGs4nk7iDQPlVHJ_5F8U-i3MREahESCjplU60VqQnw9oE3tqMu8XpGqbB0gThP6xSYvdHlfaCbzGegLZ0pHm_RSojK-M5JjkSGoDI5VZ8ZH1xFaaMTWm4u9iz4QrAVjUNJqh4G5N2sKIIUrjtWo2wjJ1sl8NaaZhzy7ADQJ8PZxR1xM-CNMVjn33Jtb74Xnrofi6tMrjZHmw6B0heoWb3QtSyttp-SoZR2Qz631cGKxNUymSR1ZKy21P-DMUNviHpUvIXvw4qhGy_kl-PEVG5ZwbXaiJhv91LfRtKJTcCzaAR7Ivk0Y8k8deOcMxTda6u13SvmETavwsSrE0rQo3a3YRYsoYsO4XXVZKbb8dDdvECrv66nvdDvYYcs-BjM2UJV9HaZ5V4lOilI3bD_ORKVR-ks8zYHCPWRUAJDYjELTiaLSf94CF-ATn6r7Hvz3GWLmAYrjCmxdexgQQvauSXaRqxb3tXm5foAmN2pS4vzjw4tCPGRkNDq4mOYlKGOAEJCDhtH93yUg4UpDbl0h-mShYZtvSEHN4H5yXuyUHZfxL1phHsvijH4onmQ7BMDFWh9suFBZaK95JrisvzFVJ2q-1HNy87NikEHudm6wevMqiJ6razUsnM5egYuTXv2_AhFfzOkixa_UPZ9JZkoZLIirOBKDnN8pwpFLavUEdKtVHGa_Camj0XW7qJwvwUJxNg1m8-3RJkWSiQfpBBDrSkBeIxYkGx7n9xFD0rLLzCNuaYaWDUskcuofS9q7aFrgUs-u1b9UcGUgZgDwNcgCbtvhg9a3BIO34a1jEsn1DJD9YJddH5u7a10jovQiKQKwPotKijYULNAjPSiQdw_RFbdTSXkkjZ6ZH4hmDIWiI9ctYeBh6QFnsQnPEQdOVzwfYSfAb1UAXL12511IaB2ixtPaG8lc0ydESxTtSR7BFePS-HzA8d2LAiGh3CVZKIA3fTibXjoxnSj8fCwElbGxCHlrWzx9JBPbCXA0X-AbQZnvD1yt1aDClCjlIGxVZRqRdKzLVcWl_uERP3Mf3huql_evi0l05FX212d3zrkM3Q6vBTXPj2Rmc8zR4yfkQTA_t-rZZEtzvGHl21c95r2rxIJt6gR-kHICamI2kE-QNtTCI0BLWNPTD2mLYqvoSHcZen16lSEGG4FsPiZ_ZPu35eMFUAdltJVVPETde7CI-kRXWnD3fMoNe_11DEj2i4tppL5XX8cbnpUbzvrZCHdEoDOXTxiM1Bgi1LVbNs4EvGAwovotztiGuzVo6FLVcPTy9-Ho2B7oGa4vzHrScZmOjrD0vAxT_iKaiAZcqehMNE_YvQ3FClzZjqnc5XmJ5OKzlvvQn4bU0Mq9hsTsKF8kLEMddR8l2DLuPgh2c_QGRT0_ENfAkC_PTs-1nFScNUpKQ3eC1r0-pRFthmdDjbFaGEsfgEZaoyhESVxRqXjSDlIr0yDVhs_jd-_tTlxQe27llThtPykHSNftprxKL6RufivA4amkoEb4cmEWlGz2W_416G5Tm0AfzyffNTL0dW2aXWvZS9B-TeIC9RGsJxp2ycdc8RjFD4mANBC2x1gTlpm6MOgWaiA55PdZa1amRsQ7hjCfwTsQW51C67HdaXC9lwl7LOG1g-hfJ7SK5Pu6DAmUTBepDjLV0mbJxKh2HINcmeMczTbU_EAYkgmrFqJv58ToHAVCyNsBJts9B3h47OaR2abDpOZeFBsiBVnU9KZIpgVCroMIRhrwH33lS9VmeF2EHAubMcaEFIWwBMfVGtHgXaguLEdD0O97USRqz663RX5rTTr6LnOTy74BJRxkuiDFAPIy6s-SEcWK3MgXI3zJZ5XzJpsz0Ii_0ycKEVQB5JxhlS3M4AHMdzoherDZHGE0g1G3SKqrhTKfVMuGXJgrfr8NF1vpKp2k6bNXx0SPbht7nulDjvwDntTZsaX63QkmBAl_kEPNvDkIIjYsJ5WQ8vRst1I7j4V9j4HxcXZ_LBcI1E9eGqMjC5QTRRrRuNe1a7Xux__8RWmCdh7NIk5GIAE7Qbs1dxQPYga6pxvRjgDPGJi2cHi-rcLQrQjkca3Rp_KyrOeQSOlAOj9AN7S-Oarbrt8Bqsosmg-H6rfoUEVSu9Qqz9d9_0lIpOzwY5u4GleMHhPxBA8saEeyyH5RDw0awGiRiyxNyBSW3_Jd4IXayAmArSsG1tByfT23cEFOaDHpM3U9TKEORq1PycGs4rIfZZIH9ufkzkMwgR9AnBhX6IsmzFA4aUwOkw9Gb-N-2ixXCssYbv-tANl4h5zkoPmJ46dYMsx2GiVGmbdzqzYRS9Eza8t9oE3OIUL36LnBxlaUDO5cWck54ePnFfeu3CrL9OVNlhKGEecT2ctm1AMH6AarrGmrNPsx-tMuXBToeESvliZToKRUyvlcaUXmOoG6hEJ813bRYW2hVXLF78uAdSPl5syr3fLxcR5uRPx4FFolM0wdeHSY9btNdJM8XmCYi8IB5i0tzn418LySonk-1OCMwBMAhgjKNofImv0A2qTRRbaipDlNlDuop9UjqYYfP7BKXlWV16Z3GJYJFN9H2O6t6gc91wUjlBW6rt21yi-w01croB_ofQbl0xt4dNnuhzdA4vX2K-cQGvXAwI4hicyh5zl1bKLQ08OECkrukfBBM2WcQbLIVjlQDwiPSA5_LYnVtnLF4ZeqEaC4tnmpy7IdiPDPT5Br8DUaa6XlK7YAeRRIia55qrCqmPLtA6U2cgmqTYGmAqK-UeqHPTmLcXwYIFGDQACF1u85YQrEu5EyLhYgLGVc2MZFPg27BE02WNeV6LJNqJV3DavE-LSL451dQwtItzacKm3C3fRqUueEfv4zUl1S-LjsQWxXZs2F6I-nmscKzADH2YhFrzw_zRbhykU96KeWqSH0jpjgYrZcLakZ0pFUqagJsPzCYTspXy-_4DJthjqrVMOmoSnAJbgX2hjNu-MFz5neR6fnAceiHK0_MA9097YRnzIn3tQBPenPt24vlpedbhiCVzuWjbUX_JRwuDDF4ISR9cXNaAN9CKZ6OhyHZAUo4h2FsvSl4qeRL1yULuzDi4KlEjjpZ87qjjvudb2B9a5c_RQRHxfAO0tv2X8hQY71f_N1hJVNDWlINo7QNUYiWHzbT1lhf1ZgGrcOuC2hImNoOXiPeW-zysVPnTCecvAeIsCnJ6xWTyqwbQGjq47aQ1QTQAOTfsqFEiwDHg1QVo="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "Op_parrhKva5694PquqqoQc",
+  "usage_metadata": {
+   "candidates_token_count": 61,
+   "prompt_token_count": 1223,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1223
+    }
+   ],
+   "thoughts_token_count": 648,
+   "total_token_count": 1932
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 4,
+   "actionability": 4,
+   "reason": "The feedback accurately reflects the measured leaning back fault and cited sources, offering a clear cue and actionable drill tailored to fixing trunk lean."
+  }
+ }
+}

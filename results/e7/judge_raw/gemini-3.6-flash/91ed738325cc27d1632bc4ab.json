@@ -1,0 +1,101 @@
+{
+ "key": "91ed738325cc27d1632bc4ab",
+ "tag": "judge-v1 c07-F-SHALLOW-BACKSWING-template",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Shallow knee bend in the backswing\",\n   \"feature\": \"max_knee_flexion_backswing\",\n   \"value\": 98.04,\n   \"unit\": \"deg\",\n   \"fires_when\": \"above\",\n   \"threshold\": 89.61,\n   \"threshold_source\": \"Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 132.59,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 98.04,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -11.6,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": -0.32,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"simultaneous\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"above_norm\",\n    \"norm_ref\": \"N-032\",\n    \"norm_mean\": 77.29,\n    \"norm_sd\": 6.16,\n    \"population\": \"elite, adults, mixed\"\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"At its most bent in the backswing, your kicking knee still made a 98 deg angle between thigh and shin; the studied players bent it further.\",\n  \"why_it_matters\": \"A deeper knee bend stretches the thigh muscles before they straighten the leg, and kicks that use this stretch are faster (Kellis & Katis 2007).\",\n  \"cue\": \"Let your heel swing up towards your backside before you swing through.\",\n  \"drill\": \"Standing leg swings holding a wall: bring the heel high behind you, then swing through slowly, feeling the knee fold and unfold.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"N-032\",\n   \"label\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1\",\n   \"text\": \"kicking_knee_max_flexion: 102.71 \u00b1 6.16 deg (elite, n = 26). Paper's words: \\\"Swing KF 102.71 \u00b1 6.16 77.04 \u00b1 12.63 437.11 \u00b1 108.87\\\"\"\n  },\n  {\n   \"id\": \"kellis_katis_2007\",\n   \"label\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review\",\n   \"text\": \"Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987).\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 5,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reports the measured 98\u00b0 angle alongside the cited literature and provides a highly specific, actionable cue and solo drill for the shallow backswing knee bend.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 5,
+  "actionability": 5,
+  "reason": "The feedback accurately reports the measured 98\u00b0 angle alongside the cited literature and provides a highly specific, actionable cue and solo drill for the shallow backswing knee bend."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Tue, 03 Nov 2026 08:49:15 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=5270",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 5,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reports the measured 98\u00b0 angle alongside the cited literature and provides a highly specific, actionable cue and solo drill for the shallow backswing knee bend.\"\n}",
+       "thought_signature": "Eu0TCuoTAWkUfRO83RTV1YEo9iHjA1zdo9RfPGxuitPNKyHH6JHuvBBPBizdC_aNqpSEHaGeoC80Vckgm1mAlqBRyWgxH10Urq69i176XsYVoRi1LKNWHftHHFTH9Z50FfqMosu3kZ5Ie5A5kD02Awxw5g2GY8ZtXay7VnqkyUOOAGCx1ryFupcQFDCvCrNwEJbHRFTjd1EFp72olrM228XvPtfmbWVaLX34hHkmuLlo8doe78GLfHEGlJ4W7QA5RV8lAQgc8nr6qKSn22cMuT0MVNWZ31qToEcf7xnmJncrhsyPkE9UIw39xk9eF3hIjmVSZe4EnYWKT1OzpK482zwB2Cn4Y9UhTiWJaQashL9yAMey7HS1VC_qFcQJ6usLHpdfc5QfyLkLMc6mcZx-DyoFFfhZ2vNnW2l3NCMvrlOrn1iIxUpf-65bx4vf2jbxHieyHQiU6x1Qb0Clb4y3th42qiQXpjb423Kb7-0x2-qb-_IYv5Aw8QNjB8tFStZtYRYKqCvjobaJSBYdJH-F8a84n1Ob2SF_Xw_oDK5vjcN6jqX3-Qfq1hIbh4QpDuPruGca4ZQk-pFZEbvhifOdqeDTk8cFCFb6r2Lifn7LlMqmBYbheWqI5UJAB8mTs0tzutePIuFCmKwzU55JXpxhPyHlh8-5RRX9C85-X6o691OrtZzQDIS6t7LjkVkSeSMRkj0cb5L9SabPhqOYKv8KTn5IUK4XxRv4PyH9uDR8lEfA3oUkjEBy50WNJcZLczAo1RALqvpQqp26dmUA1Kspwof2kZIT9SLz_QB_uXpBXTBe0g-WuQnYaynAicVQQCMWRVKWlTZg199ijT1eq7aWzUvtTupXvMvGHnSz-LxoHzBnBDBsT-XOg-PyUbdXhc87MAveHr6sThcnR2WZXVeMqcMCFM5A8_lX2ALDsjzVYcPqXhyiL7isl_7Jr2xsT1_-VcVe9SSfBEsdNSYiSEPyzP2MZ0vDnDa8dx5FcojlPilI6WpiLpNdT_BfZD5ogf51f2u_os4UU57V0pt4iQQCCIrtlzyxeDcAECWfuevd_hX1d2TZQWWbhGhpX1FFVgxF8i23zML9xQU0vyZsJ3kR5RrMPisM8THf2Av56Gxd_M2gne5_jrPIheiIDsQGuEjM2GvOkW9PLu9UdSfd7H1qxxRElAghAYYM-TvJaru105jbG5fapncHTV-GzxSSfgcmP9rRoxDPFWQGaGyG9EWZt_BxNQeHsKP4_j36L_8M-47I4-F8Wd7j-yw-6yE_R-SHQV7_JIslySrEu5csvWKCmEMGL3NOOrR6QUol03hd5loEf9sRvozoX5NvS1kzhhLKPCke45nJHJ2aPp67wIJY-eteG122PgDeFyPczsAegCFXEiU7lRPw_aiVxwU2xnCND-qJisrH4QeY5W_AkWc1oY-D6cl0KFBorqB2A1pX4kPs9YAZacryxOiv7JwVelTsGj4jQ3IWoNSAC6OxbxiAzkKbTOt84dsy6DvkbH3RiHoa-yDVCGZVVfr_kzFbPnTEuNlI_MgaUxGS5N7_CYl-GiAtjmpHNIRgr958oEJR7WaDpIUQTIw4_0WHXIWXil1tYtyPQ_gyfGgD5dfcG0ELF9G_k5McX_qW-kDDtFF8T5jBA555cS-oLP-5Y248WN7ehsGhPO3pmydOPaqbDgljfDsiPMgreG9PtZA5xxg4JAAF_Ejt5SAbKMh0e394t8tOtlE46tK7jXgphhOlyYJhJglka_RTMSMLXYpUYVmJTK7lB5jGcKIfYMUbtHAPXqxxGWHtmRdknrBJX9pxQqAp9Av4ujShIwJhZGivlboeEFDY9X2SLEECWPFRQXHyqPTE18Epgzo3vpJtIRfbL5OKonMHuUgcPC_LCiA3IigNvYpwVkTyR4QtXK2NQ8Somy25D_f5kkY_n7PL_WcVYSUOtjhG3_hJoRI5mNhHCgBb-kjgYPBiRwtTGvz03M1qlC7G9HqLhKDX2sdB5Ja97mhTR7T1PLGoZZK-8JRDh0q45eBfG_RbgxG5unbXmvU6GdUg49CX_6pysnxFTFyTqMWg9iwkEDHssGmfDujmlqbkXadRavk8YuBA8FSqg59xWWa6aLD-pNKq-gd-oSRSWC1AHdfYEjs3QSMGXiVrzuhxif15CXTOV-o1xRc19XHDPqrv4MpvJyG691Ew6R4dQ1peYoEvKyrV80QaqTd4QNsFauztFFlFa8lGaZGt3y9JfQWE34koCzlSMqArj9NT1VHoG84Wccofwfs-j6nQmC6FUkgp3WPBhpv13BAu7XqaEwfG512Z6lXJAWve6bbir-z8_BF3HVvXRSINA4sTjEVblwP7yiuRaf0Hyv095NctgS5vmpgi9mEpvDQ4b9X1QpVIBhfPbYNsRamupavmNJNk1JtbFQdJhoGacf3X2YHQhv1JLEujrTcUkOw7wzT-3K3T01g5Vr6o2tA77V93UQUiRHEZSkgYypY7c0oZDpgWU_kT4BO8fiBdcCrtWK4ifNGDdX-4J8S9EvW3KGJe_G5yVspxF6sdCbPsSi2M5-YVA_g4wb-j0p6F-UKUZAOeJgbx5y8jUEgPomzOTh45TxLdgSO2mZNjKOZtwoRdSyEw4E0u9jUV9_axLxGSAtCZfMYcH9D0kd3VgdzkNSZuodG65jhTbjAbgydneDr8w5fYAouzCKpUPvavOUhSyHr706vnN_fnSLs1F7arIjNEfl6HsPKodibRFqnx6i0xjfvjh5V6Fi0zUbDVRC1qvHSGIcHz6C2rS_u7ItJIrujPw0fbO9p0mqOks5UupVPMPQPRovxaUP9kpSg2SOWc7ot_SH9PSEMtUjP7QCA2BnozyRshxlqhcWCJPNJY7a9g9lGbZQZnipT_uruzEq-6Q-kgzYr2nr1HxaRmdCLmjqJEy7sWYPeba8a61aiP6RF3XXymwivbVILy75SK126DhEtI2uQBFNXEhCA0tto389Bp_w298sLtoO859M2P3O83TgrJ_CGUahFLWJ37HubxgqXDW6EZ7EBWf0fRyJS_qsNdD8XCT9iQnsxeClPrgwZ_EpUOwagzrZI71XDha5jZPPjB-3PSxnUeJfB7bCS784Q7Xf5SMzJYgT8D2cCiwbW7XHW-DhnElM415xcmpSnoXSubRMUz3cEoED1Y9X-1UE3XQMB-4NiTjV8_SBBIPplodYymPrBfpLWKbMVDcIh5Nn7lUOwcOj4HVe6JRFhKc7XiZldS2AGc69L757XEe9WHWkitJqO0o8nQ_yTeoUyQJitfq-bFncCRJ8Ar8IvZlxBtDuKIeLrT72J22m9kWgMLm7gI1YufgGFoLtmIs7gR7r9QZ862VZkUm_diCvl27mwdqEymNcrDUXeFpLw0sAWw46LQn6LV"
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "B6Dpar-oCvbN694PtNLXuAI",
+  "usage_metadata": {
+   "candidates_token_count": 69,
+   "prompt_token_count": 1404,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1404
+    }
+   ],
+   "thoughts_token_count": 679,
+   "total_token_count": 2152
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 5,
+   "actionability": 5,
+   "reason": "The feedback accurately reports the measured 98\u00b0 angle alongside the cited literature and provides a highly specific, actionable cue and solo drill for the shallow backswing knee bend."
+  }
+ }
+}
