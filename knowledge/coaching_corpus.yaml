@@ -1,0 +1,636 @@
+# The coaching corpus for retrieval (Phase 8, E6; handoff D14). Each chunk is a verbatim
+# excerpt from a source Aamir approved (DEC-037). tests/test_corpus.py checks every chunk
+# against the downloaded source text when it is present (tools/coaching_sources.py).
+#
+# Licences: the open-access and CC sources are quoted freely, with attribution. Excerpts
+# from the copyrighted free-to-read sources (Special Olympics, The FA) are at most 60 words
+# each and carry their URL; the full text is never committed (handoff risk table).
+#
+# Tags (D14), written by Claude from what each passage is about, not from any query:
+#   faults:    fault rules (knowledge/faults.yaml) whose aspect of technique the passage
+#              addresses: trunk position at contact (F-LEAN-BACK), knee bend in the backswing
+#              (F-SHALLOW-BACKSWING), standing-foot placement (F-PLANT-FAR-BEHIND), the
+#              order of thigh and shank speed (F-REVERSED-SEQUENCE). Empty = none of them.
+#   kick_type: instep (driven/laces kick), general (any kick), other (a different kick).
+#   level:     any, or the population the passage is about.
+# The kind of help a passage gives (why / cue / drill) is deliberately not a tag: E6 asks
+# whether embeddings can find it inside a fault's chunks.
+
+sources:
+  sonc_shooting_basics:
+    cite: "Special Olympics North Carolina, Soccer Shooting Basics (2025)"
+    url: https://sonc.org/wp-content/uploads/2025/06/Soccer-Shooting-Basics.pdf
+    licence: "© Special Olympics North Carolina; short excerpts only"
+  so_coaching_guide_2021:
+    cite: "Special Olympics, Football Coaching Guide (2021)"
+    url: https://media.specialolympics.org/resources/sports-essentials/coaching-guides/Sports-Essentials-Football-Coaching-Guide-2021.pdf
+    licence: "© Special Olympics; short excerpts only"
+  shan_zhang_2011:
+    cite: "Shan & Zhang (2011), BMC Sports Sci Med Rehabil 3:23, a review"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3224572/
+    licence: CC BY
+  kellis_katis_2007:
+    cite: "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3786235/
+    licence: open access
+  kapidzic_2014:
+    cite: "Kapidžić, Huremović & Biberovic (2014), J Hum Kinet 42:81-90"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC4234773/
+    licence: CC BY
+  xu_2025:
+    cite: "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545"
+    url: https://doi.org/10.3389/fspor.2025.1605545
+    licence: CC BY
+  scurr_hall_2009:
+    cite: "Scurr & Hall (2009), J Sports Sci Med 8(2):230-234"
+    url: https://www.jssm.org/08-2-230.p_d_f
+    licence: open access
+  plos_penalty_focus_2019:
+    cite: "Penalty-kick attentional focus and autonomy study (2019), PLoS ONE, doi:10.1371/journal.pone.0213487"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6756529/
+    licence: CC BY
+  wikipedia_shooting:
+    cite: "Wikipedia, Shooting (association football), revision 1357922406 (2026-06-05)"
+    url: https://en.wikipedia.org/w/index.php?title=Shooting_(association_football)&oldid=1357922406
+    licence: CC BY-SA 4.0
+  fa_finishing_2022:
+    cite: "The FA, England Football Learning: Different finishing techniques in football (2022)"
+    url: https://learn.englandfootball.com/articles/resources/2022/Different-finishing-techniques-in-football
+    licence: "© The FA; short excerpts only"
+
+chunks:
+  # -- Special Olympics North Carolina: teaching points, tips, faults & fixes --------------
+  - id: K-01
+    source: sonc_shooting_basics
+    where: "p. 1, Teaching Shooting, point 1"
+    text: >-
+      When shooting, approach the ball slightly from the side, not straight on. This allows
+      the foot to make a more natural and effective strike on the ball.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-02
+    source: sonc_shooting_basics
+    where: "p. 1, Teaching Shooting, points 2-3"
+    text: >-
+      Place the non-kicking foot at the side of the ball. 3. Swing the kicking foot backward
+      with a bent knee.
+    faults: [F-PLANT-FAR-BEHIND, F-SHALLOW-BACKSWING]
+    kick_type: instep
+    level: any
+  - id: K-03
+    source: sonc_shooting_basics
+    where: "p. 1, Teaching Shooting, points 4-5"
+    text: >-
+      Keep your eye on the ball and head still. 5. Swing the kicking foot forward with knee
+      pointing down.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-04
+    source: sonc_shooting_basics
+    where: "p. 1, Teaching Shooting, point 6"
+    text: >-
+      Kicking foot follows the ball as the knee straightens. Following through with the
+      kicking leg guides the ball into the corner of the net, the direction the foot and leg
+      are pointed.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-05
+    source: sonc_shooting_basics
+    where: "p. 1, Coaching Tips"
+    text: >-
+      It is harder for a goalkeeper to save a low shot. When a ball is in the air, the
+      goalkeeper can pick up the flight of the ball.
+    faults: []
+    kick_type: general
+    level: any
+  - id: K-06
+    source: sonc_shooting_basics
+    where: "p. 1, Coaching Tips"
+    text: >-
+      When shooting, accuracy is more important than power. To shoot low, it is effective to
+      hit the ball with the laces of the shoe.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-07
+    source: sonc_shooting_basics
+    where: "p. 1, Coaching Tips and Key Words"
+    text: >-
+      For good accuracy and power, keep the head down, and, with a firmly locked ankle,
+      strike the ball with the instep.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-08
+    source: sonc_shooting_basics
+    where: "p. 2, Shooting Faults & Fixes, row 1"
+    text: >-
+      Ball has a back spin when shot, or goes high or wide. Encourage player to strike the
+      middle of the ball. Listen for the boom when ball is struck properly.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-09
+    source: sonc_shooting_basics
+    where: "p. 2, Shooting Faults & Fixes, row 2 (error and correction)"
+    text: >-
+      Player cannot get power or accuracy when shooting. 1. Make sure player plants
+      non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball.
+      Kick through the ball.
+    faults: [F-PLANT-FAR-BEHIND, F-LEAN-BACK]
+    kick_type: instep
+    level: any
+  - id: K-10
+    source: sonc_shooting_basics
+    where: "p. 2, Shooting Faults & Fixes, row 2 (drill)"
+    text: >-
+      1. Have player stand with non-kicking foot next to the ball. 2. Phantom kick the ball
+      with kicking foot.
+    faults: [F-PLANT-FAR-BEHIND]
+    kick_type: instep
+    level: any
+  - id: K-11
+    source: sonc_shooting_basics
+    where: "p. 1, Coaching Tips"
+    text: >-
+      Always aim for the far post when shooting at an angle. This increases the chance of a
+      secondary opportunity.
+    faults: []
+    kick_type: general
+    level: any
+
+  # -- Special Olympics Football Coaching Guide 2021 ---------------------------------------
+  - id: K-12
+    source: so_coaching_guide_2021
+    where: "p. 75, Passing, Notes"
+    text: >-
+      To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over
+      the ball. 2. Do not lean back.
+    faults: [F-LEAN-BACK]
+    kick_type: general
+    level: any
+  - id: K-13
+    source: so_coaching_guide_2021
+    where: "p. 75, Passing, Notes"
+    text: >-
+      To make the ball go up in the air: 1. Lean back slightly. 2. Meet the ball under the
+      centre point, using your first three toes. 3. Follow through with your kicking leg in
+      an upwards direction.
+    faults: [F-LEAN-BACK]
+    kick_type: other
+    level: any
+  - id: K-14
+    source: so_coaching_guide_2021
+    where: "p. 74, Passing Coaching Points 2"
+    text: >-
+      Stepping into the movement, place standing (non-kicking) foot beside the ball.
+    faults: [F-PLANT-FAR-BEHIND]
+    kick_type: other
+    level: any
+  - id: K-15
+    source: so_coaching_guide_2021
+    where: "p. 86, Shooting Coaching Points 1-2"
+    text: >-
+      Stepping into the movement, place your standing (non-kicking) foot beside the ball. 2.
+      Lock the ankle of your kicking foot and, using the laces or instep section of the foot,
+      strike the centre section of the ball.
+    faults: [F-PLANT-FAR-BEHIND]
+    kick_type: instep
+    level: any
+  - id: K-16
+    source: so_coaching_guide_2021
+    where: "p. 86, Shooting Coaching Points 2a"
+    text: >-
+      Backlift with your kicking leg before kicking the ball and following through after
+      kicking the ball will generate greater power in your shot.
+    faults: [F-SHALLOW-BACKSWING]
+    kick_type: instep
+    level: any
+  - id: K-17
+    source: so_coaching_guide_2021
+    where: "p. 86, Shooting, Notes"
+    text: >-
+      Shooting is not just something for forwards/attacking players. It is not uncommon for
+      defenders to shoot during a match so don't exclude them when it comes to shooting
+      practice.
+    faults: []
+    kick_type: general
+    level: any
+
+  # -- Shan & Zhang 2011 (review) ----------------------------------------------------------
+  - id: K-18
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 3"
+    text: >-
+      For performing an instep kick (last step of the kick), one should place the supporting
+      foot at the side, and slightly behind, the ball. The kicking leg is first taken
+      backwards swing with flexed knee.
+    faults: [F-PLANT-FAR-BEHIND, F-SHALLOW-BACKSWING]
+    kick_type: instep
+    level: any
+  - id: K-19
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 3"
+    text: >-
+      Then, in the following forward swing, the kicking leg should be carried out in a
+      whip-like manner, i.e. forward rotation (both acceleration, and then, deceleration)
+      should begin with the hip, followed by the rotations of knee and ankle. Such a timely
+      control of the kicking leg is vital for the quality of instep kick.
+    faults: [F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-20
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 3"
+    text: >-
+      Plagenhoef determined that, if the thigh quickly slowed down during the forward swing,
+      the subsequent acceleration of the lower leg required less muscle power.
+    faults: [F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-21
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 4"
+    text: >-
+      It is apparent from the figure that shortly before the ball contact, the athlete slowed
+      down the thigh while the speeds of ankle and toe increased dramatically, reaching their
+      maxima at about 0.01 seconds before ball contact. Kollath suggested that such a control
+      pattern (whip-like movement of the kicking leg) was auspicious for the momentum
+      transfer from thigh to tibia, foot onto the ball.
+    faults: [F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: skilled
+  - id: K-22
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 5"
+    text: >-
+      Their study made it clear that the path of the kicking foot was like S-curve to the
+      ball, not as it was often assumed-a straight line (Figure 3). The authors concluded that
+      approaching a ball with certain angle would benefit hip rotation, which was important
+      for the lateral foot movement during a kick.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-23
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 7"
+    text: >-
+      While the ball is hit correctly by professionals (dorsal arch area of the foot), the
+      amateurs or, sometimes, advanced players meet the ball more with the front part of the
+      foot. Such kicks lead often to an injury caused by rapid over-extension of the foot and
+      result also in a reduced ball speed.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-24
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 7"
+    text: >-
+      It is recommended that training should begin with a slow leg swing, concentrating on
+      kick accuracy. Only when there is a high degree of accuracy achieved, training can
+      forward with an increased swing leg motion.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-25
+    source: shan_zhang_2011
+    where: "2D Kinematics Analysis, para. 8"
+    text: >-
+      45-meter kicks have greater movement amplitude at the hip as well as the last step
+      length than those of 25-meter kicks. However, there is no differences existed in knee
+      extension between both kicks.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-26
+    source: shan_zhang_2011
+    where: "3D Analysis, para. 2"
+    text: >-
+      The formation of the dynamic tension arc involved: 1) kick-side hip over-extension and
+      knee flexion, 2) trunk twist towards non-kick-side, and 3) non-kick-side shoulder
+      extension and abduction (Figure 4, left). The release of the arc consisted of: 1) quasi
+      whip-like control sequence of the kicking leg, and 2) upper trunk flexion and twist
+      towards kick-side, and 3) the non-kick-side shoulder flexion and adduction during kick
+      (Figure 4, right).
+    faults: [F-SHALLOW-BACKSWING, F-REVERSED-SEQUENCE, F-LEAN-BACK]
+    kick_type: instep
+    level: any
+  - id: K-27
+    source: shan_zhang_2011
+    where: "3D Analysis, para. 2"
+    text: >-
+      Further, by comparing kicking characteristics of advanced players with that of novices,
+      the researchers confirmed that the tension-arc created a better condition for
+      generating an explosive muscle contraction through muscle pre-lengthening and made the
+      kick more powerful.
+    faults: [F-SHALLOW-BACKSWING]
+    kick_type: instep
+    level: any
+  - id: K-28
+    source: shan_zhang_2011
+    where: "3D Analysis, para. 4"
+    text: >-
+      Skilled players utilized more trunk twist and arm extension as well as abduction on the
+      non-kick-side during ball contact phase. Such upper body control was hardly noticeable
+      in novice subjects.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-29
+    source: shan_zhang_2011
+    where: "3D Analysis, para. 4"
+    text: >-
+      Skilled subjects demonstrated significantly greater range of motion in both the hip and
+      the knee joints, leading to higher velocity of kick foot prior to ball contact. On the
+      contrary, novice kicker used the knee as primary source of inertia for increasing kick
+      foot velocity.
+    faults: [F-SHALLOW-BACKSWING, F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-30
+    source: shan_zhang_2011
+    where: "Muscle activity studies, para. 3"
+    text: >-
+      Whip-like movement is an optimized control state, resulting from years' training. As
+      such, the higher an athlete's skill is (e.g. the German national player in Kollath's
+      study), the more obvious the phenomenon is.
+    faults: [F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-31
+    source: shan_zhang_2011
+    where: "Gender Influence & Injury Risk, finding 1"
+    text: >-
+      after a powerful kick, males naturally follow through with a jump in order to dissipate
+      residual leg momentum while females avoid this airborne phase; instead they counteract
+      the momentum with upper body flexions
+    faults: []
+    kick_type: instep
+    level: any
+
+  # -- Kellis & Katis 2007 (review) --------------------------------------------------------
+  - id: K-32
+    source: kellis_katis_2007
+    where: "p. 154"
+    text: >-
+      The back swing motion of the kicking leg is completed just after ground contact with
+      the hip extended and the knee flexed (Levanon and Dapena, 1998). Forward motion is
+      initiated by rotating the pelvis around the supporting leg and by bringing the thigh of
+      the kicking leg forwards while the knee continues to flex (Weineck, 1997).
+    faults: [F-SHALLOW-BACKSWING, F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-33
+    source: kellis_katis_2007
+    where: "p. 155"
+    text: >-
+      The majority of studies on soccer kick biomechanics have identified the importance of
+      proximal-to-distal sequence of segmental angular velocities for kick performance
+      (Dorge et al., 2002; Dorge et al., 1999; Huang et al., 1982; Levanon and Dapena, 1998;
+      Nunome et al., 2002).
+    faults: [F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-34
+    source: kellis_katis_2007
+    where: "p. 155"
+    text: >-
+      As the knee starts to extend, the angular velocity of the thigh declines and the shank
+      velocity increases linearly until ball impact reaching values of 1891 deg·s -1 (Dorge et
+      al., 1999). At ball impact, the thigh angular velocity is almost zero while the shank
+      and the foot reach peak angular velocity and zero acceleration (Huang et al., 1982).
+    faults: [F-REVERSED-SEQUENCE]
+    kick_type: instep
+    level: any
+  - id: K-35
+    source: kellis_katis_2007
+    where: "p. 158"
+    text: >-
+      This movement is accompanied by a stretch of the knee extensor musculature during
+      backswing followed by immediate shortening during forward shank movement. It has been
+      shown that kicking speed is significantly higher when the knee extensor musculature is
+      stretched and then shorten compared with kicks involving only concentric actions (Bober
+      et al., 1987).
+    faults: [F-SHALLOW-BACKSWING]
+    kick_type: instep
+    level: any
+  - id: K-36
+    source: kellis_katis_2007
+    where: "p. 161"
+    text: >-
+      Kicking from an angled approach up to 45º may increase ball speed, although this
+      increase may not be statistically significant (Isokawa and Lees, 1988). Further,
+      kicking with running approach demonstrates higher ball speed values compared with
+      static approach kicks (Opavsky, 1988).
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-37
+    source: kellis_katis_2007
+    where: "p. 161"
+    text: >-
+      However, practice shows that soccer players prefer a multi-step approach, most often 2
+      or 3 steps prior to the main kicking action.
+    faults: []
+    kick_type: general
+    level: any
+  - id: K-38
+    source: kellis_katis_2007
+    where: "p. 162"
+    text: >-
+      Another important aspect of kicking success is the placement of the support foot behind
+      and beside the ball. There is no general consensus regarding the placement of ball
+      beside the foot. It has been suggested that the foot should land 5-10 cm behind and 5 –
+      28 cm beside the ball (Hay, 1993). However, this information has not been confirmed
+      experimentally.
+    faults: [F-PLANT-FAR-BEHIND]
+    kick_type: instep
+    level: any
+
+  # -- Kapidžić 2014, Xu 2025, Scurr & Hall 2009 -------------------------------------------
+  - id: K-39
+    source: kapidzic_2014
+    where: "Discussion, final paragraph"
+    text: >-
+      This study suggests that there are two factors that contribute to increased speed of
+      the ball in an instep kick in soccer, i.e. achieving a high speed of the foot, and
+      positioning the support leg as close to the center of the ball as possible what allows
+      the ball to be kicked with a large surface area of the foot that is close to the center
+      of the foot.
+    faults: [F-PLANT-FAR-BEHIND]
+    kick_type: instep
+    level: youth
+  - id: K-40
+    source: kapidzic_2014
+    where: "Introduction, para. 3"
+    text: >-
+      When using their preferred leg to perform an instep kick, soccer players practise a
+      straighter approach to the ball, place their standing foot closer to the ball, and kick
+      the ball with greater pelvic tilt and greater knee extension of the kicking leg.
+      Variations in the placement of the support leg impact the speed of the ball.
+    faults: [F-PLANT-FAR-BEHIND]
+    kick_type: instep
+    level: any
+  - id: K-41
+    source: xu_2025
+    where: "p. 7, Discussion"
+    text: >-
+      This study found that soccer players with a faster extension velocity of the swinging
+      knee tend to achieve a longer kicking distance.
+    faults: []
+    kick_type: instep
+    level: skilled
+  - id: K-42
+    source: xu_2025
+    where: "p. 7, Discussion"
+    text: >-
+      Specifically, it is essential to enhance lower limb stability, enabling greater knee
+      flexion angles during ground contact in the approach phase while maintaining safe and
+      efficient absorption of ground reaction forces. Furthermore, the role of knee extension
+      during both the push-off phase of the approach and the swing-kick motion highlights the
+      importance of incorporating knee extension-focused exercises into explosive strength
+      training.
+    faults: []
+    kick_type: instep
+    level: skilled
+  - id: K-43
+    source: scurr_hall_2009
+    where: "p. 233, Discussion"
+    text: >-
+      The data for pelvic rotation also support Lees and Nolan (1998) description of movement
+      that an angled approach of 45º opens the hips before contact, allowing the pelvis to
+      move through a greater range of motion throughout the kick. Greater pelvic range of
+      motion enables the performer to remain in contact with the ball for a longer period of
+      time, increasing the possibility of a more accurate shot (Barfield, 1998).
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-44
+    source: scurr_hall_2009
+    where: "p. 233, Discussion"
+    text: >-
+      It is interesting that the significant changes in kinematics from varying approach
+      angles did not result in changes in kicking accuracy or ball velocity during penalty
+      kicking with recreational players.
+    faults: []
+    kick_type: instep
+    level: recreational
+
+  # -- PLoS ONE 2019: how instructions are worded -------------------------------------------
+  - id: K-45
+    source: plos_penalty_focus_2019
+    where: "Introduction, para. 1"
+    text: >-
+      For two decades, research findings have consistently demonstrated that adopting an
+      external focus of attention improves motor performance compared to attempts performed
+      when using an internal focus of attention
+    faults: []
+    kick_type: general
+    level: any
+  - id: K-46
+    source: plos_penalty_focus_2019
+    where: "Conclusion"
+    text: >-
+      Combining an external focus of attention with autonomy support immediately enhanced
+      penalty kick accuracy relative to participants that performed in the control condition
+      and those that received a combination of an internal focus of attention with autonomy
+      support and their yoked counterparts.
+    faults: []
+    kick_type: general
+    level: any
+
+  # -- Wikipedia: kinds of shot (mostly other kicks) ---------------------------------------
+  - id: K-47
+    source: wikipedia_shooting
+    where: "Types of shooting, By striking surface"
+    text: >-
+      Instep drive (laces shot): A power-oriented shot struck with the instep of the foot (the
+      area commonly referred to as the laces). This technique is frequently used for
+      long-range shots and attempts requiring high ball speed.
+    faults: []
+    kick_type: instep
+    level: any
+  - id: K-48
+    source: wikipedia_shooting
+    where: "Types of shooting, By striking surface"
+    text: >-
+      Inside-of-the-foot shot (placed shot): A controlled shot struck with the inside of the
+      foot, typically used to prioritise accuracy and placement over maximum power.
+    faults: []
+    kick_type: other
+    level: any
+  - id: K-49
+    source: wikipedia_shooting
+    where: "Types of shooting, By ball state"
+    text: >-
+      Volley: A shot taken while the ball is airborne, before it touches the ground.
+      Half-volley: A shot taken immediately after the ball bounces, often requiring precise
+      timing and technique.
+    faults: []
+    kick_type: other
+    level: any
+  - id: K-50
+    source: wikipedia_shooting
+    where: "Types of shooting, Situational and specialised shots"
+    text: >-
+      Chip shot (lob): A shot struck to lift the ball in a high arc over the goalkeeper or
+      defensive line and into the goal. The technique relies on finesse and accurate
+      judgement of the goalkeeper's position.
+    faults: []
+    kick_type: other
+    level: any
+  - id: K-51
+    source: wikipedia_shooting
+    where: "Types of shooting, Situational and specialised shots"
+    text: >-
+      Toe poke (toe shot): A quick shot struck with the toe of the boot, typically used in
+      close-range situations due to the short backswing and reduced ability for defenders and
+      goalkeepers to anticipate the strike.
+    faults: []
+    kick_type: other
+    level: any
+  - id: K-52
+    source: wikipedia_shooting
+    where: "Types of shooting, By ball movement and spin"
+    text: >-
+      Curled / bending shot (curl): A shot struck to impart sidespin so that the ball curves
+      in flight. Curled shots are commonly used to bypass defenders or to target the far
+      corner of the goal.
+    faults: []
+    kick_type: other
+    level: any
+
+  # -- The FA: kinds of finish -------------------------------------------------------------
+  - id: K-53
+    source: fa_finishing_2022
+    where: "Laces"
+    text: >-
+      It's a popular type of finish - especially with younger teams - as it generates a lot
+      of power. As a result, players who use their laces may feel like they've had a good
+      shot, even if their effort wasn't accurate.
+    faults: []
+    kick_type: instep
+    level: youth
+  - id: K-54
+    source: fa_finishing_2022
+    where: "Volley"
+    text: >-
+      Volleys are a highly technical finish. Players need to: watch the flight of the ball
+      position themselves accordingly adjust their body orientation choose the ideal time to
+      make a connection.
+    faults: []
+    kick_type: other
+    level: any
+  - id: K-55
+    source: fa_finishing_2022
+    where: "Toe-poke"
+    text: >-
+      Sure, this technique isn't fancy, but it can catch the opposition off guard. It's often
+      a go-to shot for the young players who want to kick the ball quickly and generate a lot
+      of power.
+    faults: []
+    kick_type: other
+    level: youth

@@ -14,3 +14,11 @@ The papers behind `knowledge/norms.csv`. The PDFs are not committed: `uv run --g
 **Why the controls:** a model asked to extract numbers from a paper whose numbers are only in charts can either say so or invent them. Any row from a control paper is unsupported by construction, so the controls measure the hallucinated-row rate (E5).
 
 **Author lists** are copied from each paper's first page or its PMC record, not from memory.
+
+# Coaching corpus sources (Phase 8)
+
+The passages the feedback may cite are verbatim excerpts in `coaching_corpus.yaml`, whose `sources:` block lists each source with its citation, URL and licence. Aamir approved the list on 2026-11-02 (DEC-037). `uv run --group tools python tools/coaching_sources.py --download` fetches them into `knowledge/coaching_sources/` (gitignored), and `tests/test_retrieval.py` then checks every excerpt is verbatim.
+
+- **Open access / CC:** the four papers above, Shan & Zhang (2011, BMC, CC BY), a 2019 PLoS ONE attentional-focus study (CC BY), Wikipedia's "Shooting (association football)" (CC BY-SA 4.0, revision 1357922406).
+- **Copyrighted, free to read, excerpts of at most 60 words:** Special Olympics' Football Coaching Guide (2021), Special Olympics North Carolina's "Soccer Shooting Basics", The FA's "Different finishing techniques in football".
+- **Approved but not used:** a 2024 upper-body review (Springer) and wikiHow's "Kick a Ball" both answered scripted requests with a bot-challenge page; Special Olympics Wisconsin's "Shooting Faults and Fixes" chart turned out to be about basketball.
