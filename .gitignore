@@ -30,6 +30,8 @@ models/
 
 # Source papers for norm extraction: store URLs in knowledge/sources.md, not the PDFs
 knowledge/papers/
+# Coaching corpus sources (Phase 8): only short quoted chunks + URLs are committed
+knowledge/coaching_sources/
 
 # Personal
 Aamir_Hashmi_Resume*.pdf
