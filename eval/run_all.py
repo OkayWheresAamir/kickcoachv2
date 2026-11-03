@@ -57,6 +57,9 @@ STEPS = (
     ("labelling repeatability", ["-m", "eval.repeatability"]),
     ("norms, faults, feedback (cached LLM)", ["tools/run_assess.py", "--llm"]),
     ("the page's example (api/static/example.json)", ["tools/make_example.py"]),
+    ("E6 retrieval (cached embeddings)", ["-m", "eval.e6_retrieval"]),
+    ("E7 items (cached LLM answers)", ["-m", "eval.e7_feedback", "prepare"]),
+    ("E7 feedback ratings and judge (cached)", ["-m", "eval.e7_feedback"]),
 )
 FEATURES = ("knee_angle_contact", "max_knee_flexion_backswing", "trunk_lean_contact")
 FEATURE_NAMES = {
@@ -325,6 +328,41 @@ def assess_numbers(rows: list[dict]) -> dict:
     }
 
 
+def e6_numbers(rows: list[dict]) -> dict:
+    scored = [r for r in rows if int(r["n_relevant"])]
+    m = lambda k: sum(float(r[k]) for r in scored) / len(scored)  # noqa: E731
+    return {
+        "queries": len(scored),
+        "gaps": len(rows) - len(scored),
+        **{f"{k}_{x}": m(f"{k}_{c}") for k in ("filter", "filter_embed", "embed")
+           for x, c in (("r3", "recall3"), ("mrr", "rr"))},
+    }  # fmt: skip
+
+
+def e7_numbers(rows: list[dict]) -> dict:
+    from eval.e7_feedback import CRITERIA, KAPPA_BAR, VARIANTS, agreement
+
+    rated = [r for r in rows if truthy(r["in_sample"]) and r["aamir_correctness"]]
+    both = [r for r in rated if r["judge_correctness"]]
+    agree = {
+        c: agreement([(int(r[f"aamir_{c}"]), int(r[f"judge_{c}"])) for r in both])
+        for c in CRITERIA
+    } if both else {}  # fmt: skip
+    by_variant = {
+        v: {c: sum(int(r[f"aamir_{c}"]) for r in vr) / len(vr) for c in CRITERIA} | {"n": len(vr)}
+        for v in VARIANTS
+        if (vr := [r for r in rated if r["variant"] == v])
+    }
+    return {
+        "rated": len(rated),
+        "judged": sum(bool(r["judge_correctness"]) for r in rows),
+        "items": len(rows),
+        "agree": agree,
+        "bar": KAPPA_BAR,
+        "by_variant": by_variant,
+    }
+
+
 def floor_numbers() -> dict | None:
     pts, angs = read_csv("repeatability_points.csv"), read_csv("repeatability_angles.csv")
     if not pts:
@@ -360,6 +398,8 @@ def collect() -> dict:
             read_csv("e8_bounds.csv"), read_csv("e8_gate.csv"), read_csv("e8_velocity.csv")
         ),
         "assess": assess_numbers(read_csv("assess_summary.csv")),
+        "e6": e6_numbers(read_csv("e6.csv")),
+        "e7": e7_numbers(read_csv("e7.csv")),
         "floor": floor_numbers(),
     }
 
@@ -379,11 +419,27 @@ def floor_text(fl: dict | None) -> str:
     )
 
 
+def e7_text(e7: dict) -> str:
+    if not e7["rated"]:
+        return "not rated yet (Aamir's 20 ratings)"
+    names = {"llm_rag": "LLM + passages", "llm": "LLM alone", "template": "template"}
+    parts = [
+        f"{names[v]} {m['correctness']:.1f} / {m['specificity']:.1f} / {m['actionability']:.1f}"
+        for v, m in e7["by_variant"].items()
+    ]
+    text = "Aamir's mean correctness / specificity / actionability (1–5): " + "; ".join(parts)
+    if e7["agree"]:
+        k = ", ".join(f"{c} {a['kappa_w']:.2f}" for c, a in e7["agree"].items())
+        text += f". LLM judge vs Aamir, weighted κ: {k}"
+    return text
+
+
 def headline(n: dict) -> list[str]:
     """The table that goes into the README and the top of the summary."""
     d, e1, e2, e3, e4, e5, e8, a = (
         n[k] for k in ("data", "e1", "e2", "e3", "e4", "e5", "e8", "assess")
     )
+    e6 = n["e6"]
     core, dec = e1["core"], e1["dec"]
     lo, hi = dec["pck_core_ci95"][dec["best"]]
     knee = e2["knee_angle_contact"]
@@ -450,9 +506,22 @@ def headline(n: dict) -> list[str]:
             f"{gate['n']} clips",
         ],
         [
-            "LLM feedback",
+            "Retrieval of coaching passages (E6)",
+            f"filter + embeddings: Recall@3 {e6['filter_embed_r3']:.2f}, MRR "
+            f"{e6['filter_embed_mrr']:.2f}; the fault filter alone {e6['filter_r3']:.2f} / "
+            f"{e6['filter_mrr']:.2f}; embeddings alone {e6['embed_r3']:.2f} / "
+            f"{e6['embed_mrr']:.2f}",
+            f"{e6['queries']} queries (relevance labelled by Claude)",
+        ],
+        [
+            "LLM feedback with retrieved passages",
             f"passed the deterministic validator first try on {a['first_try']} of {a['llm']}",
             f"{a['llm']} clips with a fault",
+        ],
+        [
+            "Feedback quality (E7)",
+            e7_text(n["e7"]),
+            f"{n['e7']['rated']} items rated by Aamir" if n["e7"]["rated"] else "–",
         ],
         [
             "Labelling floor",
@@ -700,9 +769,16 @@ def summary(n: dict) -> str:
         f"- {a['accepted']} clips accepted, {a['refused']} refused by the gate.",
         f"- Knee at contact below the cited band (Scurr & Hall, ±1 SD, heuristic band) on "
         f"{a['knee_below']} of {a['accepted']}: an open question (README, Limitations).",
-        f"- A fault rule fired on {a['with_faults']} of {a['accepted']}; LLM feedback passed the",
-        f"  validator first try on {a['first_try']} of {a['llm']} (the validator checks numbers",
-        "  and IDs, not meaning).",
+        f"- A fault rule fired on {a['with_faults']} of {a['accepted']}; LLM feedback (with",
+        f"  retrieved passages) passed the validator first try on {a['first_try']} of {a['llm']}",
+        "  (the validator checks numbers and IDs, not meaning).",
+        "",
+        "## E6 and E7: retrieval and feedback quality",
+        "",
+        f"- **E6:** {n['e6']['queries']} queries with a relevant chunk; {n['e6']['gaps']} more "
+        "have none (no approved source had a drill for those faults). Details: "
+        "`results/e6_summary.md`.",
+        f"- **E7:** {e7_text(n['e7'])}. Details: `results/e7_summary.md`.",
     ]
     if a["cache_misses"]:
         L += [

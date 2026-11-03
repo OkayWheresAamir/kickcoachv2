@@ -1,0 +1,34 @@
+# E6 relevance labels: for each query (a fault rule x what the feedback needs), the corpus
+# chunks that answer it. Labelled by Claude, not Aamir (DEC-038), from the chunk text alone,
+# before any embedding was computed; the file's sha256 is in docs/JOURNAL.md (Phase 8).
+#
+# A chunk is relevant when it is about the fault's aspect of technique (the same aspects as
+# the corpus's `faults` tag, read strictly: it must name that aspect, not just a related one)
+# and gives the kind of help asked for:
+#   why:   it states a consequence or mechanism linking that aspect to the kick's result
+#          (speed, power, accuracy, ball height, injury, skill level). A plain description
+#          of the movement is not enough.
+#   cue:   it tells a player what to do with that aspect during a kick.
+#   drill: it describes something to practise (an activity, exercise or progression) that
+#          works on that aspect.
+# The kick_type tag is ignored here: a passing cue about the standing foot is still about
+# the standing foot. Whether the filter drops it is what E6 measures.
+#
+# An empty list is a corpus gap: no approved source had that kind of help for that fault.
+
+F-LEAN-BACK:
+  why: [K-12, K-13, K-26]
+  cue: [K-12]
+  drill: []
+F-SHALLOW-BACKSWING:
+  why: [K-35, K-16, K-29]
+  cue: [K-02, K-18, K-16]
+  drill: []
+F-PLANT-FAR-BEHIND:
+  why: [K-39, K-40, K-38, K-09]
+  cue: [K-02, K-15, K-14, K-18, K-09]
+  drill: [K-10]
+F-REVERSED-SEQUENCE:
+  why: [K-19, K-20, K-21, K-33, K-30]
+  cue: [K-19]
+  drill: []
