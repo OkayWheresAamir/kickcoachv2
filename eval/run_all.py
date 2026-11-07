@@ -353,7 +353,24 @@ def e7_numbers(rows: list[dict]) -> dict:
         for v in VARIANTS
         if (vr := [r for r in rated if r["variant"] == v])
     }
+    # No human rated (DEC-041): the matched pairs as the LLM raters scored them.
+    pairs: dict = {}
+    for r in rows:
+        if truthy(r["in_sample"]) and r["variant"] in ("llm_rag", "llm"):
+            pairs.setdefault((r["clip_id"], r["fault_id"]), {})[r["variant"]] = r
+    pair_wins = {}
+    for k in ("claude", "panel"):
+        both = [v for v in pairs.values() if len(v) == 2 and v["llm_rag"][f"{k}_correctness"]]
+        d = [
+            int(v["llm_rag"][f"{k}_correctness"]) - int(v["llm"][f"{k}_correctness"]) for v in both
+        ]
+        if d:
+            pair_wins[k] = (sum(x > 0 for x in d), sum(x < 0 for x in d), len(d))
+    flash = [int(r["judge_correctness"]) for r in rows
+             if truthy(r["in_sample"]) and r["judge_correctness"]]  # fmt: skip
     return {
+        "pair_wins": pair_wins,
+        "flash_correctness": (sum(x == 5 for x in flash), len(flash)),
         "rated": len(rated),
         "judged": sum(bool(r["judge_correctness"]) for r in rows),
         "items": len(rows),
@@ -421,7 +438,18 @@ def floor_text(fl: dict | None) -> str:
 
 def e7_text(e7: dict) -> str:
     if not e7["rated"]:
-        return "not rated yet (Aamir's 20 ratings)"
+        pw = e7["pair_wins"]
+        if not pw:
+            return "not rated yet (Aamir's 20 ratings)"
+        five, n = e7["flash_correctness"]
+        names = {"claude": "Claude (not blind)", "panel": "an AI persona panel (blind)"}
+        text = "no human rating (DEC-041). On 8 matched pairs, retrieved passages raised "
+        text += "correctness in " + " and ".join(
+            f"{w} (lower in {lo}) for {names[k]}" for k, (w, lo, _) in pw.items()
+        )
+        if n:
+            text += f"; the LLM judge (gemini-3.6-flash) gave correctness 5/5 to {five} of {n}"
+        return text
     names = {"llm_rag": "LLM + passages", "llm": "LLM alone", "template": "template"}
     parts = [
         f"{names[v]} {m['correctness']:.1f} / {m['specificity']:.1f} / {m['actionability']:.1f}"
@@ -521,7 +549,9 @@ def headline(n: dict) -> list[str]:
         [
             "Feedback quality (E7)",
             e7_text(n["e7"]),
-            f"{n['e7']['rated']} items rated by Aamir" if n["e7"]["rated"] else "–",
+            f"{n['e7']['rated']} items rated by Aamir"
+            if n["e7"]["rated"]
+            else "20 items, LLM raters only",
         ],
         [
             "Labelling floor",

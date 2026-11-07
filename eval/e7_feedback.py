@@ -17,6 +17,7 @@ its agreement with Aamir clears the bar fixed before either rated (DEC-040).
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import random
 import re
@@ -40,6 +41,11 @@ RESULTS = ROOT / "results"
 E7_DIR = RESULTS / "e7"
 ITEMS = E7_DIR / "items.json"
 RATINGS = E7_DIR / "aamir_ratings.json"
+# LLM raters of the 20-item sample, kept apart from Aamir's file (DEC-041): an AI persona
+# panel Aamir supplied (5 simulated players and a coach, one external tool, model not
+# recorded) and Claude's rule-based ratings (not blind). Neither is a human rating.
+PANEL = E7_DIR / "raters" / "persona_panel.csv"
+CLAUDE = E7_DIR / "raters" / "claude.json"
 LLM_CACHE = RESULTS / "feedback_llm"
 VARIANTS = ("llm_rag", "llm", "template")
 CRITERIA = ("correctness", "specificity", "actionability")
@@ -53,12 +59,13 @@ TEMPLATES = {"F-LEAN-BACK": 2, "F-SHALLOW-BACKSWING": 1, "F-PLANT-FAR-BEHIND": 1
 # kappa between them is at least 0.6 (Landis & Koch 1977 call 0.61-0.80 "substantial";
 # the cut-off itself is a convention, fixed here before any rating existed).
 KAPPA_BAR = 0.6
-# Not the generator's model family, so it isn't grading its own wording. The protocol named
-# gemini-3.6-flash; its free tier allows 20 requests a day (the 429 on 3 Nov), which ran out
-# after 21 of 54 items and 9 of Aamir's 20, so the judge became Gemma 4 before any agreement
-# was computed (DEC-040). The 21 Flash answers are kept as a second judge on that overlap.
-JUDGE_MODEL = "gemma-4-31b-it"
-SECOND_JUDGE = "gemini-3.6-flash"
+# Not the generator's model, so it isn't grading its own wording. gemini-3.6-flash was the
+# planned judge; its free tier allows 20 requests a day (the 429 on 3 Nov). On 3 Nov the judge
+# moved to Gemma 4, which then stalled (500s, 503s, hangs) at 30 of 54. On 7 Nov Flash's next
+# free day covered the rest of the 20-item sample, so Flash is the judge again and Gemma the
+# second (DEC-040). No agreement with a human existed at either switch.
+JUDGE_MODEL = "gemini-3.6-flash"
+SECOND_JUDGE = "gemma-4-31b-it"
 JUDGE_ROOT = E7_DIR / "judge_raw"
 JUDGE_PROMPT_VERSION = "judge-v1"
 
@@ -244,8 +251,10 @@ def parse_judge(text: str) -> dict | None:
     return d if ok else None
 
 
-def run_judge(items: list[dict], client: GeminiClient | None = None) -> dict[str, dict]:
-    client = client or GeminiClient(JUDGE_MODEL, JUDGE_ROOT / JUDGE_MODEL)
+def run_judge(
+    items: list[dict], client: GeminiClient | None = None, model: str = JUDGE_MODEL
+) -> dict[str, dict]:
+    client = client or GeminiClient(model, JUDGE_ROOT / model)
     out = {}
     for i, item in enumerate(items, 1):
         res = client.generate_json(
@@ -295,9 +304,31 @@ def agreement(pairs: list[tuple[int, int]]) -> dict:
     }
 
 
+def llm_raters(sample: list[str]) -> tuple[dict, dict, dict]:
+    """Claude's ratings, the panel's per-item median, and every persona's, keyed by item id."""
+    key_to_id = {f"R{n:02d}": iid for n, iid in enumerate(sample, 1)}
+    claude = {}
+    if CLAUDE.exists():
+        claude = {key_to_id[k]: v for k, v in json.loads(CLAUDE.read_text())["ratings"].items()}
+    personas: dict[str, dict] = {}
+    if PANEL.exists():
+        with open(PANEL, newline="") as f:
+            for r in csv.DictReader(f):
+                personas.setdefault(r["Persona"], {})[key_to_id[r["Item"]]] = {
+                    c: int(r[c.capitalize()]) for c in CRITERIA
+                }
+    panel = {
+        iid: {c: int(np.median([p[iid][c] for p in personas.values()])) for c in CRITERIA}
+        for iid in sample
+        if personas and all(iid in p for p in personas.values())
+    }
+    return claude, panel, personas
+
+
 def score() -> tuple[list[dict], str]:
     data = json.loads(ITEMS.read_text())
     items = {i["item_id"]: i for i in data["items"]}
+    claude, panel, _ = llm_raters(data["sample"])
     ratings = json.loads(RATINGS.read_text()) if RATINGS.exists() else {}
     rated = {k: v for k, v in ratings.items() if all(v.get(c) for c in CRITERIA)}
     judged = cached_judge(list(items.values()))
@@ -305,6 +336,7 @@ def score() -> tuple[list[dict], str]:
     rows = []
     for iid, it in items.items():
         r, j, j2 = rated.get(iid, {}), judged.get(iid) or {}, second.get(iid) or {}
+        cl, pa = claude.get(iid, {}), panel.get(iid, {})
         rows.append(
             {"item_id": iid, "clip_id": it["clip_id"], "fault_id": it["fault_id"],
              "variant": it["variant"], "generated_by": it["generated_by"],
@@ -314,9 +346,87 @@ def score() -> tuple[list[dict], str]:
              **{f"aamir_{c}": r.get(c) for c in CRITERIA},
              **{f"judge_{c}": j.get(c) for c in CRITERIA},
              **{f"judge2_{c}": j2.get(c) for c in CRITERIA},
+             **{f"claude_{c}": cl.get(c) for c in CRITERIA},
+             **{f"panel_{c}": pa.get(c) for c in CRITERIA},
              "judge_reason": j.get("reason", ""), "aamir_note": r.get("note", "")}
         )  # fmt: skip
     return rows, report(rows, data)
+
+
+RATERS = {  # column prefix -> how the report names it
+    "claude": "Claude (rule-based, not blind)",
+    "panel": "AI persona panel (median of 5)",
+    "judge": JUDGE_MODEL,
+    "judge2": SECOND_JUDGE,
+}
+
+
+def llm_rater_section(rows: list[dict]) -> list[str]:
+    s = [r for r in rows if r["in_sample"]]
+    present = [k for k in RATERS if any(r[f"{k}_correctness"] for r in s)]
+    if not present:
+        return []
+    L = [
+        f"## LLM raters on the {len(s)}-item sample (DEC-041)",
+        "",
+        "None of these is a human. Claude's ratings follow written rules with a reason per "
+        "item (`results/e7/raters/claude.json`); the persona panel came from one external AI "
+        "tool playing five players and a coach (`results/e7/raters/persona_panel.csv`).",
+        "",
+        "Mean rating (correctness / specificity / actionability), by variant:",
+        "",
+    ]
+    body = []
+    for k in present:
+        cells = []
+        for v in VARIANTS:
+            vr = [r for r in s if r["variant"] == v and r[f"{k}_correctness"]]
+            cells.append(
+                " / ".join(_f(mean(r[f"{k}_{c}"] for r in vr), 1) for c in CRITERIA) +
+                f" (n {len(vr)})" if vr else "–"
+            )  # fmt: skip
+        body.append([RATERS[k], *cells])
+    L += [*table(["rater", *VARIANTS], body), ""]
+    # The 8 pairs: the same clip and fault, written with and without retrieved passages.
+    pairs = {}
+    for r in s:
+        if r["variant"] in ("llm_rag", "llm"):
+            pairs.setdefault((r["clip_id"], r["fault_id"]), {})[r["variant"]] = r
+    pairs = {p: v for p, v in pairs.items() if len(v) == 2}
+    body = []
+    for k in present:
+        both = [v for v in pairs.values() if v["llm_rag"][f"{k}_correctness"]
+                and v["llm"][f"{k}_correctness"]]  # fmt: skip
+        if both:
+            diffs = {c: [v["llm_rag"][f"{k}_{c}"] - v["llm"][f"{k}_{c}"] for v in both]
+                     for c in CRITERIA}  # fmt: skip
+            body.append([RATERS[k], str(len(both)), *(
+                f"{mean(d):+.2f} (better {sum(x > 0 for x in d)}, worse {sum(x < 0 for x in d)})"
+                for d in diffs.values())])  # fmt: skip
+    if body:
+        L += [
+            "With passages minus without, on the same clip and fault (positive = passages "
+            "rated higher):",
+            "",
+            *table(["rater", "pairs", *CRITERIA], body),
+            "",
+        ]
+    body = []
+    for i, a in enumerate(present):
+        for b in present[i + 1 :]:
+            both = [r for r in s if r[f"{a}_correctness"] and r[f"{b}_correctness"]]
+            if len(both) >= 5:
+                body.append([f"{RATERS[a]} vs {RATERS[b]}", str(len(both)), *(
+                    _f(agreement([(r[f"{a}_{c}"], r[f"{b}_{c}"]) for r in both])["kappa_w"])
+                    for c in CRITERIA)])  # fmt: skip
+    if body:
+        L += [
+            "Agreement between raters (weighted κ):",
+            "",
+            *table(["raters", "items", *CRITERIA], body),
+            "",
+        ]
+    return L
 
 
 def _f(x, dp: int = 2) -> str:
@@ -331,7 +441,7 @@ def report(rows: list[dict], data: dict) -> str:
     } if both else {}  # fmt: skip
     trusted = [c for c in agree if agree[c]["kappa_w"] >= KAPPA_BAR]
     L = [
-        "# E7: feedback quality, rated by Aamir and an LLM judge",
+        "# E7: feedback quality: human, LLM-rater and LLM-judge ratings",
         "",
         f"Items: every fault item from the {len({r['clip_id'] for r in rows})} accepted clips "
         "with a fault, in three variants: LLM with retrieved passages (prompt v3, the app's "
@@ -405,8 +515,18 @@ def report(rows: list[dict], data: dict) -> str:
             ),  # fmt: skip
             "",
         ]
+    elif not sample_rows:
+        L += [
+            "**No human rating exists.** The sample wasn't rated by a human; an AI persona "
+            "panel was supplied instead (7 Nov). So the bar above can't be applied, the judge is "
+            "not validated, and it is not used beyond the sample (DEC-040, DEC-041). The "
+            "section below compares LLM raters with each other, which shows consistency, not "
+            "correctness.",
+            "",
+        ]
     else:
-        L += ["Not computed yet: needs Aamir's ratings and the judge's.", ""]
+        L += ["Not computed yet: needs the judge's answers on the rated items.", ""]
+    L += llm_rater_section(rows)
     if sample_rows:
         L += [
             "## Aamir's ratings by variant (the sample)",
@@ -447,8 +567,8 @@ def report(rows: list[dict], data: dict) -> str:
         L += [
             f"## The two judges compared ({len(two)} items both rated)",
             "",
-            f"`{SECOND_JUDGE}` was the planned judge; its free tier stopped at 20 requests a "
-            f"day, so `{JUDGE_MODEL}` judged everything (DEC-040). Where both rated:",
+            f"`{JUDGE_MODEL}` is the judge; `{SECOND_JUDGE}` stood in while Flash's free "
+            "quota (20 requests a day) was used up (DEC-040). Where both rated:",
             "",
             *table(
                 [
@@ -480,8 +600,10 @@ def report(rows: list[dict], data: dict) -> str:
     L += [
         "## Caveats",
         "",
-        "- **One rater, small n:** Aamir isn't a coach, and the sample is 20 items; the "
-        "agreement is with him, not with coaching truth.",
+        "- **No human rated:** every score here comes from an LLM, including Claude's, and "
+        "Claude also built the pipeline being rated. Agreement between LLM raters is "
+        "consistency, not validity.",
+        "- **Small n:** 20 items, 8 pairs.",
         "- **Blinding is partial:** the variant is hidden, but each fault's template has fixed "
         "wording that repeats across clips.",
         "- **No item for the shank-before-thigh rule:** it never fires on these clips.",
@@ -492,14 +614,22 @@ def report(rows: list[dict], data: dict) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", nargs="?", default="score", choices=["prepare", "judge", "score"])
+    ap.add_argument("--model", default=JUDGE_MODEL, help="judge model (judge only)")
+    ap.add_argument("--sample-only", action="store_true",
+                    help="judge only the 20 sampled items (fits a Flash free day)")  # fmt: skip
     args = ap.parse_args()
     if args.cmd == "prepare":
         prepare()
         return
     if args.cmd == "judge":
         data = json.loads(ITEMS.read_text())
+        by_id = {i["item_id"]: i for i in data["items"]}
+        # Sampled items first: they are the ones every rater shares.
+        order = [by_id[i] for i in data["sample"]]
+        if not args.sample_only:
+            order += [i for i in data["items"] if i["item_id"] not in set(data["sample"])]
         try:
-            run_judge(data["items"])
+            run_judge(order, model=args.model)
         except NoApiKey:
             raise SystemExit("the judge needs GEMINI_API_KEY") from None
     rows, md = score()
