@@ -103,4 +103,31 @@ def test_rating_save_keeps_only_valid_scores_and_the_first_open_time(tmp_path):
 def test_e7_scores_before_any_rating_without_crashing(tmp_path, monkeypatch):
     monkeypatch.setattr(e7, "RATINGS", tmp_path / "none.json")
     rows, md = e7.score()
-    assert len(rows) == 54 and "Not computed yet" in md
+    assert len(rows) == 54 and "No human rating exists" in md
+
+
+def test_offline_sheet_is_blind_and_its_download_imports(tmp_path):
+    out, ratings = tmp_path / "sheet.html", tmp_path / "r.json"
+    rate.write_sheet(e7.ITEMS, ratings, out)
+    html = out.read_text()
+    assert "/*DATA*/" not in html and "llm_rag" not in html and "item_id" not in html
+    assert html.count('"key": "R') == 20
+    dl = tmp_path / "dl.json"
+    dl.write_text(json.dumps({"sheet": "kickcoach-e7", "ratings": {
+        "R03": {"correctness": 4, "specificity": 3, "actionability": 5, "note": "x"},
+        "R04": {}}}))  # fmt: skip
+    assert rate.import_sheet(e7.ITEMS, ratings, dl) == 1
+    (saved,) = json.loads(ratings.read_text()).values()
+    assert saved["correctness"] == 4 and saved["note"] == "x"
+
+
+def test_llm_raters_load_by_item_and_never_count_as_aamir(tmp_path, monkeypatch):
+    sample = json.loads(e7.ITEMS.read_text())["sample"]
+    claude, panel, personas = e7.llm_raters(sample)
+    assert set(claude) == set(sample) and set(panel) == set(sample) and len(personas) == 5
+    r01 = sample[0]
+    assert panel[r01]["correctness"] == 3  # median of 4, 3, 3, 3, 3
+    monkeypatch.setattr(e7, "RATINGS", tmp_path / "none.json")
+    rows, md = e7.score()
+    assert all(r["aamir_correctness"] is None for r in rows)
+    assert "No human rating exists" in md and "LLM raters on the 20-item sample" in md
