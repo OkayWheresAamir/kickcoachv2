@@ -1,0 +1,101 @@
+{
+ "key": "84a539b097157abb2a24be7f",
+ "tag": "judge-v1 c14-F-SHALLOW-BACKSWING-llm_rag",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Shallow knee bend in the backswing\",\n   \"feature\": \"max_knee_flexion_backswing\",\n   \"value\": 101.38,\n   \"unit\": \"deg\",\n   \"fires_when\": \"above\",\n   \"threshold\": 89.61,\n   \"threshold_source\": \"Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 127.13,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 101.38,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": 1.13,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": 0.2,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"above_norm\",\n    \"norm_ref\": \"N-032\",\n    \"norm_mean\": 77.29,\n    \"norm_sd\": 6.16,\n    \"population\": \"elite, adults, mixed\"\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your knee stayed too straight during the backswing, reaching an angle of 101 degrees instead of bending more.\",\n  \"why_it_matters\": \"Bending your knee more stretches your muscles so you can kick with much more power.\",\n  \"cue\": \"Bend your knee more as you swing back.\",\n  \"drill\": \"Practice pulling your heel up high behind you in a slow motion backswing before you step and strike the ball.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"N-032\",\n   \"label\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1\",\n   \"text\": \"kicking_knee_max_flexion: 102.71 \u00b1 6.16 deg (elite, n = 26). Paper's words: \\\"Swing KF 102.71 \u00b1 6.16 77.04 \u00b1 12.63 437.11 \u00b1 108.87\\\"\"\n  },\n  {\n   \"id\": \"kellis_katis_2007\",\n   \"label\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review\",\n   \"text\": \"Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987).\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 5,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reports the measured knee angle of 101 degrees during the backswing, correctly explains the bio-mechanical reasoning from the cited source, and offers a highly actionable drill.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 5,
+  "actionability": 5,
+  "reason": "The feedback accurately reports the measured knee angle of 101 degrees during the backswing, correctly explains the bio-mechanical reasoning from the cited source, and offers a highly actionable drill."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Sat, 07 Nov 2026 16:19:15 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=5467",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 5,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reports the measured knee angle of 101 degrees during the backswing, correctly explains the bio-mechanical reasoning from the cited source, and offers a highly actionable drill.\"\n}",
+       "thought_signature": "ErUQCrIQAWkUfRMsDm3u8fYkVAT66AtnAJ-dW_2eTlteVJjg9-nFETIMrjvTb63aFRBxCz8DeW4cAMCskP71M3_osg4N5uwmh0sQKW8UcQLfpYb8JjXsMwXAL7AArWHXIDAmGTjdE-VVuSyWLFSNWjVS-o5lGve9np77sLsM9CKFYpW8BzTC9Of-dizwNwil4TG7aZOTbkGd7PzB6ELnF6pEDmSpNweIJeoA7-rlBVmIVOf--I6sDF6nogwHp_aWhJAw5BseDH8exGG-AaePPkrWMcOz6NX4lECkPfS6UU40rpmn6QAYiENoVgXPegVEkmL3gPSGKyafyWq8I5p_2QgqSPsZzLJvFvKHe7AFBGwbwl7ne7wL17RVKIovwwZCiCSUPCg7hzNr4q_J4GzBolKGsc-995E2DOflYI0_EH9pHmwsgCvp0zttnG08XX3vbkNWTwbks9KlG0EeoIRVygiaYhWryu6L4REwGa9veINklO4VqbxtGZXWGUsy6w77Ax86h4AEnxTVe2v0AKgh2uG_CvzbyLRvUTXJlnx7wWMr8eloh85sJ5ikc-Vjf2NaoyI9PYMqlJZp-Wla2g2fs-KeLLhrxWodm_ld0w6sWu5-mr7htZdWSEoKvXhuIyyVTwgOLyKiFWVFsQDL2Vk7b-wvn8hzOj0QcutZAhZqYBXaGfpoe2Zjx5TF0Mlg5V6LMtCg2rEUDkM6jNHys4EYfLr_nKsX5YcHmXPqZzOztkXLzBEVMasuzPjmvVL0pAGjoP6y8ckWFWYzEKGmfD0MwWihnwTDKMvepsoRs5k24vv831k_xxIgqbnTkqInGJzxQqzBSJlY5K6y0BxfV7nvn-0bfO7G1hE_JycgBp3oWRdaw0XUwhikV5brVI4dslK5c7w6u4kXTEutjCzxrWQTKeK6QC7PVtD5s9TlVS7XQ4VraIkw8SzTk3GXM5rehooAhUSSlOzhN4T7PHyYYwoPuF-carplH0C4nW5rrHz6yQKGS1FPs12yjTY-tWr3u7GgpqDwoqfnHsd73CqWnxgLCeTcgsxobWudQOJpKNnkBneB6TvDnNw2NOus3PZRw56qNNOZoiIORbh6YeGf4GSggKCw4DpMPOkLkV2v7SD2tsDHsfFxJ0VplL0UbrdLJyRkVM6XrHWWuYythdweRpOJRUXqepP6xllz1TUWK-VVZdaOsJWyjhfNkPtWobiQgCJ7fzLRaQPBI-uTdC8n6_1RuisIIBy0rn5T6xfbrIh39XPtlDQePeCBItnuaEV46anwbbZrmn027MVAjkIXfviTp9FMtj4dVd0o5r2L6ePDssy1oGvjFD-JmjcRVDEsodBl-d7iOGHkzYSRc2GxAXWy--fSOiMUILNB9GveBNlFRzfCnMh2ABbDNP7eV73DxZJJAkHZJ-BjGGLI0oKHvKjPOufr_glL_qQLJzUYKruPbyYocmm5CsoaLoSfPmJVmU0sKEJzOatuzYn6KOm5GmqqXvS9ZDpCS6qzbvB2J-2lYVUkbK0g79fu69Wu0vQtC_ynwdLJTHoZXPHFafTCa2CygA1g4RWVNLqqtlD0lkX_aqgUb_fdR87m9kEBXSrTeY_g3cox46dbuNXLfeZPuL9612Mx-nGhin2eQfwLE8xYgqPRLEPmfGI5pxyAU5ewRfAqKT3tv-8ZITKYIRgof8XkyfgknlrlFMrc2hG4d5EXCcfcfWXL6dt7DMNN1yHnJEXcNer1fhUC8n5-X692O6rl0GDfmhzHUqq4ryPD5LO211l-VzzgSW2icBBo0Wk1YwCUi8mmLiRZ7RCTbkOLKvSlFBz-xVb8ykBX0dN7j3KKUi_NmXGEWXIn33hbgdr6vrADjPC8NpKyvQs_ham87yV8ljv5t22xCpLfsJDywB9KioWJScumxB6zRN6tNggWW8PAaxRPUIkIDSofXRBz8cySPPoqjR7q9snN1YcMryvVa4rrMKvQ1CIE0e-bHatEszU18R3dMyLr0Ebm4mSm4jw7ML78EuDCftglS2DUiCjhfGKQ5BwCzHwSOei1Y3W_EPj-_BqtuN4Aw-GoCPyzoDlYkQbEpgYPXB14RQdSGd_v1EfyUGWEG_-W0A7JaZiw_6DKL3xC3kouzjii-layKB9p1PEcJb-RDYD86KULLIIQoj8FZxvmyL35yZNMXkQEqr3lMsyDLCof3dbgT-wD9ujgm9qd0J6RGNYAuo6azag9wqefA-HP97WYTmO9wgDKFyVGr4mj8hr0WhF3YSYKrArAMqIjTX8jxC-8cYdtT_xk_0j5C5I3RBABI6bjkv8B9ih8rF3qgegXQiBgLid04S6pAjEQN0-PaZBzIOWKAIHWd8F01_bamarusAtHQDRBK9pPdlB8B3kBMfnNAjaYm-qTDScDJdSe2EkgpZl8ozDhHVcqWOwd4LcCjJUEC3c0vrcHYlaqygFc7d11o_lqUMg3hMRogXAtSNqoVpifdYpkpWUKIsX-vj5CT9PI7NAiGF2f9or92VKo-b4XbRl0jU_cyx8Vl_4m-WJa3S2CMCBbcj1x14QIzgs0WOY6HRzpTkMLlpLZ7CjtuSEUpoW5uZ0KLdlrWqSh9e3J3GMKZQIGLdCfPONnI5j_byj8fIDEeTAE8zVAPFvJnulpcU6OSYTadSfWF_bENksTKMrSBmkquX41LEga_CwPI2nmKu19KHdY7A3bLeC8QQJ_Zv8LogbD0AIbsbwkByecG6xw-UcTKCA9rfyfLyhRY_kMF3igoyybHrxrZgKyL8UXVjeT7lAQO2tcqkwi-7wxRM4lKTx-ntY5DOoHIiGS3Q=="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "fk_vapSNNceI694P8JaESA",
+  "usage_metadata": {
+   "candidates_token_count": 73,
+   "prompt_token_count": 1376,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1376
+    }
+   ],
+   "thoughts_token_count": 528,
+   "total_token_count": 1977
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 5,
+   "actionability": 5,
+   "reason": "The feedback accurately reports the measured knee angle of 101 degrees during the backswing, correctly explains the bio-mechanical reasoning from the cited source, and offers a highly actionable drill."
+  }
+ }
+}

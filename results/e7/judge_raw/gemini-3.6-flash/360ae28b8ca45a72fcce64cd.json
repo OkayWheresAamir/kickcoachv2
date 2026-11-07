@@ -1,0 +1,101 @@
+{
+ "key": "360ae28b8ca45a72fcce64cd",
+ "tag": "judge-v1 c11-F-PLANT-FAR-BEHIND-template",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Plant foot far behind the ball\",\n   \"feature\": \"plant_foot_offset\",\n   \"value\": -0.37,\n   \"unit\": \"leg_lengths\",\n   \"fires_when\": \"below\",\n   \"threshold\": -0.25,\n   \"threshold_source\": \"heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it).\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 126.53,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 77.78,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -1.76,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": -0.37,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"no_comparable_norm\",\n    \"norm_ref\": null,\n    \"norm_mean\": null,\n    \"norm_sd\": null,\n    \"population\": null\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your plant foot landed well behind the ball (0.37 leg lengths behind its centre).\",\n  \"why_it_matters\": \"Coaches commonly teach planting beside the ball, so the kicking foot meets it near the bottom of its swing.\",\n  \"cue\": \"Plant your standing foot beside the ball, pointing at the target.\",\n  \"drill\": \"Place a marker beside the ball and practise your approach so your standing foot lands on it before striking.\"\n },\n \"cited_sources\": []\n}\n"
+ },
+ "text": "{\n \"correctness\": 5,\n \"specificity\": 5,\n \"actionability\": 5,\n \"reason\": \"The feedback accurately cites the measured plant foot offset, focuses specifically on correcting this issue, and provides a clear, self-executable drill with a visual marker.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 5,
+  "actionability": 5,
+  "reason": "The feedback accurately cites the measured plant foot offset, focuses specifically on correcting this issue, and provides a clear, self-executable drill with a visual marker."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Sat, 07 Nov 2026 16:18:38 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=14656",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n \"correctness\": 5,\n \"specificity\": 5,\n \"actionability\": 5,\n \"reason\": \"The feedback accurately cites the measured plant foot offset, focuses specifically on correcting this issue, and provides a clear, self-executable drill with a visual marker.\"\n}",
+       "thought_signature": "EtAQCs0QAWkUfROsc5lKHWipSmlx5chGBR8mji2uNMjcBwoRwyS5lo1a0Qmisp92zMMVtdKuaAqGwIXd4qABZIrVC0aYzp_bdTPQZzeFKFa8E3IotKHcdcys4TrAFN2Mdc0eOPy2RA3IWh3tH3lG7UkLEBHWwhHXMgVAJ99_c6c0HMVB5Z2QT3xoAythu-SYuQn6yDwWxKuPe0zCWMAaWD-MB8gOxmEmRhjj-2_oeFFNH2JAaD5GjV6qHGneybvwKgDFnKc2TJK6gOvVX0Oqn-4MqI5mR8W44UQdpSZlBgYO9TaKF3fflMUVjxNBQKAYcseunlVLpdTROFARyRe1yAeeBw5dEAziFEfDLUbxdSe0coCxF84Nz7xjo2NGUSGiydwol6hHkFuKWYf8d9EfE-dQl7e34GMY4TKjrPVH-HubVz-bqGL2uacr4DnPVYo6lhm1rt6B_dezkCov5-zDJ63A3UinLPth_D_XQiLzo1EXg1yBU1L1yqhS_SaTnayDwiri3V7Hg2R99LBGfW2FZZnyLnN0G7GotXWEZuO-OZspOAMZ0sYaMhfsQxPTZinQbioWmLJ_jjdKJT5nibDzJVSWlxgM32eWcjJu4tT274SKk_mdE9ISw-7jUGohOtLIrTzl5YPT2cZDLddrBfjps1Pmy1SqOA0UNKmM4vm0q7Pa7rd92CciDYwvn8qrJK8bJMKsSSjC2mOjleAdBz6uGGFwqBVLQjx9vmp2LVIOj4mljREZAlSWHcDz9-3UAgYBfbvIWJWHFXLUy5CtHqbUgMEqq4Zof-mi4DnjplLT819imcoy-aAD6TrFw3lQUYPyv04KmczQacuBRpRuVylMqjDoBOvnFnNRz_ALbn_V931hr_q0N947w8H1Bp4ZU21yk_p2cQAxsswssqe8busAPiYJNYg-HOgBZDXR2peap0edMcfkFFq7qfg0HYTV1DbTcjnt_X2v0LkoxIcAfaTz6YDWCzn7hAACLryOWQW1nXvPltd3OLsvyS3SFLM2pvfflamH8ByZp_OJQQjkd4oP1AGH9DUYbRdvc2ldgyIzDI8e5lhu-4Doz3Ee2mwXvgdws9eQUze1lZNfCZh4Yuh2msVfs6dagmJPMOLUbSIxARnhVMOMhni4H8445OmB6ZCu468AKEYxXPZTN3GwdnBgBTQaWftSrngnmymIHbk4rN5OZidz4AwFq0NOz0Ca6fBwKOaSVploFwefpCEIq5AgeQlB9v8MQKn9l2uTrfn-p24HVUA59pblg3V9GTpXIX1tlytZp6F12E7sv5HnuQxkdLBdO06S7v8LdkHzTL9BxVR74_i35DkOLBpt_WCSaeqaBCkRQ2vnxx9rQdmrA1uPXqbwou03py71Fj46WV4HhCa8aE2pFX3ZY92BtSVTWyLjIBi0ScDj-JYBlxLMGP6saEI_Fc5A0S5ZjqmuUlV3yrkYIrc6bPCY2MDTnzd8KMWw85Qk4CfVzpvtU9zsLlduFfD4qstY5UhmUEk9W9XWDrdBUUHljZcqbNvigNyiV0rA8w1tBbRVnIMGF5o2NIKkGdGC7Gk5FU6ve-17FjSIi8F6gCVmlYe47n8SXoIDp-3TCUAtx2Tzb_BvQbH0vF1jMK_EjC-ZNXGRZGwuPhfKLblJu78aEDvBHkvPvn8e2ptRH-AuBlmCpPeX7g8pUwO9vdoy_pZmo3g6COVZvxmYRSshrr58FUNdf1RkPIIjOvBrOYg6X2QOcJwoT8vDj_lQxJQn3tp8Qqkv519R_7h7tctg_rlA5EivVlVt4uXdA0c0w9G2WEkq7V8XYrN1Sm0RkUKB-GWKPnUOzGzgARxk5kwHowL2F4I-fKarn6GSq91UHhxZcPegW-uA2fiO8NZ6_DuAZAGyhs_YzrwLR5FhoDa8JUsQb_PJ_hS7RxjHjtDFvXC4qZkAaPV_M0A1yRMKbGvf31NL16Zuloo5Gq3TXf2uoLQtru1l1_0ks7QahUnToN9MYL-AWUWAWZhAQnsyCf3572ctQ_VjK9WquPqg5lL6u77JeRdnD85L5mIimAeAyIlL4w50Cne6uR8_rQtaD9lGcBbJXdiEoh_x0cFUs21vV3qmIn8IzcHFLpxHA4hk0wLX4ABIwKpIKP6sWFtSKHrlfhYAN2uJ0DeH1x2Yq5_F8pqwm78ohkLI_1c0o7c_Fa68Ey7U1H16agjOBbLOSEw9EbK1ROsY02AIY2ZunSY8a3I6TCeRAerm38UXtPa_1GCgEk6oO7LVpMHI_S-iLr9tJj1AT7xEyGDVhXWSjDhvyg2pCiyiE-3BPKedpeNwSjrp7dlWnD1u6OUR4fMS0T4SqZRbrP9JRIXk2hJadjL8iJRRHBmUcP9lLlu6RTAAM_QXiq8HozA13y1VOCB5gh2akpgGk3OqsoFLYa9WuBtlK9JYuh4GLcfsgEbeVaxWhHlGjAFy3ZfJAuZ-g-8BCyARH__cwRnvfwmQUM7fCBKvsWAksSeSAJLbn-27qe_VnDMEgVtIs3BG5WjS0BRAgw4lYpRmzIYTKqOLj1NS8S8O9D8ax9dbcunCJp3qxAAfCt3QHvEw4vZMJl1-U8ZCwHb7LI2e4FO5RLjnyTp4RKxQJ_LfvXSMeLBHO7FgBTqIn_ERF7rLLzHIM7YMwCppHQTZ_NfFZ0ZFMOpF_cBFL8lCne4p3jULLMaryKRS7yxq5qSZdtvhkCdFJAW7XDjuK7HH9ZxMLfuv9DlW87jfAvQAZhFwAvz9gXBl1sc4bBmFyA7Rx-MbKy4DP45bnNaJ8THRi1o8fOGItnTa0Dx73W1siicBNHsIY_7ivJwM-UNRKUcO5FQF7LHledp0VE5_5eiAmg=="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "UE_vaqebD__XqfkP44P6IA",
+  "usage_metadata": {
+   "candidates_token_count": 62,
+   "prompt_token_count": 1062,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1062
+    }
+   ],
+   "thoughts_token_count": 535,
+   "total_token_count": 1659
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 5,
+   "actionability": 5,
+   "reason": "The feedback accurately cites the measured plant foot offset, focuses specifically on correcting this issue, and provides a clear, self-executable drill with a visual marker."
+  }
+ }
+}

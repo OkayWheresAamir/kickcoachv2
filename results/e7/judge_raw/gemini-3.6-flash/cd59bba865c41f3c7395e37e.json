@@ -1,0 +1,101 @@
+{
+ "key": "cd59bba865c41f3c7395e37e",
+ "tag": "judge-v1 c14-F-SHALLOW-BACKSWING-llm",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Shallow knee bend in the backswing\",\n   \"feature\": \"max_knee_flexion_backswing\",\n   \"value\": 101.38,\n   \"unit\": \"deg\",\n   \"fires_when\": \"above\",\n   \"threshold\": 89.61,\n   \"threshold_source\": \"Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 127.13,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 101.38,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": 1.13,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": 0.2,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"above_norm\",\n    \"norm_ref\": \"N-032\",\n    \"norm_mean\": 77.29,\n    \"norm_sd\": 6.16,\n    \"population\": \"elite, adults, mixed\"\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your knee bend in the backswing was 101 degrees, which is too straight.\",\n  \"why_it_matters\": \"Bending your knee more stores energy so you can kick harder.\",\n  \"cue\": \"Bend your knee more.\",\n  \"drill\": \"Practice pulling your heel close to your body during the backswing before striking the ball.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"N-032\",\n   \"label\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1\",\n   \"text\": \"kicking_knee_max_flexion: 102.71 \u00b1 6.16 deg (elite, n = 26). Paper's words: \\\"Swing KF 102.71 \u00b1 6.16 77.04 \u00b1 12.63 437.11 \u00b1 108.87\\\"\"\n  },\n  {\n   \"id\": \"kellis_katis_2007\",\n   \"label\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review\",\n   \"text\": \"Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987).\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 3,\n  \"reason\": \"The feedback accurately cites the measured 101\u00b0 angle and mechanical benefits, though the cue is very brief and the drill lacks specific setup parameters.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 4,
+  "actionability": 3,
+  "reason": "The feedback accurately cites the measured 101\u00b0 angle and mechanical benefits, though the cue is very brief and the drill lacks specific setup parameters."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Sat, 07 Nov 2026 16:18:06 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=6950",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 3,\n  \"reason\": \"The feedback accurately cites the measured 101\u00b0 angle and mechanical benefits, though the cue is very brief and the drill lacks specific setup parameters.\"\n}",
+       "thought_signature": "EokSCoYSAWkUfRNqeapBVGs1P-WfptrBW7FjU55Dz5OGzOl8O6pL8KMnWSTeL0FavBzRw3OZs37bB6g17vn-eZAXKQqu_GsHxKtszZWIBKyyBfeSTtWr2IW1EKanvnrYeusfYl5KeUmdnk8phnxYmYQWcuOqfxaeVbKkU9SgNrsrF6oX08T5GtEE9htlkiKpo-QK5fEchuST4KnLGjEYo3eX2PuP3yIF3LoT4sEOC1P-GggF1leN24o05NIZpzBLgJ4U99u8wbsHRt44sZ9vPzI5WZqcfrl-qgq6Oyt_9p5sXglszptSuDQOuK7Wp2-Q_J0PohbW7IxRg5KlB7UWxDPlQj7lB1emkHCDkvYUKmGS0rQg3GKsGX_bmxCx96sh0N-P7G21yg7c3iOl8D88eWTFZZKee_GhciC7E0DK8okYcNqsLdl2wLVBkI45dBVmBBLIau92YL6jrKhmIBWcPjjpNGA5HDeqRo5u4LGCy_rTjwEh77X4YaoaIu-XrcmBhq8oPB9JjM-MaYzAaumQen1FulbpjnZ0U4OFUwwvzK03fpTu3wdNshSg4G_GllDNfWSnTWbDWpNWzp31dQvdyP2i1Q2XL2S118XkxklbXttTkcDTqw0Gv9wcu2kCD8ZQ39EOEduDE74dhWXpM5Mw38ln7e500MnYVEtuaVHRRWMmB1I1NF_y4nhb2CwxkqSy5vvqRw8eaqk9Rrh8u-YmwfQcoSKfBawmffPOk_beOo1FDE_t9qNNt6nSLY9vM3AY3Pwgw6TqTMDS2FLog4XK2FjIweical6a0JpYIgM7ohDuZm6sMBkFVJXr4RFmUXvMxextce-xj3btlyfHt29xnyZYgLjYXoQMkokg0umTo2ZVkWrfa_PrqB8xNipOhs9j1BQjgMFV772Sl7qTdRzYkmgVg6C34MEmL2UMbkzxF53t8aTgmXax9rwgi3zMoFZhJy2ht7fowAI89PlyKt_RMB7D0TiXSmJ7ymkr3Jlvrm8tUInPkloApAgHoucCWp52T3uEOAvCmPEnR0Gsr_hCWH2V8IXf5hBkx01Q3bMoy1nREXyXXEWxA_ToV5zw0BaviVL1utfqcHe2VvUd0U9WxMfV_-UqCa_XEqy8S7SHwbO1AbDs5A6MOde-C0-dE9ljdN9aN87AebubYIuw7bxJfblRgjxXfcvPZUnq0arfXRoIgkxckRldfZyIMbzwNJw3Eglgb2RAcrWwNk2ygmq6VZ3cvxwAz4lF5hjRqFHORmzIJZBPNtHvjyaxqDzWibidkJ_U1uIXCoUrgcGYHbLCNf4GU_HR2qDOKLrCuZ1brk10yEXk9xHErHYY3xl7ckti27BBQWbdN8pDdkscGgNas31qvg8JIMfMdhZi51qOitUhhjc0BpQtFw13wLdNiSArIB5QUOsJ3l9daBM95U5KiYkGGz7HS8EvM6VigCz-GmhHKEKbjryw5qOxsEsRTtLIWmETx-h-RZ7Gp73N_HgMDA6ghAO8v9dpoheNQmTPfvfgh_8z9Ca9AeIXtzrIU4KihqG3GUsp7UJrU4mCDqkwVvoKXJ6CeM_maWXluULCClVPZPBKK0uMpMfRDbOqVVRdFNMyx_G6pKcBhpP6KbVTAfNIuzwym0gRUP8fLiNj5vMgFkPHk6XjctT2dFw1jVQC3SIRbPpIIoGyagMqOrp5B9Op8Xn-Wttorxta9cU9Pyc95KBNUcUZso3PLAwhyoR1kegV2HnTPIRH_BPfTV9lUvpOUgQTQEOm7ZKZgMvjuPwmxukdGi1WGy9j55QhVSzs1Fz1C4t6lVhH1n89ciy1-PGVAZ5TTcZJzjfGzTzq9XZ-A-IV6NhBJQ09teyk91POzdUB1amxSfenOWG9jz7_i7xL59nCabMZSlNVddpB9BuAq29vy0fkmqbLP1EWoTDdxhjDg0r2AEwCLvk536_8oxPBsUlVl4wAHch4laygTZqkLseKqK3Fq5GS2HgfwTUEcFJu413tDkDxHBZTXSCGPvoYTjr8S7Q_mr6goGCUcTFpZCD-d2GP4iwPCPbH41TJ3L2aBOM6Pc-cKvepTy0f4RJiLR7nuzxqkDuZiJo-TCyHDA0i6XSdVcnixyl2IkRaC-WXTJTxjpTPgydrf4UxX5ChdKr72SebNNL6vHS9a5nE1k_jyEp1P419qjzfoCHvxPDhsQL3EC84LwtHmmeRvAL3-hPDmqF4yxaLhiyNmYAyflCb_I6xY3igPWZWrmfybWLlGyHEGQSzCnlhhVNFcpVir637jffYcMEeH-GBz7V5_EiBZlcpwqJdRVbmZyYTLNhcb0hS8uclzRfGrETvCxPZay1TeRdW95m579sxgBqtJupttnXgBpVdIyoMw6jCuCp1oFXtu6oUncwzU5b9Md462-5xW6LknAQlyyLwfp94xAv7v_rrvQ9nQ0dWwnlR5csJoA65GhT4A3VqBVawQhbsq9Y5etJQxN_Q-fCt3MrfbOJNK65yjml0Mgy69lNX01TH3_LHykWifzW2J47jq2RxXaVQNTiDxp45M-JYFuGgKmjJuTEaYObl3MC8V6zJMuNF9POubS3QxsiSlfg3x6U4JoCVSN5lqMPO5VGZpnMElFN5JckypJ92p_iajLFE3Mrugehs7ox5dLjutNN4AfPkQw9cMOLe-22ohsCpsnOWqPGNfIrLHc6j5Hkt-4F1Mu1od6QFEnPAlkLCT88F5atSdBBe6ZO_RVGjFL6WlszCaNA_t4xRXCCxRW3QvBFKqORZZ8YAg7DXz3IdT8Pd8PYwdMyed6GNOEUXfmaBL7jHPnzC_FvEU5SZayv_MenutKcjLNpvokovT0lPGZASYRJKFyLIG0QlyFe-91Eki7HN_f4ybcUztjDfnXM580ecOWMHJSjdTUr26GZJEaoLJ5mKq91dflSEd1y8cLUKeijbGnkOikbY-zx1H5eSrHNlb4Oj2SYiwOfCmeOr6GuL-sKgeAJnBAl9YmwjOKQbkq3baIoau6SUW0YgKrfAbg08BjfzpKusHPR15e6OYExV-Yel45Y5rfZ_JLupp9HZTo0hiZNSNyd8gxl14OP-crB9b-q9B069M9jhPWHz"
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "OE_vas7sJfWr3LUPiNGb4Qc",
+  "usage_metadata": {
+   "candidates_token_count": 65,
+   "prompt_token_count": 1358,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1358
+    }
+   ],
+   "thoughts_token_count": 567,
+   "total_token_count": 1990
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 4,
+   "actionability": 3,
+   "reason": "The feedback accurately cites the measured 101\u00b0 angle and mechanical benefits, though the cue is very brief and the drill lacks specific setup parameters."
+  }
+ }
+}

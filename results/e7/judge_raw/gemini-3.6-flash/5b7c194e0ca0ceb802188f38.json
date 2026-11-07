@@ -1,0 +1,101 @@
+{
+ "key": "5b7c194e0ca0ceb802188f38",
+ "tag": "judge-v1 c16-F-PLANT-FAR-BEHIND-llm_rag",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Plant foot far behind the ball\",\n   \"feature\": \"plant_foot_offset\",\n   \"value\": -0.36,\n   \"unit\": \"leg_lengths\",\n   \"fires_when\": \"below\",\n   \"threshold\": -0.25,\n   \"threshold_source\": \"heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it).\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 137.23,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 71.22,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": 5.36,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": -0.36,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"no_comparable_norm\",\n    \"norm_ref\": null,\n    \"norm_mean\": null,\n    \"norm_sd\": null,\n    \"population\": null\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your plant foot landed too far behind the ball.\",\n  \"why_it_matters\": \"Placing your foot too far back reduces your power and accuracy.\",\n  \"cue\": \"Plant your foot next to the ball.\",\n  \"drill\": \"Stand with your non-kicking foot next to the ball and practice a phantom kick.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"K-40\",\n   \"label\": \"Kapid\u017ei\u0107, Huremovi\u0107 & Biberovic (2014), J Hum Kinet 42:81-90, Introduction, para. 3\",\n   \"text\": \"When using their preferred leg to perform an instep kick, soccer players practise a straighter approach to the ball, place their standing foot closer to the ball, and kick the ball with greater pelvic tilt and greater knee extension of the kicking leg. Variations in the placement of the support leg impact the speed of the ball.\"\n  },\n  {\n   \"id\": \"K-09\",\n   \"label\": \"Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)\",\n   \"text\": \"Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball.\"\n  },\n  {\n   \"id\": \"K-10\",\n   \"label\": \"Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (drill)\",\n   \"text\": \"1. Have player stand with non-kicking foot next to the ball. 2. Phantom kick the ball with kicking foot.\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 3,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reflects the detected fault and cited sources, providing a clear solo drill, though the advice remains somewhat standard.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 3,
+  "actionability": 5,
+  "reason": "The feedback accurately reflects the detected fault and cited sources, providing a clear solo drill, though the advice remains somewhat standard."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Sat, 07 Nov 2026 16:16:00 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=5065",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 3,\n  \"actionability\": 5,\n  \"reason\": \"The feedback accurately reflects the detected fault and cited sources, providing a clear solo drill, though the advice remains somewhat standard.\"\n}",
+       "thought_signature": "EsYXCsMXAWkUfRPLz4ImIxteBXgY_vHZNql1gk7fSBtDJrxy6b2cJqVVNCe3EwdIuBSSQrDouipfPssvIhF8x2caeEZm2YydXFE7QMn-obqsSfSDdscMFFRmX55Qsh-wH1rsdNqldssU0LyQkuowzEW--nQ7hSO9WxYKfVWm6fZJu-17jgpwiiEakfGDmEgo225B6gz0vEzPcD_vPb8f3OQD90oN9SNc5ufZN6zrC8jEDpMpFtwFW44BeBGV6bw1NQC807GBc5vNGMLBl5b9ZPgeWwgJ10vkLolfDqSm7UcKK8BW9nXaUi2IwXOHzG6nvomOmxS6fmAWTS5NWP1XiQjC3TKYvKWI4lxjhmKjz-B__rwtSn8DgS2pJdHb6DreFPa3JLvE759fIHju6lDfO9iG4OWFBF-5IGhU1HSWL25MbjEeMo7aQlvA-gdHDMDboNgh9EzvubrHKMH8GgdOa_Dv1sqZUNoViiYI2xYtOoDAh-thKCJ6n8b7DYIKtYUUBWhe49161pAB0RfWYK5GRmFvpS1m_Kl0As_1-azrKPtMVqfaH8bjn96dad-hQ3s9tsHG3KHxBCJIYRvRBCPnljG7tfOFrsgQJ8FWHZ4RD0YObtdfCb8c6VJr3vFdm9Dtu9y-l113hjKAiCqoSxt-9Bt6slv-zaxrlzZtZtO3FP69f8833qxrasUY-hJRswb_Kv-tGns9GTf0HQmghW2sB8sS4-8TFcR9acZF0m62yfzsZH-_Irk8X2JXAHQjZ4sLvhgd4WYqARONwvdW-Pi0JFJLlePXKWoCgqOHtyZDE3cTXmFQRn01z-DWfW45B3H5-C1DnNY-QTGlh60KRnQrQJa1g4ALnTUzI91vXj1qoSaoV7pbliIXmcnWtJpK0bmaeVBkITmtaIscnI7E1DsrvziYxQn437Lmv9LwiS0ijJyqrjaw-JwTwolgqSNEf9OBYtyhwjt5P4WldpjvFPr7v0FBCLDMaqXlpkdnOC9EqXhBv2ovVC_LShdbKgNJxYQXllaQ9xgP4V3pJYb45bWpIPkG-ym689-WQXUXDIYxKFWfHp_Vmg6qdR8ah0EyZ0BXw9h1xl9xZtUeJ6XodNrm6ZIG_f_vfh_eJWzHnbmtnK0bmSPOJPiAKsGD6OuRuY7aQQc7jArfbFm-zNksVjv70mRQTVxMK5Gj498WOMSeaxsvdw6juiCRoxNN7Jv3oE5N4IQw20euD4r6QV2xcAi6eINXuwz0hlCb3O4yew5Usn_-bHq9rHEnL_v2ldJVRdFokhuxrhbw2Dyi9cH_PrpQTcD7APoCKz8RjGH97aud2qYoXcukiVNeMvmhwPhBbpodiOzcqNjNti11EIsU6HL1fj-k3PSCOfr8IShbzm4VrCfRWNQT_pMfYu0Yt_UMDma2UYzUTeeTKxYK4Izpjp20jRSPtRnYBZgviiJdwxThUqmIAtRC-Ju-uu4vEw-LG-kmqVraklTgHJQcG-oTO2tu6NLbtB_yUCFMVdOx9WBhXd-_prP550-ULqytKe5WNEma8WBm7Fwgac7oJhG7VaKYWTLKQrsUKsDg8QytdD8a3RHuw5WrXIiqAIgr5Vozp7ElM5MuVy9tHLYtK9xr-vHBIyKfSGoPaJtCdhdAsmb0Mp9DP5X9Qp6JOtC1BMjYHvmawbas9ezTptmaIIzwwBucnVCZlzZJUMnvgFjwXd1YSvDiS8VgZQyZWK67NpGKW7eM7Mva743wVF1--wVqZI6ZMbCSisKgr13FoilWbhT7DnZYFhhtuLzdKr9a8MtOyCgjaijyUetSIeLOvEoMJpaESU2rpB5htqvr2AI5w6MFhzyG5Mq8zU1fOwBx5-pWYP64jY1RdQ6W4xZgBnyTa30Sy64eLg6fI2B972-xotaWarDxo5B89CJLQagSAqiHZf0XQPTQCPzKOFU0JjJ9_1PWe-VS2fsvGXK2vDvRY4Fmwsz2JsTjmKOLwYGK5HwDesCd1mCnAc88zihmICfJAepz2FRZedXvB6UQeIuSTFeTk-elebLvBkWb0SUIcxCjRq9-8KNXzWuSvkRGdOXeQnwWc6K1YiSwTnqvWeI-fwpcjO_3T_NvPIzh40keKomgd_CEOPwBTA3Wd6S-npZT50lWbi-VAojLI0fDHqQZzoz1tmhhN73BC5edwBbBBQwiknbA1SGcVkjDa2D-q2bVR_Ie9u8CV8qkHNV25nBygxLmm_QIdTjNQzybh1mrL_EA96kaMVAFHYn0ZRiQDgFcyH7l5lWgWoAq5bATvNzf1IJsQqnlqqJIawYfiUqIcDbiD_rPnMqVqmcvZTEZYjBC6w1ROWF737bJTJc3iBMuqhSaUH7bj7Njl_HbYfzi-tVFtFhHq2C-A8SLxmMy8NKBcjf2OyT9tNTCaKSSx-pdhRl3rwruL3bGvLtjLd9lRGvL5R48zHXFHqVRGP2tSlYKBcP9q7FnBpsJ_3guFL46h_tuKhjAL-j7eHkyOrSzJc4QdP6vGJ9Y130fIU4t50JyAGQGCCPsAmuJW__9KxBxvZtLTI6ZfRLyaaIbXX13WHDVrwVgKksTpCvqE-FGnLHAbOxEp0e6ez0lgbjLvQpwsJoKrRctPp5QlGRqZZOArC5UtAFR4Jfh-pG1LYUhnRr4nu4q6XVr7rKsp_mysm-Tu2QmwQW_8F8lp1wmh9KH9_nkZ7mLCEb8VRUQso7HId6hL7-rrTndbjd35UeL5VsOU_alpBrf0sdoM3iW0Jzrt2WdCNhM1-u7NJpfDqd7yRIou5qSjsxFaSgeLQUDLZFg2I2ASjUI0fPkD35TJfQxgdX209MVw3szSsfebMOMIm6Afq2wwpLkEapBBJt-Qa-S5yh8a_iBjSJEhQlawVo8g65lA32K8Q5flxzKQ_PPe9G9Fe1wXy-utVzeE5Zkd25OsHc8zWKTNn2HKDRjKOLHQjqj7QlHWppEQQ5ml3R4alltWn8mwwcj6ADufpl_pfp5pgZPJiFWWiS-wpYwGVWd6UvotrRFpdXnELxrh4cbPK16dwe2Dsu4-QL35CgRkKcgCe9cOvnErz_yc3E_c5yKxf1OvAZq-UBWphXe9YzISoO-UVQeNer75sSIIAls0Lf84eBv4yPPs-o82qPvSeSE35YzJSLbn0Wdesq5TUx2fUQRcdxCDD8ktObefLc7D_lOQKHkXtAN2opN9vb2bhlln11EvhVECuFz41dv-WcOWaCO_B5hmFjF6PaTtsvC7WUhh_m7rCCkIeE0xrkl9Xv_3xbd08f2jby30tm1WzfxdlFLZ6Z023NCk_d2Jrpn1DsskOoHmGxT8qgwku5_qUP4OC6pjAm_NXIMzd5YZm8u-PMm1m9FF0ZhM4MOXulYo2EEf6XFgfNZie-uxWGLwho6Q1on9_cgThyKxPapXlOdZx-z8cHwrceuRNF6lxwn2tqdXjdFJrMsU6xLU277ZFHlLcoCb2AyFRKggEBOwNkdV5A3Qt7lpdXoaC8fHClYeam-uzwZr-knGZhZwNadlqUYK7fpuIDbYaehN_m4nsIoc22N8SQIW7nQiICKUeiUbwLXqpbgo10PkLDvG9AZsnfpTUP4m4tIjozIDe_dpGoDoxAvKDcbuGhtm7dKaof1YHHsIbmDUNrcBJyWfgPtKiJlZpi8DJr8tWP0qtVGFdbJVVpwInqJ-g8DggzQyH0k0A2_x1_3tGq8elyHRDs3dlSE2nGwdRdExWFqwHQUSzRy517wr_PXqvVLUxPwYIU0-6h8F8pm9KE5pm_eVbQLU99PGlO1HQB0TjqvkbGkpA_Y3OZB-wMpBn7CNFn8NVKs8LaLOBrRSGO8kiWIUAZdQE_63KpqCNU1TWlap3Sg112X2xLY3QAo_iqj1wbhSgzVYCNxsCzuMujfwHP3sBu1g6THvC3DP1r7ttNTwluMUq-jBQNVT5S4YXi2wFdGmJzaBVSUI2nZ_LbGIHHcY1afzfPkwhGGB0NCNo3-EP7mY1uxP5lWt5n2ZhMWWpQA5aATtkcNMm4sdTd2XpA8nNzzW28="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "vE7vas6XFvn8v_gPjv3asQ4",
+  "usage_metadata": {
+   "candidates_token_count": 59,
+   "prompt_token_count": 1366,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1366
+    }
+   ],
+   "thoughts_token_count": 718,
+   "total_token_count": 2143
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 3,
+   "actionability": 5,
+   "reason": "The feedback accurately reflects the detected fault and cited sources, providing a clear solo drill, though the advice remains somewhat standard."
+  }
+ }
+}

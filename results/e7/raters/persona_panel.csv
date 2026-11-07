@@ -1,0 +1,101 @@
+Persona,Item,Correctness,Specificity,Actionability,Note
+Toby,R01,4,3,4,"I get the chest-over-ball idea, but it doesn't show me where my laces or ankle should be."
+Toby,R02,3,4,3,The 101° number sounds about my kick; standing leg curls don't show me how to kick the ball.
+Toby,R03,3,3,4,"It says I lean back, but I'd need a demo to know what forward should feel like."
+Toby,R04,3,3,4,Freezing at contact makes sense; I can copy that slowly.
+Toby,R05,3,3,4,"Same chest cue again. The number tells me how much, but the drill isn't new."
+Toby,R06,4,3,4,"The head-and-knee cue is easier to picture, and the guide supports keeping the ball down."
+Toby,R07,4,3,5,"Wall passing is easy to repeat, though it feels more like passing practice than shooting."
+Toby,R08,4,4,4,Heel toward my bum is clear; I can swing slowly and try it.
+Toby,R09,3,3,4,"I get it, but push forward sounds weird and I might lean too much."
+Toby,R10,3,4,4,A marker and pretend kick are easy; I just want to know exactly how close.
+Toby,R11,2,4,5,"Stepping to the marker is simple, but the reason about leaning away doesn't match the numbers."
+Toby,R12,3,4,4,Heel close to my body is easy to copy; stores energy is confusing.
+Toby,R13,3,4,3,"Slow backswing is doable, but bend more doesn't say how much."
+Toby,R14,4,5,5,The 94° measurement and heel-up drill make it feel like this is about my kick.
+Toby,R15,3,4,4,"I can step beside a stationary ball, but no source explains why this distance is wrong."
+Toby,R16,3,4,5,The marker tells me where to step and which way to point my foot.
+Toby,R17,3,4,5,"Heel high, then step and strike is a clear sequence; much more power sounds like a promise."
+Toby,R18,4,4,4,"Pulling my heel toward my glutes makes sense, but it doesn't show an angle to aim for."
+Toby,R19,3,4,5,Marker drill and plant-foot cue are clear; I still don't know how far beside the ball.
+Toby,R20,3,4,4,"It connects leaning back to high shots, but doesn't show how to keep my laces on the ball."
+Maya,R01,3,3,4,"The lean flag is relevant to high shots, but the effect on accuracy isn't demonstrated; the slow drill is usable."
+Maya,R02,3,3,3,"101° is specific, but deeper knee bend is not obviously the main fix for my shots over the bar; curls won't transfer directly."
+Maya,R03,2,3,3,My issue is ball flight; causes and lose power are too strong without any ball-flight evidence.
+Maya,R04,3,4,5,Freezing at contact gives me a clear check on trunk position; shoulders ahead of hips could be over-cued.
+Maya,R05,3,4,5,"The -19.79° lean is the clearest personal detail, but the rest is still the same template."
+Maya,R06,3,3,4,"The guide backs keeping a ball down, but it says nothing about shot power or my actual trajectory."
+Maya,R07,3,3,4,"Wall passes can give low-ball reps, but that is less relevant to a full-power shot."
+Maya,R08,3,4,4,"The bend measurement and heel drill are useful, but deeper bend may not fix my overbar misses."
+Maya,R09,2,3,3,"The -13° value is personal, but no source or measured ball flight supports the high-shot claim."
+Maya,R10,3,3,4,"Plant-foot location is worth testing, but the heuristic cutoff makes the diagnosis uncertain."
+Maya,R11,2,3,4,"The plant-foot cue is relevant, but the lean-away explanation conflicts with the measured +5.36° trunk angle."
+Maya,R12,3,3,3,101° is useful detail; stores energy is oversimplified and doesn't diagnose my shot trajectory.
+Maya,R13,3,3,3,98° and simultaneous segment peaks need interpretation; simply bending more may not fix high shots.
+Maya,R14,4,4,4,"The 94° measurement and cited stretch-shortening explanation are useful, though the adult elite reference isn't a personal target."
+Maya,R15,2,3,4,"The marker drill is easy, but the threshold is only a heuristic and there is no citation."
+Maya,R16,3,3,4,"Good plant-foot cue, but no source or outcome data shows this exact offset is too far back."
+Maya,R17,3,4,4,"The heel-back progression is clear, but much more power isn't supported by any shot-speed measurement."
+Maya,R18,4,4,4,"It has several measurements but addresses only knee bend; the heel drill is useful, though the link to lower shots is indirect."
+Maya,R19,3,3,4,The citation supports planting near the ball; the cutoff still needs validation against actual kicks.
+Maya,R20,3,5,4,"This is directly relevant to my overbar problem, but no actual shot height or power was measured."
+Coach Rick,R01,3,3,4,"The -12.65° sign and cue agree, but the accuracy claim goes beyond a passing citation about keeping the ball down."
+Coach Rick,R02,3,4,2,"100.89° exceeds the converted elite reference, but a 2D-to-3D population comparison is weak and leg curls don't train the kick sequence."
+Coach Rick,R03,2,3,3,Direction is consistent with the trunk measurement; causes and power loss are unsupported and there is no source.
+Coach Rick,R04,3,4,5,The slow walk-up and freeze is observable; the shoulders-level-or-ahead-of-hips rule is more prescriptive than the measurement supports.
+Coach Rick,R05,3,4,4,"-19.79° supports the lean description, but the causal explanation is copy-paste and uncited."
+Coach Rick,R06,3,3,4,"Measurement matches; the guide supports a low ball, not increased power, and it doesn't validate the threshold."
+Coach Rick,R07,4,3,5,"The citation directly supports keeping the ball on the ground; the wall drill is clear, though control is a broader claim."
+Coach Rick,R08,3,4,4,"The reference and stretch-shortening rationale are relevant, but the cross-study comparison doesn't prove this player's power is limited."
+Coach Rick,R09,2,3,3,"The measurement supports leaning back; the high-shot outcome is inferred, not observed, and there is no citation."
+Coach Rick,R10,3,4,4,Two sources support support-foot placement and the phantom drill is usable; the -0.25-leg-length cutoff is explicitly unvalidated.
+Coach Rick,R11,2,4,5,"The offset is measured, but the claimed lean-away conflicts with +5.36° trunk lean, which the sheet defines as forward."
+Coach Rick,R12,3,4,3,"101.38° matches the flag, but stores energy is sloppy shorthand; the heel-back drill is clear but not a kicking drill."
+Coach Rick,R13,2,4,3,"The 98° value is specific, but power reduction is asserted without a direct outcome link; the slow drill is generic."
+Coach Rick,R14,4,5,5,"Best knee item: exact angle, cited mechanism and a solo progression; still treat the elite 3D norm as a reference, not a target."
+Coach Rick,R15,2,4,4,"The stepping drill is usable, but the diagnosis rests on an uncalibrated threshold and has no cited support."
+Coach Rick,R16,3,4,5,The offset and marker drill are clear; the explanation about meeting the ball at the bottom of the swing is not demonstrated.
+Coach Rick,R17,3,4,5,"The number and drill are specific, but much more power is an unquantified overclaim; peak knee-extension velocity wasn't measured."
+Coach Rick,R18,4,4,4,"The 98° flag and sources support the stretch-shortening rationale, but knee-extension velocity and individual outcome are not measured."
+Coach Rick,R19,3,4,5,"The source supports planting near the ball; threshold remains heuristic, but the marker progression is practical."
+Coach Rick,R20,3,4,3,The -12.57° measurement supports the diagnosis; there is no source for the shot-flight/power claim and the drill is vague.
+Carlos,R01,3,3,4,"The chest-over-ball cue may keep a driven pass down, but it lacks plant-foot and striking-foot detail."
+Carlos,R02,3,3,3,"Knee bend might change the swing, but standing curls don't reproduce a weaker-foot instep pass."
+Carlos,R03,3,3,3,"Forward posture could stop my pass ballooning, but the power-loss claim is stated as fact."
+Carlos,R04,3,3,4,The walk-up and freeze is easy to do alone; it gives no target offset or progression.
+Carlos,R05,3,3,4,"Same useful freeze drill, but it doesn't tell me how much lean to aim for."
+Carlos,R06,4,3,4,Good cue and the guide supports keeping the ball on the ground; I can practise slow passes.
+Carlos,R07,4,3,5,"Wall practice is directly usable for driven passes, and the cue is simple."
+Carlos,R08,3,3,4,"Heel-back practice is more kick-specific than curls, but there's no weaker-foot progression."
+Carlos,R09,3,3,3,"Chest over the ball fits driven passing, but pushed forward over the kicking foot is unclear."
+Carlos,R10,3,5,5,Most useful plant-foot item: marker placement and a phantom kick give me a repeatable weaker-foot setup.
+Carlos,R11,2,4,5,"Plant position is useful to test, but the lean-away explanation doesn't fit the measured forward trunk angle."
+Carlos,R12,3,3,3,"The knee-bend cue is understandable, but I don't see how it makes my long pass repeatable."
+Carlos,R13,3,3,3,"Slow backswing might help, but it's generic and doesn't adapt the drill to my weaker foot."
+Carlos,R14,4,4,5,Controlled leg swings are easy to practise alone; the power link is plausible but not proven for my pass.
+Carlos,R15,3,5,5,The stationary-ball plant-foot drill is simple to add before weaker-foot strikes.
+Carlos,R16,3,5,5,Marker approach plus pointing the standing foot at the target gives me a repeatable setup.
+Carlos,R17,3,3,4,"Heel-back then strike is useful, but much more power is an overpromise without ball-speed data."
+Carlos,R18,4,3,4,"The backswing drill is clear, but the same kick also flags a plant-foot issue that this advice ignores."
+Carlos,R19,3,5,5,The cited plant-foot correction and marker drill are practical; I'd repeat every rep with my left foot.
+Carlos,R20,3,3,4,"Forward body position may keep the pass down, but it doesn't explain how it adds distance."
+Priya,R01,3,3,3,"This addresses trunk posture, not the hip-to-knee timing I'm trying to tune."
+Priya,R02,3,3,2,"It measures bend, not extension timing; standing curls won't teach a fast knee snap."
+Priya,R03,2,3,2,"The lean diagnosis is plausible, but the advice ignores the measured thigh/shank sequence."
+Priya,R04,3,3,4,"The freeze drill checks posture at contact, not when hip extension and knee snap happen."
+Priya,R05,3,3,3,"Same issue: lean is measured, timing isn't; the cue isn't my main variable."
+Priya,R06,3,3,3,"The citation supports a low ball, but it doesn't explain proximal-to-distal timing."
+Priya,R07,3,3,3,"Wall passing gives repeatable reps, but it won't show hip-extension or knee-snap timing."
+Priya,R08,3,3,3,"Heel-back rehearses flexion, but there's no instruction about when to extend."
+Priya,R09,2,3,2,There's no timing guidance; pushing forward could distract from the sequencing issue.
+Priya,R10,3,3,4,"Plant-foot practice is clear, but it is unrelated to the hip-extension timing I want to improve."
+Priya,R11,2,3,4,"The plant-foot target is clear, but the explanation also contradicts the measured forward trunk lean."
+Priya,R12,2,3,2,"Heel-close trains backswing shape, not when knee snap should follow hip extension; stores energy is oversimplified."
+Priya,R13,2,3,2,"The measured segment peaks are simultaneous, but the advice ignores that and just says bend more."
+Priya,R14,4,4,4,"This is a better backswing drill, but slow swings don't train the timing of rapid extension."
+Priya,R15,2,3,3,"Plant-foot practice is actionable, but it doesn't address hip-to-knee timing."
+Priya,R16,3,3,4,Marker approach is clear; there's still no knee-snap information.
+Priya,R17,3,3,3,"Heel-up then strike is simple, but it doesn't coach the transition or extension velocity."
+Priya,R18,3,3,3,"It references stretch-shortening, but peak knee-extension velocity wasn't measured, so timing remains unknown."
+Priya,R19,3,3,4,"Good plant setup, but no measurement of hip extension or knee-snap timing."
+Priya,R20,3,3,3,"Forward lean might affect trajectory, but the advice doesn't address backswing or segment timing."

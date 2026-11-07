@@ -1,0 +1,101 @@
+{
+ "key": "85dbd991c033de9b1d62a378",
+ "tag": "judge-v1 c24-F-SHALLOW-BACKSWING-llm",
+ "model": "gemini-3.6-flash",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "correctness": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "specificity": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "actionability": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5
+    },
+    "reason": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "correctness",
+    "specificity",
+    "actionability",
+    "reason"
+   ]
+  },
+  "temperature": 0.0,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are checking coaching feedback written about one football (soccer) instep kick. A\nseparate system measured the kick from video; \"facts\" is its output. \"feedback\" was written\nfrom those facts, and \"cited_sources\" are the sources the feedback cites (empty if none).\n\nRate the feedback from 1 to 5 on each criterion:\n- correctness: Is everything it says true to the facts and the sources it cites? 5 = Every statement matches the measurements and the cited sources; nothing invented. 3 = Mostly right, but one claim is unsupported, overstated or slightly off. 1 = Contradicts a measurement (e.g. says too bent when the number says too straight) or invents facts or sources. (2 and 4 are in between.)\n- specificity: Is it about this kick, not football in general? 5 = Built on this kick's measurement and fault; it couldn't be pasted onto another kick. 3 = Names the fault, but the rest would fit any player. 1 = Generic advice that ignores what was measured. (2 and 4 are in between.)\n- actionability: Could the player act on the cue and drill at their next session? 5 = A clear cue and a drill you could set up and do alone, without asking anyone. 3 = Understandable, but vague about what to do or how to practise it. 1 = No usable instruction. (2 and 4 are in between.)\n\nJudge only what is shown. A claim that no fact or cited source supports counts against\ncorrectness even if it is common coaching advice. Give a one-sentence reason.\n\n{\n \"facts\": {\n  \"fault\": {\n   \"name\": \"Shallow knee bend in the backswing\",\n   \"feature\": \"max_knee_flexion_backswing\",\n   \"value\": 100.89,\n   \"unit\": \"deg\",\n   \"fires_when\": \"above\",\n   \"threshold\": 89.61,\n   \"threshold_source\": \"Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.\"\n  },\n  \"measured\": [\n   {\n    \"id\": \"knee_angle_contact\",\n    \"value\": 145.7,\n    \"unit\": \"deg\",\n    \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n   },\n   {\n    \"id\": \"max_knee_flexion_backswing\",\n    \"value\": 100.89,\n    \"unit\": \"deg\",\n    \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n   },\n   {\n    \"id\": \"trunk_lean_contact\",\n    \"value\": -12.57,\n    \"unit\": \"deg\",\n    \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n   },\n   {\n    \"id\": \"plant_foot_offset\",\n    \"value\": 0.15,\n    \"unit\": \"leg_lengths\",\n    \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n   },\n   {\n    \"id\": \"segment_sequence_order\",\n    \"value\": \"proximal_to_distal\",\n    \"unit\": \"order\",\n    \"definition\": \"whether the thigh's speed peaked before the shank's\"\n   }\n  ],\n  \"not_measured\": [\n   \"peak_knee_ext_velocity\"\n  ],\n  \"norm_comparison\": [\n   {\n    \"verdict\": \"above_norm\",\n    \"norm_ref\": \"N-032\",\n    \"norm_mean\": 77.29,\n    \"norm_sd\": 6.16,\n    \"population\": \"elite, adults, mixed\"\n   }\n  ]\n },\n \"feedback\": {\n  \"what\": \"Your knee bend in the backswing was 101 degrees.\",\n  \"why_it_matters\": \"A shallow backswing reduces the power you can generate.\",\n  \"cue\": \"Bend your knee more as you wind up.\",\n  \"drill\": \"Practice standing leg curls to build comfort with a deeper knee bend.\"\n },\n \"cited_sources\": [\n  {\n   \"id\": \"N-032\",\n   \"label\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1\",\n   \"text\": \"kicking_knee_max_flexion: 102.71 \u00b1 6.16 deg (elite, n = 26). Paper's words: \\\"Swing KF 102.71 \u00b1 6.16 77.04 \u00b1 12.63 437.11 \u00b1 108.87\\\"\"\n  },\n  {\n   \"id\": \"kellis_katis_2007\",\n   \"label\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review\",\n   \"text\": \"Kellis & Katis 2007, p. 158: rapid knee flexion then extension stretches and then shortens the knee extensors, and kicking speed is higher with that stretch-shortening cycle (citing Bober et al. 1987).\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 4,\n  \"reason\": \"The feedback accurately cites the measured 101-degree knee flexion backswing angle and offers a clear, actionable cue and bodyweight exercise to improve knee bend.\"\n}",
+ "parsed": {
+  "correctness": 5,
+  "specificity": 4,
+  "actionability": 4,
+  "reason": "The feedback accurately cites the measured 101-degree knee flexion backswing angle and offers a clear, actionable cue and bodyweight exercise to improve knee bend."
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Sat, 07 Nov 2026 16:14:01 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=4716",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"correctness\": 5,\n  \"specificity\": 4,\n  \"actionability\": 4,\n  \"reason\": \"The feedback accurately cites the measured 101-degree knee flexion backswing angle and offers a clear, actionable cue and bodyweight exercise to improve knee bend.\"\n}",
+       "thought_signature": "EvEQCu4QAWkUfROSa-LVveuNC4iVC0YEOkVgJFKxYPnjBulxNap2US-H1-OwKBIURrdugwDLObUwqFIg2SgWUeOxwJ8U4UNuJd3S3w5Gewr29E7BydiI3J1Kjlj_cBZNkWsY-F7R_emNrBlMpIYAHkStukfYp51JimypjF_i55-b790VXnkHMG6gdXvu6jQnRUVdNXy4ybO7kWJnEJ9VlNLTLESGPpdsn6eEON81kB1NYQs1_gwyXqc5P8ijgBTb2YMeqvj4CUeeArK1qPOojITEsJOIX3NRNaI-xtG-pLS5fcGb63Abp6tBxC5SS4CVgwjxtqfXNoWirgSU3qLAIGqDK-GHENAVsJC-1DnbnalYlRGlWZCVh_vqpuX6XO6NcqsqpNoO3_VU8kfGQ4uUmNFJpv-hQc-zFGisL3M-17sL3lLsz_HC7uwl8Nj0y2NF_OCoTGlUYMEqxZr78NBQIK1Fk9-W22nyX4Bhep-5MnL82RPMuMtyopRpQ84kwtunxQFlPxE00rqJirK8Q01rDpkqJSthXtG9fUN9sgMZ0dKIYK9K3nayryQ90I6W0kfKEMZyeTSWIsADLFRcOcGRgu1t-QK0MVHiuoAXN1I0p8Pu6n35TxKAj4efgV0S4BRnodMx6boLaJ_nlClpgcRwA6iJ04MCFxijaY573ueWo0-MMQRSvfLSsWeqFPc4dpw0b-po5MQGruqwR1FXZDRlGy1VVC26vtNjSM5KXKVuKcMeWFlwJoR3m4RR5kvGMhO_sUTMd4_CYu0Jxib_L8wf1iO70W3L605XqRmCZEKYy9OVL31BaypI5dnYevUopDANFeSvZqYnjV-3u0b0KIDZtt66dbeJX5tecGgvleneJSyh_-oL1qWRQ_F8nhoVDrlQSmcHBC7sz4vtiXeeoi3pbCcQhvm8SIl9zFxOg1Z5-5Ot4unarBe8jJK9UQzoC4OWV2loHXYvJL8uGyhsin-DffMEewA_NeFCeWwyBlk102rE6MPlIhRJGFfl37wYEwsL-lUNbSDasFKhcAhwt7IvhgY2jTXVxTY9mNyY0Amht_M9C92fW1onER3JG7sdlWuXLXKnEAzSRSpMxpvcYiyKFAVUhhHrvwMS15aku0m0vQfnCaYugMX9ip6tYALqa5YGF6WyBVqL0XuRNsKHDUIvxLca-R0S-ObqpYzgcHZl_HT2Bu75FqzwkqF8al9xEXjzuKjt5evUluPKHNQ6bt6VjjMfOLKmaUNKSqFZetmV0BA5G5Lq3k8uZH5MuQpAhN1O_Wo12CG_rM4yCAoOTUFHn_froNLHi07QxCyz1fQOqCo20Nt-85vmxwTkdep7PCTKtHxxH0blZHHhMwI4lx6tfwrJTIBWzOLMea_e7z1XUvtljXz8knia7S-8hqmFMrXVPGQsX6fDXwddcbAHAzLbTASqXVRIDF3TOGMKeGla1lU4oMI8Bki0dOCJw83ySZ0KvROkmJe1KL63DUtvrvwMdX4SQ4GqVQ8zw0PL1jsd2FqHQ4KSiO7OTx2_0bpFzxjY34ZyD9lJQKTm9htTMqM7Id6egq_9RmZlav3k4ml35xrwXujUgS4-htXdQoCFR3D3rxiLDQSYGMbdoVKAVTTHd65Nnyhy3mAeXOmaZivphSopVp9AM2UQoDBymwTsvE9ysU7vMT8_Mh-G9yJQnk66EmJv3vq6KCJI8ABYZ9gzmP6H3ayAlxGBVHqNkF38b30YMptMNdcfSX0677gOuHwP2yvv00bTcx77TubT3Keh5jzBFoMTcoiY9zS4mgK-E3Gdih0SUOB8IM4cCYQ95UItEHFSY3XgTrvzHvzLhosumGtol2CMAV8M1KOxNYZQ6m8jc_YMDWfgklRzIXOZ4ShX_uuSWUcY52g9A5sShCo4Kfqb-Z2ZHbN0SepLniFvsrOwWynlxPOQ8lxp8THqNiAStRL0Yx8_R2ADrjeUho4zb8vBCYPAe40Q4n2V2NsPbqUG-iMwkr5U1bgp2hztHaJ4k_OUl6yX1GF_tKoo6cm-sy3Xk6fDtZmuRuwKn7yjMJkKC8ezaroqmUWs5ImS-1GQvV3CQjDd_PBSzhP5oHCPhqgWAefWwFUpu5BJHfCo-7VXqRA0HQG8ClA2s2rzIaBv8lXkDcFckvIMN8ar1hon7gT4MtIcQfTHHo6PerswHR4ZrfSNOrukwQv5DIkY-L1MP8r0qEpqv1upr_Czz1JNaA7UrTJeT-0b9WLTCmsvnTTGE6QT6oC94IZuO08MdyFawt1zKLC33Ob0_gjwamcjc0bqnrYPBzVCh4rI83jAaOsPbTlJVdq48dz-8xHXATfKZFx4L34IJsUY0z9DRwBfy4AtHW5UJp-dGhQcjxP7xX9HFvh9NxEjdhjG4Xk-6ZcSqRsDq6Op_6-oGoc97TOdj9XTgk0CZB6MbPvxeKNNgi9uRHQVJ-po5Mf9ze5z9shm7SmOB8FHoDIYQIl9shacXplVoSzjcah6J1pTe8dhUuCjG_9Z9QgTOSMBwVf41Dor7rYhw8kS3webj_76IMYh1RQcTCtoBLma8KtK2GOA8y8JqwXnDiiuQTST6-GMrjDv0oe_w5z9UYeNZgjP3Q8qqiK5mI4sChsd46FpX2Br_6oEiJpeObQG95xkEerbN9h0Y8m2usFZRBGfToxHA-5RNBiG3jxcQW90gCKSB-77Pr4dYvELxU3xVI8ogaTEHnW8RvTv4bm1t3LNRl4GmtUbn3l2MLPv_sXarKp2LLQoefK0-euOyK-_3MgXH_FvsUQabV-zToJwergU9caMzD1ELc7kkK_UYuLk0jb_tpH5Lo3_lCoyF6p4-5CMEMuV7D0QvFbbid2KfTL3_7cDKJoNvMQFor71Nwaf7Ef_PJcSA8CiNfKyEg=="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.6-flash",
+  "response_id": "RU7vavfNIIaz694P09GAEQ",
+  "usage_metadata": {
+   "candidates_token_count": 68,
+   "prompt_token_count": 1352,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 1352
+    }
+   ],
+   "thoughts_token_count": 538,
+   "total_token_count": 1958
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "correctness": 5,
+   "specificity": 4,
+   "actionability": 4,
+   "reason": "The feedback accurately cites the measured 101-degree knee flexion backswing angle and offers a clear, actionable cue and bodyweight exercise to improve knee bend."
+  }
+ }
+}

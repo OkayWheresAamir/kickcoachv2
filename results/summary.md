@@ -28,7 +28,7 @@ evaluation are in its own `results/e*_summary.md`.
 | Camera-angle gate (E8) | refused 4 of 4 clips filmed from the wrong angle and 0 of 21 good ones (in-sample) | 25 clips |
 | Retrieval of coaching passages (E6) | filter + embeddings: Recall@3 0.56, MRR 0.75; the fault filter alone 0.46 / 0.61; embeddings alone 0.29 / 0.50 | 9 queries (relevance labelled by Claude) |
 | LLM feedback with retrieved passages | passed the deterministic validator first try on 14 of 15 | 15 clips with a fault |
-| Feedback quality (E7) | not rated yet (Aamir's 20 ratings) | – |
+| Feedback quality (E7) | no human rating (DEC-041). On 8 matched pairs, retrieved passages raised correctness in 7 (lower in 1) for Claude (not blind) and 6 (lower in 0) for an AI persona panel (blind); the LLM judge (gemini-3.6-flash) gave correctness 5/5 to 20 of 20 | 20 items, LLM raters only |
 | Labelling floor | not measured yet (the blind relabel hasn't been done) | – |
 
 ## Labelling repeatability (the floor)
@@ -121,7 +121,7 @@ tuning clip, so its recall is in-sample.
 ## E6 and E7: retrieval and feedback quality
 
 - **E6:** 9 queries with a relevant chunk; 3 more have none (no approved source had a drill for those faults). Details: `results/e6_summary.md`.
-- **E7:** not rated yet (Aamir's 20 ratings). Details: `results/e7_summary.md`.
+- **E7:** no human rating (DEC-041). On 8 matched pairs, retrieved passages raised correctness in 7 (lower in 1) for Claude (not blind) and 6 (lower in 0) for an AI persona panel (blind); the LLM judge (gemini-3.6-flash) gave correctness 5/5 to 20 of 20. Details: `results/e7_summary.md`.
 
 ## Failure analysis
 
