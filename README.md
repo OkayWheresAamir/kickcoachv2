@@ -23,7 +23,7 @@ v2 is a rebuild of [KickCoach](https://github.com/OkayWheresAamir/kickcoach-syna
 | Camera-angle gate (E8) | refused 4 of 4 clips filmed from the wrong angle and 0 of 21 good ones (in-sample) | 25 clips |
 | Retrieval of coaching passages (E6) | filter + embeddings: Recall@3 0.56, MRR 0.75; the fault filter alone 0.46 / 0.61; embeddings alone 0.29 / 0.50 | 9 queries (relevance labelled by Claude) |
 | LLM feedback with retrieved passages | passed the deterministic validator first try on 14 of 15 | 15 clips with a fault |
-| Feedback quality (E7) | not rated yet (Aamir's 20 ratings) | – |
+| Feedback quality (E7) | no human rating (DEC-041). On 8 matched pairs, retrieved passages raised correctness in 7 (lower in 1) for Claude (not blind) and 6 (lower in 0) for an AI persona panel (blind); the LLM judge (gemini-3.6-flash) gave correctness 5/5 to 20 of 20 | 20 items, LLM raters only |
 | Labelling floor | not measured yet (the blind relabel hasn't been done) | – |
 <!-- results:end -->
 
@@ -114,7 +114,7 @@ A clip that fails the camera-angle check is refused with the reason and how to r
 - **Small n, one labeller.** 19 labelled clips (5 held out), labelled by one person who is not a coach, and the repeatability floor isn't measured yet. Confidence intervals are wide, and the camera-angle gate's recall is in-sample (all 4 wrong-angle clips were tuning clips).
 - **Heuristic thresholds.** The gate's threshold, two of the four fault rules (and the 2 SD margin of a third), the ±1 SD band and the validator's number tolerances are heuristics, marked as such in the code and the UI. Where a threshold comes from a study, its population (often elite or adult male players) may not match the user's.
 - **Internet clips.** Most are slow motion with an unknown capture rate, so velocities are withheld on all but the clips whose rate is known. The players are mostly amateurs, and the kick types vary.
-- **The validator checks facts, not meaning.** It catches invented numbers, unknown citations and talk about unmeasured features. It doesn't judge whether the advice is sound; E7 does, with one human rater (not a coach) on 20 items and an LLM judge whose agreement with him is reported.
+- **The validator checks facts, not meaning.** It catches invented numbers, unknown citations and talk about unmeasured features. It doesn't judge whether the advice is sound; E7 was meant to score it with a human rater and an LLM judge checked against him, but no human rated: E7 reports LLM raters only (Claude, not blind, and an AI persona panel), and the two LLM judges, which gave near-perfect correctness to items with unsupported or contradictory claims (DEC-041).
 - **Retrieval is evaluated on its author's labels.** E6's relevance labels were written by Claude, who also wrote the corpus tags; they were fixed before any embedding was computed, but they are not independent. The corpus is small (55 passages) and has no drill for three of the four faults.
 - **Gemini on the free tier.** E4 used the strongest model the free tier allows for video (`gemini-3.8-flash`, a Flash model, not Pro), at 20 requests a day. It ignores temperature, so identical requests gave different answers, and repeat calls are reported. Free-tier inputs may be used by Google to improve its products, so only the public clips were sent. For the same reason the hosted demo uses template feedback only (DEC-034).
 - **No user study.** Nobody has yet used the feedback to change their kick.
