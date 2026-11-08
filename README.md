@@ -2,7 +2,7 @@
 
 KickCoach measures a footballer's instep kick from an ordinary side-on video: the knee angle at ball contact, how far the knee bends in the backswing, trunk lean and plant-foot position. It compares them with norms from published biomechanics studies and with the player's own past sessions, and explains what to work on.
 
-The measuring is done by a pose model and deterministic code, never by an LLM. Every measurement is checked against hand labels, and a frontier video model (Gemini) is evaluated as an alternative measuring tool on the same labels. An LLM writes the feedback text from the measurements and from coaching passages retrieved from a small corpus of quoted sources, under a validator that rejects any number or citation it wasn't given.
+The measuring is done by a pose model and deterministic code, never by an LLM. Every measurement is checked against hand labels, and a frontier video model (Gemini) is evaluated as an alternative measuring tool on the same labels. An LLM writes the feedback text from the measurements and from coaching passages retrieved from a small corpus of quoted sources, under a validator that rejects any number or citation it wasn't given. Locally, a coach chat answers open questions about a player's own sessions ("is my backswing getting deeper?") by calling tools over the stored measurements, under the same kind of validator.
 
 v2 is a rebuild of [KickCoach](https://github.com/OkayWheresAamir/kickcoach-synapse.ai), which won 3rd place at the Synapse AI Hackathon (DTU, Feb 2026). The rebuild started with an audit of that version ([docs/V1_AUDIT.md](docs/V1_AUDIT.md)), and v1, replayed as it shipped, is the baseline in every comparison below.
 
@@ -24,6 +24,7 @@ v2 is a rebuild of [KickCoach](https://github.com/OkayWheresAamir/kickcoach-syna
 | Retrieval of coaching passages (E6) | filter + embeddings: Recall@3 0.56, MRR 0.75; the fault filter alone 0.46 / 0.61; embeddings alone 0.29 / 0.50 | 9 queries (relevance labelled by Claude) |
 | LLM feedback with retrieved passages | passed the deterministic validator first try on 14 of 15 | 15 clips with a fault |
 | Feedback quality (E7) | no human rating (DEC-041). On 8 matched pairs, retrieved passages raised correctness in 7 (lower in 1) for Claude (not blind) and 6 (lower in 0) for an AI persona panel (blind); the LLM judge (gemini-3.6-flash) gave correctness 5/5 to 20 of 20 | 20 items, LLM raters only |
+| Coach chat, tool calling (E9) | right tools on 16 of 16 questions (16 with the expected arguments); 55 of 55 numbers in first drafts came from a tool; checker passed 15 of 16 first drafts; not-measured feature refused 2 of 2 | 16 scripted questions (1 added after a run), fixture players |
 | Labelling floor | not measured yet (the blind relabel hasn't been done) | – |
 <!-- results:end -->
 
@@ -59,10 +60,11 @@ flowchart LR
     X -- fails twice --> M[template] --> O
 ```
 
-Everything up to the fault rules is deterministic code: an angle is a function of keypoints, and every threshold, norm or bound either cites a source or is marked `heuristic` in the code and the UI. The LLM appears in three places only, and none of them measures anything:
+Everything up to the fault rules is deterministic code: an angle is a function of keypoints, and every threshold, norm or bound either cites a source or is marked `heuristic` in the code and the UI. The LLM appears in four places only, and none of them measures anything:
 1. **Offline norm extraction.** `gemini-3.6-flash` extracts norm rows from open-access papers into a fixed schema, and a human verifies every row before the app may use it (E5 scores the extraction).
 2. **Feedback wording.** `gemini-3.5-flash-lite` turns the detected faults, measured values, verified norms and retrieved coaching passages into text. A validator checks that every number is one it was given, that every citation is one of the provided IDs, that each fault is covered once, and that nothing marked `not_measured` is discussed. On failure it retries once with the errors, then falls back to a template. The app runs with no API key at all.
 3. **The baseline (E4).** `gemini-3.8-flash` is asked to measure the same angles from the video, to test whether a frontier model could replace the pipeline.
+4. **The coach chat (local only).** `gemini-3.5-flash-lite` with function calling over four read-only tools: the player's history, one session's features, the norm comparison and the coaching-passage search. The tools compute every number, including trends and whether a change is bigger than the measurement error from E2, so the model only restates them. A checker rejects any number no tool returned (or one written in the wrong unit), any ID no tool returned, and talk about a feature that wasn't measured. This is the only place the model chooses what to do next; the analysis pipeline stays linear (DEC-008).
 
 | Stage | Code | Decision |
 |---|---|---|
@@ -76,6 +78,7 @@ Everything up to the fault rules is deterministic code: an angle is a function o
 | LLM feedback under a validator | `kickcoach/feedback/` | [DEC-029](docs/DECISIONS.md) |
 | Coaching corpus and retrieval (verbatim quotes; fault filter, then `gemini-embedding-2`) | `knowledge/coaching_corpus.yaml`, `kickcoach/retrieval/` | [DEC-037](docs/DECISIONS.md)–[DEC-039](docs/DECISIONS.md) |
 | Storage and API | `kickcoach/storage/`, `api/` | [DEC-030](docs/DECISIONS.md) |
+| Coach chat: tool calling over stored sessions, with an answer checker | `kickcoach/chat/` | [DEC-043](docs/DECISIONS.md) |
 
 Every decision, with its alternatives and evidence, is in [docs/DECISIONS.md](docs/DECISIONS.md). The build log, including the dead ends, is in [docs/JOURNAL.md](docs/JOURNAL.md).
 
@@ -106,6 +109,7 @@ A clip that fails the camera-angle check is refused with the reason and how to r
 | E6 | Does retrieval fetch the right coaching passage for a fault? | `eval/e6_retrieval.py` |
 | E7 | Is the feedback correct, specific and actionable, and can an LLM judge stand in for a human rater? | `eval/e7_feedback.py` |
 | E8 | Does v2 remove impossible values and refuse bad clips? | `eval/e8_reliability.py` |
+| E9 | Does the coach chat call the right tools, restate only their numbers, and refuse to discuss unmeasured features? | `eval/e9_chat.py` |
 | floor | How consistent is the labeller with himself? | `eval/repeatability.py` |
 
 ## Limitations
@@ -115,6 +119,7 @@ A clip that fails the camera-angle check is refused with the reason and how to r
 - **Heuristic thresholds.** The gate's threshold, two of the four fault rules (and the 2 SD margin of a third), the ±1 SD band and the validator's number tolerances are heuristics, marked as such in the code and the UI. Where a threshold comes from a study, its population (often elite or adult male players) may not match the user's.
 - **Internet clips.** Most are slow motion with an unknown capture rate, so velocities are withheld on all but the clips whose rate is known. The players are mostly amateurs, and the kick types vary.
 - **The validator checks facts, not meaning.** It catches invented numbers, unknown citations and talk about unmeasured features. It doesn't judge whether the advice is sound; E7 was meant to score it with a human rater and an LLM judge checked against him, but no human rated: E7 reports LLM raters only (Claude, not blind, and an AI persona panel), and the two LLM judges, which gave near-perfect correctness to items with unsupported or contradictory claims (DEC-041).
+- **The chat is evaluated on scripted questions and fixture players.** E9's 15 questions and their expectations were written by Claude before any run; its "players" are real pipeline outputs from different people's clips stored as sessions, so their trends aren't anyone's progression. Its checker, like the feedback validator, checks numbers, units and IDs, not meaning.
 - **Retrieval is evaluated on its author's labels.** E6's relevance labels were written by Claude, who also wrote the corpus tags; they were fixed before any embedding was computed, but they are not independent. The corpus is small (55 passages) and has no drill for three of the four faults.
 - **Gemini on the free tier.** E4 used the strongest model the free tier allows for video (`gemini-3.8-flash`, a Flash model, not Pro), at 20 requests a day. It ignores temperature, so identical requests gave different answers, and repeat calls are reported. Free-tier inputs may be used by Google to improve its products, so only the public clips were sent. For the same reason the hosted demo uses template feedback only (DEC-034).
 - **No user study.** Nobody has yet used the feedback to change their kick.
@@ -129,7 +134,7 @@ uv run python -m eval.run_all     # every eval + results/summary.md + this READM
 uv run pytest
 ```
 
-`run_all` reruns the pipeline on every clip from the committed pose keypoints and ball detections (`data/cache/`), then E1–E5, E8, the floor and the feedback summary, rebuilds the page's example (`api/static/example.json`), then E6 and E7. The Gemini answers and embeddings come from the committed caches (`results/e4_raw/`, `results/feedback_llm/`, `results/e7/judge_raw/`, `knowledge/embeddings/`); the run sets `GEMINI_API_KEY` to empty, so it can't call the API. It takes about half a minute on an M2 MacBook Air, and a fresh copy of the repository reproduced every file in `results/` byte for byte.
+`run_all` reruns the pipeline on every clip from the committed pose keypoints and ball detections (`data/cache/`), then E1–E5, E8, the floor and the feedback summary, rebuilds the page's example (`api/static/example.json`), then E6, E7 and E9. The Gemini answers and embeddings come from the committed caches (`results/e4_raw/`, `results/feedback_llm/`, `results/e7/judge_raw/`, `results/e9/`, `knowledge/embeddings/`); the run sets `GEMINI_API_KEY` to empty, so it can't call the API. It takes about half a minute on an M2 MacBook Air, and a fresh copy of the repository reproduced every file in `results/` byte for byte.
 
 Not rerun by `run_all`: the failure renders (`uv run python -m eval.failures` draws on video frames) and the norm extraction itself (`tools/extract_norms.py` needs the papers and a key).
 
@@ -143,6 +148,7 @@ Upload a side-on clip, or press "See an example result". `POST /analyse` returns
 
 Two modes (DEC-034):
 - **Local** (the default): each session is also stored in SQLite (`data/kickcoach.db`) with its pose array. With `GEMINI_API_KEY` in `.env` (see `.env.example`), the LLM writes the feedback under the validator; without one, templates do.
+- **The coach chat** (local mode only): the "Ask about your kicks" panel, `POST /chat`, or `uv run python tools/coach_chat.py --player me`. It reads the sessions in `data/kickcoach.db`; without a key it answers with a template listing the latest session.
 - **Public** (`KICKCOACH_PUBLIC=1`, the hosted demo): nothing is stored on the server. The page keeps the visitor's results in their own browser and sends them back with the next upload for the history comparison. Feedback is always the template: Gemini's unpaid tier may use inputs to improve Google's products, and its terms allow only paid services for apps offered to users in the EEA, Switzerland or the UK.
 
 The app needs two models: rtmlib downloads RTMPose to `~/.cache/rtmlib` on first use, and the ball detector is Megvii's YOLOX-m (Apache-2.0):
@@ -176,7 +182,7 @@ Weights for the comparison models (gitignored; DEC-011): MoveNet is v1's `3.tfli
 ## Repository layout
 
 ```
-kickcoach/   ingest/ pose/ signal/ events/ features/ quality/ compare/ feedback/ retrieval/ llm/ storage/
+kickcoach/   ingest/ pose/ signal/ events/ features/ quality/ compare/ feedback/ retrieval/ chat/ llm/ storage/
 api/         FastAPI app, job queue, the page and its example
 deploy/      the Modal app (the hosted demo) and an upload smoke test
 eval/        one script per evaluation, and run_all.py
