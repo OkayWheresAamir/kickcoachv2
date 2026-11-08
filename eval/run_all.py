@@ -58,8 +58,9 @@ STEPS = (
     ("norms, faults, feedback (cached LLM)", ["tools/run_assess.py", "--llm"]),
     ("the page's example (api/static/example.json)", ["tools/make_example.py"]),
     ("E6 retrieval (cached embeddings)", ["-m", "eval.e6_retrieval"]),
-    ("E7 items (cached LLM answers)", ["-m", "eval.e7_feedback", "prepare"]),
+    ("E7 items (frozen: the rated texts)", ["-m", "eval.e7_feedback", "prepare"]),
     ("E7 feedback ratings and judge (cached)", ["-m", "eval.e7_feedback"]),
+    ("E9 coach chat (cached model turns)", ["-m", "eval.e9_chat"]),
 )
 FEATURES = ("knee_angle_contact", "max_knee_flexion_backswing", "trunk_lean_contact")
 FEATURE_NAMES = {
@@ -380,6 +381,37 @@ def e7_numbers(rows: list[dict]) -> dict:
     }
 
 
+def e9_numbers(rows: list[dict]) -> dict:
+    def k_of(key: str) -> tuple[int, int]:
+        scored = [r for r in rows if r[key] != ""]
+        return sum(truthy(r[key]) for r in scored), len(scored)
+
+    return {
+        "n": len(rows),
+        "tools": k_of("tools_ok"),
+        "args": k_of("args_ok"),
+        "first_try": k_of("first_try_passed"),
+        "refused": k_of("refused_ok"),
+        "value": k_of("has_value"),
+        "first_numbers": sum(int(r["first_numbers"]) for r in rows),
+        "first_grounded": sum(int(r["first_numbers"]) - int(r["first_ungrounded"]) for r in rows),
+        "llm": sum(r["generated_by"] == "llm" for r in rows),
+        "post_hoc": sum("post hoc" in r["id"] for r in rows),
+    }
+
+
+def e9_text(e9: dict) -> str:
+    if not e9["n"]:
+        return "not run yet"
+    t, a, f, r = (e9[k] for k in ("tools", "args", "first_try", "refused"))
+    return (
+        f"right tools on {t[0]} of {t[1]} questions ({a[0]} with the expected arguments); "
+        f"{e9['first_grounded']} of {e9['first_numbers']} numbers in first drafts came from a "
+        f"tool; checker passed {f[0]} of {f[1]} first drafts; not-measured feature refused "
+        f"{r[0]} of {r[1]}"
+    )
+
+
 def floor_numbers() -> dict | None:
     pts, angs = read_csv("repeatability_points.csv"), read_csv("repeatability_angles.csv")
     if not pts:
@@ -417,6 +449,7 @@ def collect() -> dict:
         "assess": assess_numbers(read_csv("assess_summary.csv")),
         "e6": e6_numbers(read_csv("e6.csv")),
         "e7": e7_numbers(read_csv("e7.csv")),
+        "e9": e9_numbers(read_csv("e9.csv")),
         "floor": floor_numbers(),
     }
 
@@ -552,6 +585,12 @@ def headline(n: dict) -> list[str]:
             f"{n['e7']['rated']} items rated by Aamir"
             if n["e7"]["rated"]
             else "20 items, LLM raters only",
+        ],
+        [
+            "Coach chat, tool calling (E9)",
+            e9_text(n["e9"]),
+            f"{n['e9']['n']} scripted questions ({n['e9']['post_hoc']} added after a run), "
+            "fixture players",
         ],
         [
             "Labelling floor",
@@ -809,6 +848,11 @@ def summary(n: dict) -> str:
         "have none (no approved source had a drill for those faults). Details: "
         "`results/e6_summary.md`.",
         f"- **E7:** {e7_text(n['e7'])}. Details: `results/e7_summary.md`.",
+        "",
+        "## E9: the coach chat",
+        "",
+        f"- {e9_text(n['e9'])}. The players are fixtures (real pipeline outputs from different "
+        "people's clips, stored as sessions). Details: `results/e9_summary.md`.",
     ]
     if a["cache_misses"]:
         L += [

@@ -8,7 +8,7 @@ actionability) without seeing which variant is which; an LLM judge rates every i
 the same facts and rubric. The judge is trusted beyond the sample only on criteria where
 its agreement with Aamir clears the bar fixed before either rated (DEC-040).
 
-    uv run python -m eval.e7_feedback prepare   # results/e7/items.json, from cached answers
+    uv run python -m eval.e7_feedback prepare   # results/e7/items.json (frozen once built)
     uv run python tools/rate_feedback.py         # Aamir rates the sample
     uv run python -m eval.e7_feedback judge     # the judge; answers cached in results/e7/judge_raw/
     uv run python -m eval.e7_feedback           # score: results/e7.csv, results/e7_summary.md
@@ -28,9 +28,10 @@ import numpy as np
 from scipy.stats import spearmanr
 
 from eval.e1_pose import table, write_csv
-from kickcoach.compare import norms
+from kickcoach.compare import engine, faults, norms
 from kickcoach.compare.faults import load_rules
-from kickcoach.feedback.generate import DEFINITIONS, SOURCES
+from kickcoach.feedback.generate import DEFINITIONS, SOURCES, build_context
+from kickcoach.feedback.validate import validate
 from kickcoach.llm import GeminiClient, NoApiKey
 from kickcoach.llm.gemini import DEV_MODEL
 from kickcoach.retrieval import corpus as coaching
@@ -192,7 +193,17 @@ def sample(items: list[dict]) -> list[str]:
     return chosen
 
 
-def prepare() -> None:
+def prepare(rebuild: bool = False) -> None:
+    # The items are frozen once built: they hold the exact texts every rater scored (prompts
+    # v2/v3, Phase 8). The prompt and validator have changed since (DEC-042), so rebuilding
+    # now would put new texts under old ratings. --rebuild exists for a new round of rating.
+    if ITEMS.exists() and not rebuild:
+        data = json.loads(ITEMS.read_text())
+        missing = set(data["sample"]) - {i["item_id"] for i in data["items"]}
+        if missing:
+            raise SystemExit(f"sampled items missing from {ITEMS}: {sorted(missing)}")
+        print(f"{ITEMS} is frozen: {len(data['items'])} items, the texts that were rated")
+        return
     items = build_items()
     E7_DIR.mkdir(parents=True, exist_ok=True)
     # The sample is drawn once and then frozen: rebuilding the items (e.g. after a late LLM
@@ -205,6 +216,33 @@ def prepare() -> None:
     ITEMS.write_text(json.dumps(data, indent=1, ensure_ascii=False))
     by = {v: sum(i["variant"] == v for i in items) for v in VARIANTS}
     print(f"wrote {ITEMS}: {len(items)} items {by}; sample of {len(data['sample'])}")
+
+
+def recheck(items: list[dict]) -> dict[str, list[str]]:
+    """Today's validator on the frozen LLM items: {item_id: errors}. Its checks 6 and 7 were
+    written from these ratings (DEC-042), so this shows what they catch on the rated texts.
+    One call wrote all of a clip's items, so they are validated together, with the passages
+    each was given."""
+    verified = norms.verified_norms()
+    chunks = {c.id: c for c in coaching.load()}
+    groups: dict[tuple[str, str], list[dict]] = {}
+    for it in items:
+        if it["variant"] != "template" and it["generated_by"] == "llm":
+            groups.setdefault((it["clip_id"], it["variant"]), []).append(it)
+    out = {}
+    for (clip, variant), its in sorted(groups.items()):
+        res = json.loads((RESULTS / "pipeline" / f"{clip}.json").read_text())
+        comps = engine.compare(res["features"], verified, None)
+        fired, _ = faults.evaluate(res["features"], verified)
+        passages = {it["fault_id"]: [chunks[c] for c in it["passages_given"]] for it in its}
+        ctx, _ = build_context(res["features"], fired, comps, verified,
+                               passages if variant == "llm_rag" else None)  # fmt: skip
+        raw = {"items": [{"fault_id": it["fault_id"], **it["feedback"],
+                          "citations": [c["id"] for c in it["cited"]]} for it in its]}  # fmt: skip
+        errors = validate(raw, ctx)[1]
+        for it in its:
+            out[it["item_id"]] = [e for e in errors if e.startswith(it["fault_id"])]
+    return out
 
 
 # -- judge ----------------------------------------------------------------------------------
@@ -333,6 +371,7 @@ def score() -> tuple[list[dict], str]:
     rated = {k: v for k, v in ratings.items() if all(v.get(c) for c in CRITERIA)}
     judged = cached_judge(list(items.values()))
     second = cached_judge(list(items.values()), SECOND_JUDGE)
+    now = recheck(list(items.values()))
     rows = []
     for iid, it in items.items():
         r, j, j2 = rated.get(iid, {}), judged.get(iid) or {}, second.get(iid) or {}
@@ -348,6 +387,7 @@ def score() -> tuple[list[dict], str]:
              **{f"judge2_{c}": j2.get(c) for c in CRITERIA},
              **{f"claude_{c}": cl.get(c) for c in CRITERIA},
              **{f"panel_{c}": pa.get(c) for c in CRITERIA},
+             "validator_now": " | ".join(now.get(iid, [])),
              "judge_reason": j.get("reason", ""), "aamir_note": r.get("note", "")}
         )  # fmt: skip
     return rows, report(rows, data)
@@ -427,6 +467,24 @@ def llm_rater_section(rows: list[dict]) -> list[str]:
             "",
         ]
     return L
+
+
+def recheck_section(rows: list[dict], sample: list[str]) -> list[str]:
+    llm = [r for r in rows if r["variant"] != "template" and r["generated_by"] == "llm"]
+    bad = [r for r in llm if r["validator_now"]]
+    key = {iid: f"R{n:02d}" for n, iid in enumerate(sample, 1)}
+    L = [
+        "## Today's validator on the rated texts",
+        "",
+        "The ratings found three slips the Phase 8 validator passed: a knee angle called "
+        '"bend" (R02, R13) and a lean the kick didn\'t have (R11). Phase 9 added a check for '
+        "each kind (`kickcoach/feedback/validate.py` checks 6 and 7, DEC-042). Run on the frozen "
+        f"LLM items, today's validator rejects {len(bad)} of {len(llm)}; the app now retries "
+        "such an answer with the error, then falls back to the template:",
+        "",
+    ]
+    body = [[key.get(r["item_id"], "–"), r["item_id"], r["validator_now"]] for r in bad]
+    return L + [*table(["sample", "item", "error"], body), ""] if bad else L
 
 
 def _f(x, dp: int = 2) -> str:
@@ -597,6 +655,7 @@ def report(rows: list[dict], data: dict) -> str:
             ),  # fmt: skip
             "",
         ]
+    L += recheck_section(rows, data["sample"])
     L += [
         "## Caveats",
         "",
@@ -615,11 +674,16 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", nargs="?", default="score", choices=["prepare", "judge", "score"])
     ap.add_argument("--model", default=JUDGE_MODEL, help="judge model (judge only)")
+    ap.add_argument(
+        "--rebuild",
+        action="store_true",
+        help="prepare: rebuild the frozen items from today's code (new texts)",
+    )
     ap.add_argument("--sample-only", action="store_true",
                     help="judge only the 20 sampled items (fits a Flash free day)")  # fmt: skip
     args = ap.parse_args()
     if args.cmd == "prepare":
-        prepare()
+        prepare(args.rebuild)
         return
     if args.cmd == "judge":
         data = json.loads(ITEMS.read_text())

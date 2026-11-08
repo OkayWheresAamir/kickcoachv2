@@ -1,0 +1,166 @@
+# E9: the coach chat's scripted questions (Phase 9, DEC-043). Written by Claude before the
+# chat was run on any of them; eval/e9_chat.py prints this file's sha256 in the summary.
+#
+# FIXTURE, NOT A REAL PLAYER. Each "player" is a sequence of real pipeline outputs from the
+# committed corpus (results/pipeline/<clip>.json), stored as sessions with made-up dates.
+# The clips are different people, so the "trends" are not anyone's progression; they only
+# give the chat realistic numbers to look up.
+#
+# Expected values are references (a clip's feature, or the change between two clips), so
+# the scorer reads the numbers from the pipeline output instead of a copy typed here.
+#
+# Per question:
+#   required:  groups of tools; each group needs at least one of its tools called
+#   args:      {tool: {arg: value}}: at least one call of that tool had these arguments
+#   no_tools:  true = calling any tool is wrong (off-topic)
+#   expect_values: at least one of these numbers appears in the answer (unit tolerance)
+#   must_mention:  groups of phrases; each group needs one (heuristic wording checks)
+#   refuse:    a feature that is not measured; the answer must say so, with no value for it
+#   post_hoc:  added after a run, from a failure seen outside the set (scored, but marked)
+
+players:
+  fixture-a:
+    - {clip: c20, date: "2026-10-04"}
+    - {clip: c09, date: "2026-10-11"}
+    - {clip: c17, date: "2026-10-18"}
+    - {clip: c07, date: "2026-10-25"}
+  fixture-b:
+    - {clip: c13, date: "2026-10-05"}
+    - {clip: c19, date: "2026-10-12"}
+    - {clip: c26, date: "2026-10-19"}   # refused by the quality gate (rear view)
+
+questions:
+  - id: q01
+    kind: fact
+    player: fixture-a
+    text: What was my trunk lean when I hit the ball in my last kick?
+    required: [[get_session_features, get_history]]
+    expect_values: [{clip: c07, feature: trunk_lean_contact}]
+    must_mention: [[back]]
+
+  - id: q02
+    kind: fact
+    player: fixture-a
+    text: What did I do wrong in my latest kick?
+    required: [[get_session_features, get_history]]
+    must_mention: [[lean, trunk, upper body], [backswing], [plant, standing foot, support foot]]
+
+  - id: q03
+    kind: trend
+    player: fixture-a
+    text: My knee angle at contact dropped over my last 3 sessions. Why?
+    required: [[get_history]]
+    args: {get_history: {feature_id: knee_angle_contact}}
+    expect_values:
+      - {change: knee_angle_contact, clips: [c09, c07]}
+      - {clip: c09, feature: knee_angle_contact}
+      - {clip: c07, feature: knee_angle_contact}
+
+  - id: q04
+    kind: trend
+    player: fixture-a
+    text: Over my last 3 sessions, is my backswing getting deeper or shallower?
+    required: [[get_history]]
+    args: {get_history: {feature_id: max_knee_flexion_backswing}}
+    must_mention: [[shallower, less bent, straighter, less bend, less deep, not as deep]]
+
+  - id: q05
+    kind: norms
+    player: fixture-a
+    text: Is my backswing knee angle normal compared with research?
+    required: [[compare_to_norms]]
+    args: {compare_to_norms: {feature_id: max_knee_flexion_backswing}}
+    expect_values: [{clip: c07, feature: max_knee_flexion_backswing}]
+    must_mention: [[above, outside, less bent, straighter, higher, larger, bigger, beyond]]
+
+  - id: q06
+    kind: norms
+    player: fixture-a
+    text: How does my trunk lean compare with the research?
+    required: [[compare_to_norms]]
+    args: {compare_to_norms: {feature_id: trunk_lean_contact}}
+    must_mention: [[no study, no published, no norm, no research, no comparable, no matching,
+                    "doesn't have", "don't have", not found, no reference, no data,
+                    "couldn't find", "isn't a", "there isn't", "there is no", "there's no"]]
+
+  - id: q07
+    kind: drill
+    player: fixture-a
+    text: Give me a drill to stop leaning back when I shoot.
+    required: [[search_drills]]
+    args: {search_drills: {fault_id: F-LEAN-BACK}}
+
+  - id: q08
+    kind: drill
+    player: fixture-a
+    text: Any exercise to help me get my standing foot in the right place?
+    required: [[search_drills]]
+    args: {search_drills: {fault_id: F-PLANT-FAR-BEHIND}}
+
+  - id: q09
+    kind: refusal
+    player: fixture-a
+    text: How fast was my knee straightening in my last kick?
+    required: [[get_session_features, get_history]]
+    refuse: peak_knee_ext_velocity
+
+  - id: q10
+    kind: refusal
+    player: fixture-a
+    text: Has my knee extension speed improved across my sessions?
+    required: [[get_history]]
+    refuse: peak_knee_ext_velocity
+
+  - id: q11
+    kind: multi
+    player: fixture-a
+    text: Compare where I plant my standing foot with the research, and suggest a drill for it.
+    required: [[compare_to_norms], [search_drills]]
+    args:
+      compare_to_norms: {feature_id: plant_foot_offset}
+      search_drills: {fault_id: F-PLANT-FAR-BEHIND}
+
+  - id: q12
+    kind: fact
+    player: fixture-a
+    text: Which faults showed up in my first session?
+    required: [[get_history, get_session_features]]
+    must_mention: [[backswing]]
+
+  - id: q13
+    kind: off_topic
+    player: fixture-a
+    text: Which boots should I buy for shooting?
+    no_tools: true
+
+  - id: q14
+    kind: refused_clip
+    player: fixture-b
+    text: What was my knee angle at contact in my last kick?
+    required: [[get_session_features, get_history]]
+    must_mention: [[refused, rejected, side-on, side on, "couldn't be analysed",
+                    could not be analysed, not accepted, "wasn't accepted", camera]]
+
+  - id: q15
+    kind: trend
+    player: fixture-b
+    text: Has my knee extension speed improved?
+    required: [[get_history]]
+    expect_values:
+      - {change: peak_knee_ext_velocity, clips: [c13, c19]}
+      - {clip: c13, feature: peak_knee_ext_velocity}
+      - {clip: c19, feature: peak_knee_ext_velocity}
+    must_mention: [[improv, increas, faster, went up, higher, rose]]
+
+  # Added after run 2 (DEC-043): asked on the page, this question got "your backswing is
+  # getting shallower" for a +4.37 deg change against a 4.63 deg typical error. Not part of
+  # the set fixed before any run.
+  - id: q16
+    kind: trend
+    post_hoc: true
+    player: fixture-a
+    text: Is my backswing getting deeper or shallower?
+    required: [[get_history]]
+    args: {get_history: {feature_id: max_knee_flexion_backswing}}
+    must_mention: [[measurement error, measurement noise, "can't tell", cannot tell, "can't be told",
+                    within the, too small, not clear, "isn't clear", "can't say", cannot say]]
