@@ -1,0 +1,134 @@
+{
+ "key": "21c82382f8741962a06a9752",
+ "tag": "feedback-v4 attempt 1",
+ "model": "gemini-3.5-flash-lite",
+ "request": {
+  "schema": {
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "fault_id": {
+        "type": "string"
+       },
+       "what": {
+        "type": "string"
+       },
+       "why_it_matters": {
+        "type": "string"
+       },
+       "cue": {
+        "type": "string"
+       },
+       "drill": {
+        "type": "string"
+       },
+       "citations": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       }
+      },
+      "required": [
+       "fault_id",
+       "what",
+       "why_it_matters",
+       "cue",
+       "drill",
+       "citations"
+      ]
+     }
+    }
+   },
+   "required": [
+    "items"
+   ]
+  },
+  "temperature": null,
+  "video_sha256": null,
+  "video_fps": null,
+  "prompt": "You are a football (soccer) coach writing feedback on one instep kick, for a player whose\nlevel is: not stated. The kick was measured from video by a\nseparate system; the facts below are its output. You write words only.\n\nRules:\n1. Write exactly one item per fault in \"faults\", with that fault_id.\n2. Use only these facts. If you mention a number, copy it from the facts (you may round an\n   angle to whole degrees). Write no other numbers at all: no rep counts, distances,\n   percentages, times or list numbering.\n3. Never mention a feature listed in \"not_measured\", or anything it describes.\n4. \"citations\" may contain only IDs from \"citable_sources\", and only when the item uses that\n   source. An empty list is fine.\n5. \"coaching_passages\" are short excerpts from coaching sources, found for each fault by a\n   search; some may not fit. Use a passage only where it really supports what you write,\n   say it in your own words, and add its ID to that item's citations. Copy no numbers or\n   names from a passage. A field no passage supports is written without a citation.\n6. \"what\": what happened in this kick, in plain words, with the fault's measured value from\n   its \"evidence\" (rounded as rule 2 allows) and its unit, and which way it points, read\n   from the feature's definition. \"why_it_matters\": why it matters for the kick. \"cue\": one\n   short coaching cue. \"drill\": one practice drill, described in words.\n7. Knee values are interior angles between thigh and shin (180 = straight). Call a knee\n   number an angle, never an amount of \"bend\" or \"flexion\".\n8. Describe this kick only as its measurements show it: don't say the player leaned back or\n   planted behind the ball unless that feature's value says so.\n9. Short sentences a teenager would understand. No medical advice.\n\nFacts (JSON):\n{\n \"player_level\": null,\n \"measured\": [\n  {\n   \"id\": \"knee_angle_contact\",\n   \"value\": 117.51,\n   \"unit\": \"deg\",\n   \"definition\": \"interior angle between thigh and shin at ball contact; 180 = straight\"\n  },\n  {\n   \"id\": \"max_knee_flexion_backswing\",\n   \"value\": 90.44,\n   \"unit\": \"deg\",\n   \"definition\": \"the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee\"\n  },\n  {\n   \"id\": \"trunk_lean_contact\",\n   \"value\": -6.34,\n   \"unit\": \"deg\",\n   \"definition\": \"trunk angle from vertical at contact; negative = leaning back\"\n  },\n  {\n   \"id\": \"plant_foot_offset\",\n   \"value\": -0.02,\n   \"unit\": \"leg_lengths\",\n   \"definition\": \"plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball\"\n  },\n  {\n   \"id\": \"segment_sequence_order\",\n   \"value\": \"proximal_to_distal\",\n   \"unit\": \"order\",\n   \"definition\": \"whether the thigh's speed peaked before the shank's\"\n  }\n ],\n \"not_measured\": [\n  {\n   \"id\": \"peak_knee_ext_velocity\",\n   \"reason\": \"capture frame rate unknown, so no real time per frame (DEC-010)\"\n  }\n ],\n \"faults\": [\n  {\n   \"fault_id\": \"F-SHALLOW-BACKSWING\",\n   \"name\": \"Shallow knee bend in the backswing\",\n   \"evidence\": {\n    \"max_knee_flexion_backswing\": 90.44\n   },\n   \"unit\": \"deg\",\n   \"fires_when\": \"above\",\n   \"threshold\": 89.61,\n   \"threshold_source\": \"Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.\",\n   \"citations\": [\n    \"N-032\",\n    \"kellis_katis_2007\"\n   ]\n  }\n ],\n \"norm_comparisons\": [\n  {\n   \"feature_id\": \"knee_angle_contact\",\n   \"verdict\": \"below_norm\",\n   \"norm_ref\": \"N-019\",\n   \"norm_mean\": 156.2,\n   \"norm_sd\": 10.1,\n   \"norm_band\": [\n    146.1,\n    166.3\n   ],\n   \"population\": \"recreational, adult, male\",\n   \"caveats\": [\n    \"Measured in a lab (3D motion capture (DLT)); this app measures a 2D side-on angle from video, so some difference is expected.\",\n    \"These were kicks aimed for accuracy (instep penalty kick); accurate kicks use slower motion than maximum-power kicks (e.g. 1364 vs 1175 deg/s knee extension, N-011/N-012).\",\n    \"Small sample: n = 7.\"\n   ]\n  },\n  {\n   \"feature_id\": \"max_knee_flexion_backswing\",\n   \"verdict\": \"above_norm\",\n   \"norm_ref\": \"N-032\",\n   \"norm_mean\": 77.29,\n   \"norm_sd\": 6.16,\n   \"norm_band\": [\n    71.13,\n    83.45\n   ],\n   \"population\": \"elite, adults, mixed\",\n   \"caveats\": [\n    \"Measured in a lab (IMU and OpenSim); this app measures a 2D side-on angle from video, so some difference is expected.\",\n    \"Small sample: n = 26.\"\n   ]\n  }\n ],\n \"citable_sources\": {\n  \"N-032\": \"Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1: kicking_knee_max_flexion (elite)\",\n  \"kellis_katis_2007\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review\",\n  \"K-35\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review, p. 158\",\n  \"K-32\": \"Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review, p. 154\",\n  \"K-02\": \"Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 1, Teaching Shooting, points 2-3\",\n  \"N-019\": \"Scurr & Hall (2009), J Sports Sci Med 8(2):230-234, p. 232, Table 2: kicking_knee_angle_at_impact (recreational)\"\n },\n \"coaching_passages\": [\n  {\n   \"id\": \"K-35\",\n   \"for_fault\": \"F-SHALLOW-BACKSWING\",\n   \"text\": \"This movement is accompanied by a stretch of the knee extensor musculature during backswing followed by immediate shortening during forward shank movement. It has been shown that kicking speed is significantly higher when the knee extensor musculature is stretched and then shorten compared with kicks involving only concentric actions (Bober et al., 1987).\"\n  },\n  {\n   \"id\": \"K-32\",\n   \"for_fault\": \"F-SHALLOW-BACKSWING\",\n   \"text\": \"The back swing motion of the kicking leg is completed just after ground contact with the hip extended and the knee flexed (Levanon and Dapena, 1998). Forward motion is initiated by rotating the pelvis around the supporting leg and by bringing the thigh of the kicking leg forwards while the knee continues to flex (Weineck, 1997).\"\n  },\n  {\n   \"id\": \"K-02\",\n   \"for_fault\": \"F-SHALLOW-BACKSWING\",\n   \"text\": \"Place the non-kicking foot at the side of the ball. 3. Swing the kicking foot backward with a bent knee.\"\n  }\n ]\n}\n"
+ },
+ "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-SHALLOW-BACKSWING\",\n      \"what\": \"Your backswing knee angle reached 90 deg, which points toward a shallower bend than normal.\",\n      \"why_it_matters\": \"Bending your knee more in the backswing helps stretch your leg muscles so you can kick with more power.\",\n      \"cue\": \"Bend your knee more as you swing back.\",\n      \"drill\": \"Practice pulling your heel close to your backside during the backswing against a wall.\",\n      \"citations\": [\n        \"N-032\",\n        \"kellis_katis_2007\"\n      ]\n    }\n  ]\n}",
+ "parsed": {
+  "items": [
+   {
+    "fault_id": "F-SHALLOW-BACKSWING",
+    "what": "Your backswing knee angle reached 90 deg, which points toward a shallower bend than normal.",
+    "why_it_matters": "Bending your knee more in the backswing helps stretch your leg muscles so you can kick with more power.",
+    "cue": "Bend your knee more as you swing back.",
+    "drill": "Practice pulling your heel close to your backside during the backswing against a wall.",
+    "citations": [
+     "N-032",
+     "kellis_katis_2007"
+    ]
+   }
+  ]
+ },
+ "response": {
+  "sdk_http_response": {
+   "headers": {
+    "x-gemini-service-tier": "standard",
+    "content-type": "application/json; charset=UTF-8",
+    "vary": "Origin, X-Origin, Referer",
+    "content-encoding": "gzip",
+    "date": "Sat, 07 Nov 2026 18:55:49 GMT",
+    "server": "scaffolding on HTTPServer2",
+    "x-xss-protection": "0",
+    "x-frame-options": "SAMEORIGIN",
+    "x-content-type-options": "nosniff",
+    "server-timing": "gfet4t7; dur=1617",
+    "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "transfer-encoding": "chunked"
+   }
+  },
+  "candidates": [
+   {
+    "content": {
+     "parts": [
+      {
+       "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-SHALLOW-BACKSWING\",\n      \"what\": \"Your backswing knee angle reached 90 deg, which points toward a shallower bend than normal.\",\n      \"why_it_matters\": \"Bending your knee more in the backswing helps stretch your leg muscles so you can kick with more power.\",\n      \"cue\": \"Bend your knee more as you swing back.\",\n      \"drill\": \"Practice pulling your heel close to your backside during the backswing against a wall.\",\n      \"citations\": [\n        \"N-032\",\n        \"kellis_katis_2007\"\n      ]\n    }\n  ]\n}",
+       "thought_signature": "EmAKXgFpFH0TeF-LaB4O7INy-C_HquP_KxCTHitJAGCDC27I7NpN1bEVpAQfUyQRqvWNGmbtKGPFF774favQmT72_cNjyglXZW-LjaWxH9ajlJbPbzF64ombHueAerSqh9s="
+      }
+     ],
+     "role": "model"
+    },
+    "finish_reason": "STOP",
+    "index": 0
+   }
+  ],
+  "model_version": "gemini-3.5-flash-lite",
+  "response_id": "NHTvauDFE57F3LUP6qHL6A4",
+  "usage_metadata": {
+   "candidates_token_count": 163,
+   "prompt_token_count": 2109,
+   "prompt_tokens_details": [
+    {
+     "modality": "TEXT",
+     "token_count": 2109
+    }
+   ],
+   "total_token_count": 2272
+  },
+  "automatic_function_calling_history": [],
+  "parsed": {
+   "items": [
+    {
+     "fault_id": "F-SHALLOW-BACKSWING",
+     "what": "Your backswing knee angle reached 90 deg, which points toward a shallower bend than normal.",
+     "why_it_matters": "Bending your knee more in the backswing helps stretch your leg muscles so you can kick with more power.",
+     "cue": "Bend your knee more as you swing back.",
+     "drill": "Practice pulling your heel close to your backside during the backswing against a wall.",
+     "citations": [
+      "N-032",
+      "kellis_katis_2007"
+     ]
+    }
+   ]
+  }
+ }
+}

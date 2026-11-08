@@ -61,6 +61,18 @@ Agreement between raters (weighted κ):
 | specificity | 0.00 | 41% | 100% | 4.41 | 5.00 |
 | actionability | 0.60 | 59% | 100% | 4.23 | 4.64 |
 
+## Today's validator on the rated texts
+
+The ratings found three slips the Phase 8 validator passed: a knee angle called "bend" (R02, R13) and a lean the kick didn't have (R11). Phase 9 added a check for each kind (`kickcoach/feedback/validate.py` checks 6 and 7, DEC-042). Run on the frozen LLM items, today's validator rejects 5 of 36; the app now retries such an answer with the error, then falls back to the template:
+
+| sample | item | error |
+|---|---|---|
+| – | c03-F-SHALLOW-BACKSWING-llm_rag | F-SHALLOW-BACKSWING.what: 90 is the knee's interior angle (180 = straight), not an amount of bend; call it the knee angle |
+| R13 | c07-F-SHALLOW-BACKSWING-llm | F-SHALLOW-BACKSWING.what: 98 is the knee's interior angle (180 = straight), not an amount of bend; call it the knee angle |
+| R12 | c14-F-SHALLOW-BACKSWING-llm | F-SHALLOW-BACKSWING.what: 101 is the knee's interior angle (180 = straight), not an amount of bend; call it the knee angle |
+| R11 | c16-F-PLANT-FAR-BEHIND-llm | F-PLANT-FAR-BEHIND.why_it_matters: says 'lean away', but trunk_lean_contact is 5.36 (a negative value would mean that); this kick's measurement shows the opposite or neither |
+| R02 | c24-F-SHALLOW-BACKSWING-llm | F-SHALLOW-BACKSWING.what: 101 is the knee's interior angle (180 = straight), not an amount of bend; call it the knee angle |
+
 ## Caveats
 
 - **No human rated:** every score here comes from an LLM, including Claude's, and Claude also built the pipeline being rated. Agreement between LLM raters is consistency, not validity.

@@ -1,0 +1,1416 @@
+{
+ "q01": {
+  "answer": "Your trunk lean when you hit the ball in your last kick was -12 degrees (leaning back).",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_session_features",
+    "args": {},
+    "result": {
+     "session_id": 4,
+     "date": "2026-10-25",
+     "accepted": true,
+     "features": [
+      {
+       "id": "knee_angle_contact",
+       "status": "measured",
+       "definition": "interior angle between thigh and shin at ball contact; 180 = straight",
+       "value": 132.59,
+       "unit": "deg"
+      },
+      {
+       "id": "max_knee_flexion_backswing",
+       "status": "measured",
+       "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee",
+       "value": 98.04,
+       "unit": "deg"
+      },
+      {
+       "id": "trunk_lean_contact",
+       "status": "measured",
+       "definition": "trunk angle from vertical at contact; negative = leaning back",
+       "value": -11.6,
+       "unit": "deg"
+      },
+      {
+       "id": "plant_foot_offset",
+       "status": "measured",
+       "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball",
+       "value": -0.32,
+       "unit": "leg_lengths"
+      },
+      {
+       "id": "segment_sequence_order",
+       "status": "measured",
+       "definition": "whether the thigh's speed peaked before the shank's",
+       "value": "simultaneous",
+       "unit": "order"
+      },
+      {
+       "id": "peak_knee_ext_velocity",
+       "status": "not_measured",
+       "definition": "fastest knee straightening speed before contact",
+       "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+      }
+     ],
+     "faults": [
+      {
+       "fault_id": "F-LEAN-BACK",
+       "name": "Leaning back at contact",
+       "evidence": {
+        "trunk_lean_contact": -11.6
+       },
+       "unit": "deg",
+       "fires_when": "below",
+       "threshold": -10.0,
+       "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+      },
+      {
+       "fault_id": "F-SHALLOW-BACKSWING",
+       "name": "Shallow knee bend in the backswing",
+       "evidence": {
+        "max_knee_flexion_backswing": 98.04
+       },
+       "unit": "deg",
+       "fires_when": "above",
+       "threshold": 89.61,
+       "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+      },
+      {
+       "fault_id": "F-PLANT-FAR-BEHIND",
+       "name": "Plant foot far behind the ball",
+       "evidence": {
+        "plant_foot_offset": -0.32
+       },
+       "unit": "leg_lengths",
+       "fires_when": "below",
+       "threshold": -0.25,
+       "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+      }
+     ],
+     "warnings": [
+      "velocities withheld: slow motion with unknown capture rate"
+     ]
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your trunk lean when you hit the ball in your last kick was -12 degrees (leaning back).",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q02": {
+  "answer": "In your latest kick from October 25, 2026, three faults were found:\n\n* **Leaning back at contact:** Your trunk lean was -12 degrees (the threshold is -10 degrees).\n* **Shallow knee bend in the backswing:** Your knee angle was 98 degrees (the threshold is 90 degrees, where a larger number means a less bent knee).\n* **Plant foot far behind the ball:** Your plant foot offset was -0.32 leg lengths (the threshold is -0.25 leg lengths).",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_session_features",
+    "args": {},
+    "result": {
+     "session_id": 4,
+     "date": "2026-10-25",
+     "accepted": true,
+     "features": [
+      {
+       "id": "knee_angle_contact",
+       "status": "measured",
+       "definition": "interior angle between thigh and shin at ball contact; 180 = straight",
+       "value": 132.59,
+       "unit": "deg"
+      },
+      {
+       "id": "max_knee_flexion_backswing",
+       "status": "measured",
+       "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee",
+       "value": 98.04,
+       "unit": "deg"
+      },
+      {
+       "id": "trunk_lean_contact",
+       "status": "measured",
+       "definition": "trunk angle from vertical at contact; negative = leaning back",
+       "value": -11.6,
+       "unit": "deg"
+      },
+      {
+       "id": "plant_foot_offset",
+       "status": "measured",
+       "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball",
+       "value": -0.32,
+       "unit": "leg_lengths"
+      },
+      {
+       "id": "segment_sequence_order",
+       "status": "measured",
+       "definition": "whether the thigh's speed peaked before the shank's",
+       "value": "simultaneous",
+       "unit": "order"
+      },
+      {
+       "id": "peak_knee_ext_velocity",
+       "status": "not_measured",
+       "definition": "fastest knee straightening speed before contact",
+       "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+      }
+     ],
+     "faults": [
+      {
+       "fault_id": "F-LEAN-BACK",
+       "name": "Leaning back at contact",
+       "evidence": {
+        "trunk_lean_contact": -11.6
+       },
+       "unit": "deg",
+       "fires_when": "below",
+       "threshold": -10.0,
+       "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+      },
+      {
+       "fault_id": "F-SHALLOW-BACKSWING",
+       "name": "Shallow knee bend in the backswing",
+       "evidence": {
+        "max_knee_flexion_backswing": 98.04
+       },
+       "unit": "deg",
+       "fires_when": "above",
+       "threshold": 89.61,
+       "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+      },
+      {
+       "fault_id": "F-PLANT-FAR-BEHIND",
+       "name": "Plant foot far behind the ball",
+       "evidence": {
+        "plant_foot_offset": -0.32
+       },
+       "unit": "leg_lengths",
+       "fires_when": "below",
+       "threshold": -0.25,
+       "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+      }
+     ],
+     "warnings": [
+      "velocities withheld: slow motion with unknown capture rate"
+     ]
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "In your latest kick from October 25, 2026, three faults were found:\n\n* **Leaning back at contact:** Your trunk lean was -12 degrees (the threshold is -10 degrees).\n* **Shallow knee bend in the backswing:** Your knee angle was 98 degrees (the threshold is 90 degrees, where a larger number means a less bent knee).\n* **Plant foot far behind the ball:** Your plant foot offset was -0.32 leg lengths (the threshold is -0.25 leg lengths).",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q03": {
+  "answer": "Over your last 3 sessions, your knee angle at contact changed by -5.19 deg (from 137.78 deg on 2026-10-11 to 132.59 deg on 2026-10-25). That drop is larger than the typical measurement error of 3.43 deg. \n\nThe system measurements can track what changed, but they can't tell us why it happened.",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_history",
+    "args": {
+     "last_n": 3,
+     "feature_id": "knee_angle_contact"
+    },
+    "result": {
+     "player": "fixture-a",
+     "sessions_stored": 4,
+     "units": {
+      "knee_angle_contact": "deg",
+      "max_knee_flexion_backswing": "deg",
+      "trunk_lean_contact": "deg",
+      "plant_foot_offset": "leg_lengths",
+      "segment_sequence_order": "order",
+      "peak_knee_ext_velocity": "deg/s"
+     },
+     "sessions": [
+      {
+       "session_id": 4,
+       "date": "2026-10-25",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.59,
+        "max_knee_flexion_backswing": 98.04,
+        "trunk_lean_contact": -11.6,
+        "plant_foot_offset": -0.32,
+        "segment_sequence_order": "simultaneous",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK",
+        "F-SHALLOW-BACKSWING",
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "session_id": 3,
+       "date": "2026-10-18",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.23,
+        "max_knee_flexion_backswing": 89.25,
+        "trunk_lean_contact": -12.4,
+        "plant_foot_offset": -0.03,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 2,
+       "date": "2026-10-11",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 137.78,
+        "max_knee_flexion_backswing": 81.08,
+        "trunk_lean_contact": -13.05,
+        "plant_foot_offset": -0.02,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      }
+     ],
+     "trend": {
+      "feature_id": "knee_angle_contact",
+      "definition": "interior angle between thigh and shin at ball contact; 180 = straight",
+      "unit": "deg",
+      "points_oldest_first": [
+       {
+        "session_id": 2,
+        "date": "2026-10-11",
+        "value": 137.78
+       },
+       {
+        "session_id": 3,
+        "date": "2026-10-18",
+        "value": 132.23
+       },
+       {
+        "session_id": 4,
+        "date": "2026-10-25",
+        "value": 132.59
+       }
+      ],
+      "measured_in": 3,
+      "change_first_to_last": -5.19,
+      "step_changes": [
+       -5.55,
+       0.36
+      ],
+      "typical_error": {
+       "value": 3.43,
+       "source": "E2: mean absolute error against hand labels, 19 clips"
+      },
+      "change_exceeds_typical_error": true,
+      "reading": "the change is larger than the typical measurement error"
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Over your last 3 sessions, your knee angle at contact changed by -5.19 deg (from 137.78 deg on 2026-10-11 to 132.59 deg on 2026-10-25). That drop is larger than the typical measurement error of 3.43 deg. \n\nThe system measurements can track what changed, but they can't tell us why it happened.",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q04": {
+  "answer": "Over your last 3 sessions, your backswing is getting shallower. \n\nHere are the knee angles from your backswing (remember that a larger number means a less bent knee):\n- 2026-10-11: 81 deg\n- 2026-10-18: 89 deg\n- 2026-10-25: 98 deg\n\nThe total change from your first to your last session was 16.96 deg (step changes of 8.17 deg then 8.79 deg), which is larger than the typical measurement error of 4.63 deg.",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_history",
+    "args": {
+     "feature_id": "max_knee_flexion_backswing",
+     "last_n": 3
+    },
+    "result": {
+     "player": "fixture-a",
+     "sessions_stored": 4,
+     "units": {
+      "knee_angle_contact": "deg",
+      "max_knee_flexion_backswing": "deg",
+      "trunk_lean_contact": "deg",
+      "plant_foot_offset": "leg_lengths",
+      "segment_sequence_order": "order",
+      "peak_knee_ext_velocity": "deg/s"
+     },
+     "sessions": [
+      {
+       "session_id": 4,
+       "date": "2026-10-25",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.59,
+        "max_knee_flexion_backswing": 98.04,
+        "trunk_lean_contact": -11.6,
+        "plant_foot_offset": -0.32,
+        "segment_sequence_order": "simultaneous",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK",
+        "F-SHALLOW-BACKSWING",
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "session_id": 3,
+       "date": "2026-10-18",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.23,
+        "max_knee_flexion_backswing": 89.25,
+        "trunk_lean_contact": -12.4,
+        "plant_foot_offset": -0.03,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 2,
+       "date": "2026-10-11",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 137.78,
+        "max_knee_flexion_backswing": 81.08,
+        "trunk_lean_contact": -13.05,
+        "plant_foot_offset": -0.02,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      }
+     ],
+     "trend": {
+      "feature_id": "max_knee_flexion_backswing",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee",
+      "unit": "deg",
+      "points_oldest_first": [
+       {
+        "session_id": 2,
+        "date": "2026-10-11",
+        "value": 81.08
+       },
+       {
+        "session_id": 3,
+        "date": "2026-10-18",
+        "value": 89.25
+       },
+       {
+        "session_id": 4,
+        "date": "2026-10-25",
+        "value": 98.04
+       }
+      ],
+      "measured_in": 3,
+      "change_first_to_last": 16.96,
+      "step_changes": [
+       8.17,
+       8.79
+      ],
+      "typical_error": {
+       "value": 4.63,
+       "source": "E2: mean absolute error against hand labels, 19 clips"
+      },
+      "change_exceeds_typical_error": true,
+      "reading": "the change is larger than the typical measurement error"
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Over your last 3 sessions, your backswing is getting shallower. \n\nHere are the knee angles from your backswing (remember that a larger number means a less bent knee):\n- 2026-10-11: 81 deg\n- 2026-10-18: 89 deg\n- 2026-10-25: 98 deg\n\nThe total change from your first to your last session was 16.96 deg (step changes of 8.17 deg then 8.79 deg), which is larger than the typical measurement error of 4.63 deg.",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q05": {
+  "answer": "Your backswing knee angle is **98 deg**, which is higher than the research norm of **77 deg** (meaning your knee is straighter than the elite adult players in that study) [N-032]. \n\nBecause of this, the system flagged a fault for a shallow knee bend in the backswing (which fires when the angle goes above **90 deg**) [N-032].",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "compare_to_norms",
+    "args": {
+     "feature_id": "max_knee_flexion_backswing"
+    },
+    "result": {
+     "session_id": 4,
+     "feature_id": "max_knee_flexion_backswing",
+     "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee",
+     "value": 98.04,
+     "unit": "deg",
+     "comparison": {
+      "norm_ref": "N-032",
+      "verdict": "above_norm",
+      "norm_mean": 77.29,
+      "norm_sd": 6.16,
+      "norm_band": [
+       71.13,
+       83.45
+      ],
+      "band_rule": "heuristic: 'within' = mean ± 1 SD of the study sample, or inside a reported range; the band is a description of that sample, not a target",
+      "source": "Xu, Gong, Zhang & Zhang (2025), Front Sports Act Living 7:1605545, p. 4, Table 1",
+      "population": "elite, adults, mixed",
+      "kick_type": "instep",
+      "converted": true,
+      "caveats": [
+       "Measured in a lab (IMU and OpenSim); this app measures a 2D side-on angle from video, so some difference is expected.",
+       "Small sample: n = 26."
+      ]
+     },
+     "fault_rule": {
+      "fault_id": "F-SHALLOW-BACKSWING",
+      "name": "Shallow knee bend in the backswing",
+      "fires_when": "above",
+      "threshold": 89.61,
+      "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D.",
+      "fired": true
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your backswing knee angle is **98 deg**, which is higher than the research norm of **77 deg** (meaning your knee is straighter than the elite adult players in that study) [N-032]. \n\nBecause of this, the system flagged a fault for a shallow knee bend in the backswing (which fires when the angle goes above **90 deg**) [N-032].",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q06": {
+  "answer": "There is no published research norm available to compare your trunk lean against. \n\nHowever, in your latest session, your trunk angle at contact was -11.6 deg (where negative means leaning back). That value triggered a fault for leaning back at contact, because it fell below the -10 deg threshold [F-LEAN-BACK].",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "compare_to_norms",
+    "args": {
+     "feature_id": "trunk_lean_contact"
+    },
+    "result": {
+     "session_id": 4,
+     "feature_id": "trunk_lean_contact",
+     "definition": "trunk angle from vertical at contact; negative = leaning back",
+     "value": -11.6,
+     "unit": "deg",
+     "comparison": {
+      "norm_ref": null,
+      "verdict": "no_comparable_norm",
+      "reason": "no verified norm row for this feature"
+     },
+     "fault_rule": {
+      "fault_id": "F-LEAN-BACK",
+      "name": "Leaning back at contact",
+      "fires_when": "below",
+      "threshold": -10.0,
+      "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.",
+      "fired": true
+     }
+    }
+   },
+   {
+    "name": "compare_to_norms",
+    "args": {
+     "feature_id": "trunk_lean_contact"
+    },
+    "result": {
+     "session_id": 4,
+     "feature_id": "trunk_lean_contact",
+     "definition": "trunk angle from vertical at contact; negative = leaning back",
+     "value": -11.6,
+     "unit": "deg",
+     "comparison": {
+      "norm_ref": null,
+      "verdict": "no_comparable_norm",
+      "reason": "no verified norm row for this feature"
+     },
+     "fault_rule": {
+      "fault_id": "F-LEAN-BACK",
+      "name": "Leaning back at contact",
+      "fires_when": "below",
+      "threshold": -10.0,
+      "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes.",
+      "fired": true
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "There is no published research norm available to compare your trunk lean against [N-032]. \n\nHowever, in your latest session, your trunk angle at contact was -11.6 deg (where negative means leaning back). That value triggered a fault for leaning back at contact, because it fell below the -10 deg threshold [F-LEAN-BACK].",
+    "errors": [
+     "N-032 wasn't returned by any tool; cite only IDs the tools returned"
+    ]
+   },
+   {
+    "attempt": 2,
+    "answer": "There is no published research norm available to compare your trunk lean against. \n\nHowever, in your latest session, your trunk angle at contact was -11.6 deg (where negative means leaning back). That value triggered a fault for leaning back at contact, because it fell below the -10 deg threshold [F-LEAN-BACK].",
+    "errors": []
+   }
+  ],
+  "model_calls": 4
+ },
+ "q07": {
+  "answer": "To stop leaning back when you shoot, try to keep your head and the knee of your kicking foot directly over the ball, and make sure not to lean your upper body backward [K-12]. It also helps to plant your non-kicking foot right next to the ball so your body stays balanced over it rather than falling away [K-09].",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "search_drills",
+    "args": {
+     "fault_id": "F-LEAN-BACK",
+     "query": "drill to stop leaning back trunk lean"
+    },
+    "result": {
+     "method": "fault filter, then embedding similarity",
+     "passages": [
+      {
+       "id": "K-12",
+       "text": "To keep the ball on the ground: 1. Keep your head and the knee of your kicking foot over the ball. 2. Do not lean back.",
+       "source": "Special Olympics, Football Coaching Guide (2021), p. 75, Passing, Notes",
+       "url": "https://media.specialolympics.org/resources/sports-essentials/coaching-guides/Sports-Essentials-Football-Coaching-Guide-2021.pdf",
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "id": "K-09",
+       "text": "Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball.",
+       "source": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)",
+       "url": "https://sonc.org/wp-content/uploads/2025/06/Soccer-Shooting-Basics.pdf",
+       "faults": [
+        "F-PLANT-FAR-BEHIND",
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "id": "K-26",
+       "text": "The formation of the dynamic tension arc involved: 1) kick-side hip over-extension and knee flexion, 2) trunk twist towards non-kick-side, and 3) non-kick-side shoulder extension and abduction (Figure 4, left). The release of the arc consisted of: 1) quasi whip-like control sequence of the kicking leg, and 2) upper trunk flexion and twist towards kick-side, and 3) the non-kick-side shoulder flexion and adduction during kick (Figure 4, right).",
+       "source": "Shan & Zhang (2011), BMC Sports Sci Med Rehabil 3:23, a review, 3D Analysis, para. 2",
+       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3224572/",
+       "faults": [
+        "F-SHALLOW-BACKSWING",
+        "F-REVERSED-SEQUENCE",
+        "F-LEAN-BACK"
+       ]
+      }
+     ],
+     "note": "quoted passages; use one only where it fits the question"
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "To stop leaning back when you shoot, try to keep your head and the knee of your kicking foot directly over the ball, and make sure not to lean your upper body backward [K-12]. It also helps to plant your non-kicking foot right next to the ball so your body stays balanced over it rather than falling away [K-09].",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q08": {
+  "answer": "Try this drill to help you get your standing foot in the right place: stand with your non-kicking foot right next to the ball, and then do a phantom kick with your kicking foot [K-10].",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "search_drills",
+    "args": {
+     "query": "plant foot place position drill exercise",
+     "fault_id": "F-PLANT-FAR-BEHIND"
+    },
+    "result": {
+     "method": "fault filter, then embedding similarity",
+     "passages": [
+      {
+       "id": "K-10",
+       "text": "1. Have player stand with non-kicking foot next to the ball. 2. Phantom kick the ball with kicking foot.",
+       "source": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (drill)",
+       "url": "https://sonc.org/wp-content/uploads/2025/06/Soccer-Shooting-Basics.pdf",
+       "faults": [
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "id": "K-40",
+       "text": "When using their preferred leg to perform an instep kick, soccer players practise a straighter approach to the ball, place their standing foot closer to the ball, and kick the ball with greater pelvic tilt and greater knee extension of the kicking leg. Variations in the placement of the support leg impact the speed of the ball.",
+       "source": "Kapidžić, Huremović & Biberovic (2014), J Hum Kinet 42:81-90, Introduction, para. 3",
+       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4234773/",
+       "faults": [
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "id": "K-38",
+       "text": "Another important aspect of kicking success is the placement of the support foot behind and beside the ball. There is no general consensus regarding the placement of ball beside the foot. It has been suggested that the foot should land 5-10 cm behind and 5 – 28 cm beside the ball (Hay, 1993). However, this information has not been confirmed experimentally.",
+       "source": "Kellis & Katis (2007), J Sports Sci Med 6(2):154-165, a review, p. 162",
+       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3786235/",
+       "faults": [
+        "F-PLANT-FAR-BEHIND"
+       ]
+      }
+     ],
+     "note": "quoted passages; use one only where it fits the question"
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Try this drill to help you get your standing foot in the right place: stand with your non-kicking foot right next to the ball, and then do a phantom kick with your kicking foot [K-10].",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q09": {
+  "answer": "Your knee straightening speed wasn't measured in your last kick because the capture frame rate is unknown, so the system couldn't calculate time per frame.",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_session_features",
+    "args": {},
+    "result": {
+     "session_id": 4,
+     "date": "2026-10-25",
+     "accepted": true,
+     "features": [
+      {
+       "id": "knee_angle_contact",
+       "status": "measured",
+       "definition": "interior angle between thigh and shin at ball contact; 180 = straight",
+       "value": 132.59,
+       "unit": "deg"
+      },
+      {
+       "id": "max_knee_flexion_backswing",
+       "status": "measured",
+       "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee",
+       "value": 98.04,
+       "unit": "deg"
+      },
+      {
+       "id": "trunk_lean_contact",
+       "status": "measured",
+       "definition": "trunk angle from vertical at contact; negative = leaning back",
+       "value": -11.6,
+       "unit": "deg"
+      },
+      {
+       "id": "plant_foot_offset",
+       "status": "measured",
+       "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball",
+       "value": -0.32,
+       "unit": "leg_lengths"
+      },
+      {
+       "id": "segment_sequence_order",
+       "status": "measured",
+       "definition": "whether the thigh's speed peaked before the shank's",
+       "value": "simultaneous",
+       "unit": "order"
+      },
+      {
+       "id": "peak_knee_ext_velocity",
+       "status": "not_measured",
+       "definition": "fastest knee straightening speed before contact",
+       "reason": "capture frame rate unknown, so no real time per frame (DEC-010)"
+      }
+     ],
+     "faults": [
+      {
+       "fault_id": "F-LEAN-BACK",
+       "name": "Leaning back at contact",
+       "evidence": {
+        "trunk_lean_contact": -11.6
+       },
+       "unit": "deg",
+       "fires_when": "below",
+       "threshold": -10.0,
+       "threshold_source": "heuristic: no norm for trunk lean at contact was found in the extracted papers. -10 deg is about 4x the pipeline's trunk-lean error against the labels (MAE 2.7 deg, E2), so measurement error alone rarely fires it. Not calibrated on outcomes."
+      },
+      {
+       "fault_id": "F-SHALLOW-BACKSWING",
+       "name": "Shallow knee bend in the backswing",
+       "evidence": {
+        "max_knee_flexion_backswing": 98.04
+       },
+       "unit": "deg",
+       "fires_when": "above",
+       "threshold": 89.61,
+       "threshold_source": "Xu et al. 2025, p. 4, Table 1 (N-032, verified): peak swing knee flexion 102.71 +/- 6.16 deg with 0 deg = straight, i.e. an interior angle of 77.29 deg. Fires beyond mean + 2 SD (the 2 is heuristic). Caveat: elite players, men and women, measured with IMUs in 3D."
+      },
+      {
+       "fault_id": "F-PLANT-FAR-BEHIND",
+       "name": "Plant foot far behind the ball",
+       "evidence": {
+        "plant_foot_offset": -0.32
+       },
+       "unit": "leg_lengths",
+       "fires_when": "below",
+       "threshold": -0.25,
+       "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it)."
+      }
+     ],
+     "warnings": [
+      "velocities withheld: slow motion with unknown capture rate"
+     ]
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your knee straightening speed wasn't measured in your last kick because the capture frame rate is unknown, so the system couldn't calculate time per frame.",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q10": {
+  "answer": "Your knee extension speed wasn't measured in any of your sessions because the capture frame rate was unknown, so no real time per frame could be calculated (DEC-010).",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_history",
+    "args": {
+     "feature_id": "peak_knee_ext_velocity"
+    },
+    "result": {
+     "player": "fixture-a",
+     "sessions_stored": 4,
+     "units": {
+      "knee_angle_contact": "deg",
+      "max_knee_flexion_backswing": "deg",
+      "trunk_lean_contact": "deg",
+      "plant_foot_offset": "leg_lengths",
+      "segment_sequence_order": "order",
+      "peak_knee_ext_velocity": "deg/s"
+     },
+     "sessions": [
+      {
+       "session_id": 4,
+       "date": "2026-10-25",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.59,
+        "max_knee_flexion_backswing": 98.04,
+        "trunk_lean_contact": -11.6,
+        "plant_foot_offset": -0.32,
+        "segment_sequence_order": "simultaneous",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK",
+        "F-SHALLOW-BACKSWING",
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "session_id": 3,
+       "date": "2026-10-18",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.23,
+        "max_knee_flexion_backswing": 89.25,
+        "trunk_lean_contact": -12.4,
+        "plant_foot_offset": -0.03,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 2,
+       "date": "2026-10-11",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 137.78,
+        "max_knee_flexion_backswing": 81.08,
+        "trunk_lean_contact": -13.05,
+        "plant_foot_offset": -0.02,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 1,
+       "date": "2026-10-04",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 154.19,
+        "max_knee_flexion_backswing": 93.67,
+        "trunk_lean_contact": -8.58,
+        "plant_foot_offset": -0.14,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-SHALLOW-BACKSWING"
+       ]
+      }
+     ],
+     "trend": {
+      "feature_id": "peak_knee_ext_velocity",
+      "definition": "fastest knee straightening speed before contact",
+      "unit": null,
+      "points_oldest_first": [
+       {
+        "session_id": 1,
+        "date": "2026-10-04",
+        "not_measured": "capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       {
+        "session_id": 2,
+        "date": "2026-10-11",
+        "not_measured": "capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       {
+        "session_id": 3,
+        "date": "2026-10-18",
+        "not_measured": "capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       {
+        "session_id": 4,
+        "date": "2026-10-25",
+        "not_measured": "capture frame rate unknown, so no real time per frame (DEC-010)"
+       }
+      ],
+      "measured_in": 0,
+      "note": "not measured in any of these sessions"
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your knee extension speed wasn't measured in any of your sessions because the capture frame rate was unknown, so no real time per frame could be calculated (DEC-010).",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q11": {
+  "answer": "Your plant foot was measured at -0.32 leg lengths, meaning it is behind the ball. Published studies could not be compared to your plant foot offset because those studies measure distance in centimeters while your measurement is in leg lengths. \n\nBecause your plant foot landed too far back, it triggered a fault for planting too far behind the ball. \n\nTo work on this, try a phantom kick drill: stand with your non-kicking foot right next to the ball, and practice a phantom kick without actually striking it to get used to planting closer [K-10].",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "compare_to_norms",
+    "args": {
+     "feature_id": "plant_foot_offset"
+    },
+    "result": {
+     "session_id": 4,
+     "feature_id": "plant_foot_offset",
+     "definition": "plant ankle's horizontal distance from the ball centre, in leg lengths; negative = behind the ball",
+     "value": -0.32,
+     "unit": "leg_lengths",
+     "comparison": {
+      "norm_ref": null,
+      "verdict": "no_comparable_norm",
+      "reason": "N-004: the norm is in cm, the measurement in leg_lengths; N-027: the norm is in cm, the measurement in leg_lengths; N-028: the norm is in cm, the measurement in leg_lengths; N-029: the norm is in cm, the measurement in leg_lengths; N-030: the norm is in cm, the measurement in leg_lengths; N-031: the norm is in cm, the measurement in leg_lengths"
+     },
+     "fault_rule": {
+      "fault_id": "F-PLANT-FAR-BEHIND",
+      "name": "Plant foot far behind the ball",
+      "fires_when": "below",
+      "threshold": -0.25,
+      "threshold_source": "heuristic: the extracted norms give the plant foot's position in cm (e.g. N-027, N-031), and converting needs a leg length in cm that a video doesn't give. A quarter of a leg length behind the ball centre is an uncalibrated guess, and this feature's accuracy has not been measured against labels (E2 doesn't score it).",
+      "fired": true
+     }
+    }
+   },
+   {
+    "name": "search_drills",
+    "args": {
+     "fault_id": "F-PLANT-FAR-BEHIND",
+     "query": "plant foot drill"
+    },
+    "result": {
+     "method": "fault filter, then embedding similarity",
+     "passages": [
+      {
+       "id": "K-10",
+       "text": "1. Have player stand with non-kicking foot next to the ball. 2. Phantom kick the ball with kicking foot.",
+       "source": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (drill)",
+       "url": "https://sonc.org/wp-content/uploads/2025/06/Soccer-Shooting-Basics.pdf",
+       "faults": [
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "id": "K-09",
+       "text": "Player cannot get power or accuracy when shooting. 1. Make sure player plants non-kicking foot next to the ball. 2. Make sure knee on kicking leg is over the ball. Kick through the ball.",
+       "source": "Special Olympics North Carolina, Soccer Shooting Basics (2025), p. 2, Shooting Faults & Fixes, row 2 (error and correction)",
+       "url": "https://sonc.org/wp-content/uploads/2025/06/Soccer-Shooting-Basics.pdf",
+       "faults": [
+        "F-PLANT-FAR-BEHIND",
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "id": "K-40",
+       "text": "When using their preferred leg to perform an instep kick, soccer players practise a straighter approach to the ball, place their standing foot closer to the ball, and kick the ball with greater pelvic tilt and greater knee extension of the kicking leg. Variations in the placement of the support leg impact the speed of the ball.",
+       "source": "Kapidžić, Huremović & Biberovic (2014), J Hum Kinet 42:81-90, Introduction, para. 3",
+       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4234773/",
+       "faults": [
+        "F-PLANT-FAR-BEHIND"
+       ]
+      }
+     ],
+     "note": "quoted passages; use one only where it fits the question"
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your plant foot was measured at -0.32 leg lengths, meaning it is behind the ball. Published studies could not be compared to your plant foot offset because those studies measure distance in centimeters while your measurement is in leg lengths. \n\nBecause your plant foot landed too far back, it triggered a fault for planting too far behind the ball. \n\nTo work on this, try a phantom kick drill: stand with your non-kicking foot right next to the ball, and practice a phantom kick without actually striking it to get used to planting closer [K-10].",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q12": {
+  "answer": "In your first session on October 4, 2026, the fault that showed up was:\n\n* **F-SHALLOW-BACKSWING**",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_history",
+    "args": {
+     "last_n": 20
+    },
+    "result": {
+     "player": "fixture-a",
+     "sessions_stored": 4,
+     "units": {
+      "knee_angle_contact": "deg",
+      "max_knee_flexion_backswing": "deg",
+      "trunk_lean_contact": "deg",
+      "plant_foot_offset": "leg_lengths",
+      "segment_sequence_order": "order",
+      "peak_knee_ext_velocity": "deg/s"
+     },
+     "sessions": [
+      {
+       "session_id": 4,
+       "date": "2026-10-25",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.59,
+        "max_knee_flexion_backswing": 98.04,
+        "trunk_lean_contact": -11.6,
+        "plant_foot_offset": -0.32,
+        "segment_sequence_order": "simultaneous",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK",
+        "F-SHALLOW-BACKSWING",
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "session_id": 3,
+       "date": "2026-10-18",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.23,
+        "max_knee_flexion_backswing": 89.25,
+        "trunk_lean_contact": -12.4,
+        "plant_foot_offset": -0.03,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 2,
+       "date": "2026-10-11",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 137.78,
+        "max_knee_flexion_backswing": 81.08,
+        "trunk_lean_contact": -13.05,
+        "plant_foot_offset": -0.02,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 1,
+       "date": "2026-10-04",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 154.19,
+        "max_knee_flexion_backswing": 93.67,
+        "trunk_lean_contact": -8.58,
+        "plant_foot_offset": -0.14,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-SHALLOW-BACKSWING"
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "In your first session on October 4, 2026, the fault that showed up was:\n\n* **F-SHALLOW-BACKSWING**",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q13": {
+  "answer": "I can only help with your measured kicks, so I can't recommend specific boots to buy.",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "I can only help with your measured kicks, so I can't recommend specific boots to buy.",
+    "errors": []
+   }
+  ],
+  "model_calls": 1
+ },
+ "q14": {
+  "answer": "Your last kick was not measured because the clip was refused: the camera wasn't side-on, as your shoulder width appeared too large compared to your torso length. Please film from the side, level with your hips, so we can measure your knee angle at contact!",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_session_features",
+    "args": {},
+    "result": {
+     "session_id": 7,
+     "date": "2026-10-19",
+     "accepted": false,
+     "refused_because": [
+      "camera not side-on: shoulder width is 0.67 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips"
+     ],
+     "note": "the clip was refused by the quality check, so nothing was measured"
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your last kick was not measured because the clip was refused: the camera wasn't side-on, as your shoulder width appeared too large compared to your torso length. Please film from the side, level with your hips, so we can measure your knee angle at contact!",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q15": {
+  "answer": "Yes, your knee straightening speed has improved. \n\nAcross your last two sessions, it increased by 384.97 deg/s (going from 1313.51 deg/s on October 5 to 1698.48 deg/s on October 12). However, this feature's measurement accuracy hasn't been tested yet, so we don't know if this change is larger than the typical error.",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_history",
+    "args": {
+     "feature_id": "peak_knee_ext_velocity"
+    },
+    "result": {
+     "player": "fixture-b",
+     "sessions_stored": 3,
+     "units": {
+      "knee_angle_contact": "deg",
+      "max_knee_flexion_backswing": "deg",
+      "trunk_lean_contact": "deg",
+      "plant_foot_offset": "leg_lengths",
+      "segment_sequence_order": "order",
+      "peak_knee_ext_velocity": "deg/s"
+     },
+     "sessions": [
+      {
+       "session_id": 7,
+       "date": "2026-10-19",
+       "accepted": false,
+       "refused_because": [
+        "camera not side-on: shoulder width is 0.67 of torso length in the kick (> 0.5, heuristic). Film from the side, level with the hips"
+       ],
+       "note": "the clip was refused by the quality check, so nothing was measured"
+      },
+      {
+       "session_id": 6,
+       "date": "2026-10-12",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 136.64,
+        "max_knee_flexion_backswing": 81.62,
+        "trunk_lean_contact": -2.17,
+        "plant_foot_offset": 0.06,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": 1698.48
+       },
+       "faults": []
+      },
+      {
+       "session_id": 5,
+       "date": "2026-10-05",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 145.58,
+        "max_knee_flexion_backswing": 89.33,
+        "trunk_lean_contact": -8.83,
+        "plant_foot_offset": 0.07,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": 1313.51
+       },
+       "faults": []
+      }
+     ],
+     "trend": {
+      "feature_id": "peak_knee_ext_velocity",
+      "definition": "fastest knee straightening speed before contact",
+      "unit": "deg/s",
+      "points_oldest_first": [
+       {
+        "session_id": 5,
+        "date": "2026-10-05",
+        "value": 1313.51
+       },
+       {
+        "session_id": 6,
+        "date": "2026-10-12",
+        "value": 1698.48
+       },
+       {
+        "session_id": 7,
+        "date": "2026-10-19",
+        "not_measured": "clip refused"
+       }
+      ],
+      "measured_in": 2,
+      "change_first_to_last": 384.97,
+      "step_changes": [
+       384.97
+      ],
+      "typical_error": {
+       "value": null,
+       "why": "this feature's accuracy hasn't been measured"
+      },
+      "change_exceeds_typical_error": null,
+      "reading": "this feature's accuracy hasn't been measured, so the change can't be compared with its error"
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Yes, your knee straightening speed has improved. \n\nAcross your last two sessions, it increased by 384.97 deg/s (going from 1313.51 deg/s on October 5 to 1698.48 deg/s on October 12). However, this feature's measurement accuracy hasn't been tested yet, so we don't know if this change is larger than the typical error.",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ },
+ "q16": {
+  "answer": "Your backswing angle went from 94 deg in your first session to 98 deg in your latest session. However, that total change of 4 deg is smaller than the typical measurement error of 5 deg, so it's considered noise rather than a clear trend up or down.",
+  "generated_by": "llm",
+  "validator_passed": true,
+  "fallback_reason": null,
+  "tool_calls": [
+   {
+    "name": "get_history",
+    "args": {
+     "feature_id": "max_knee_flexion_backswing"
+    },
+    "result": {
+     "player": "fixture-a",
+     "sessions_stored": 4,
+     "units": {
+      "knee_angle_contact": "deg",
+      "max_knee_flexion_backswing": "deg",
+      "trunk_lean_contact": "deg",
+      "plant_foot_offset": "leg_lengths",
+      "segment_sequence_order": "order",
+      "peak_knee_ext_velocity": "deg/s"
+     },
+     "sessions": [
+      {
+       "session_id": 4,
+       "date": "2026-10-25",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.59,
+        "max_knee_flexion_backswing": 98.04,
+        "trunk_lean_contact": -11.6,
+        "plant_foot_offset": -0.32,
+        "segment_sequence_order": "simultaneous",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK",
+        "F-SHALLOW-BACKSWING",
+        "F-PLANT-FAR-BEHIND"
+       ]
+      },
+      {
+       "session_id": 3,
+       "date": "2026-10-18",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 132.23,
+        "max_knee_flexion_backswing": 89.25,
+        "trunk_lean_contact": -12.4,
+        "plant_foot_offset": -0.03,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 2,
+       "date": "2026-10-11",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 137.78,
+        "max_knee_flexion_backswing": 81.08,
+        "trunk_lean_contact": -13.05,
+        "plant_foot_offset": -0.02,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-LEAN-BACK"
+       ]
+      },
+      {
+       "session_id": 1,
+       "date": "2026-10-04",
+       "accepted": true,
+       "values": {
+        "knee_angle_contact": 154.19,
+        "max_knee_flexion_backswing": 93.67,
+        "trunk_lean_contact": -8.58,
+        "plant_foot_offset": -0.14,
+        "segment_sequence_order": "proximal_to_distal",
+        "peak_knee_ext_velocity": "not measured: capture frame rate unknown, so no real time per frame (DEC-010)"
+       },
+       "faults": [
+        "F-SHALLOW-BACKSWING"
+       ]
+      }
+     ],
+     "trend": {
+      "feature_id": "max_knee_flexion_backswing",
+      "definition": "the smallest interior knee angle in the backswing (most bent); 180 = straight, so a larger number means a less bent knee",
+      "unit": "deg",
+      "points_oldest_first": [
+       {
+        "session_id": 1,
+        "date": "2026-10-04",
+        "value": 93.67
+       },
+       {
+        "session_id": 2,
+        "date": "2026-10-11",
+        "value": 81.08
+       },
+       {
+        "session_id": 3,
+        "date": "2026-10-18",
+        "value": 89.25
+       },
+       {
+        "session_id": 4,
+        "date": "2026-10-25",
+        "value": 98.04
+       }
+      ],
+      "measured_in": 4,
+      "change_first_to_last": 4.37,
+      "step_changes": [
+       -12.59,
+       8.17,
+       8.79
+      ],
+      "typical_error": {
+       "value": 4.63,
+       "source": "E2: mean absolute error against hand labels, 19 clips"
+      },
+      "change_exceeds_typical_error": false,
+      "reading": "the change is smaller than the typical measurement error, so it can't be told apart from measurement noise: don't call it a trend"
+     }
+    }
+   }
+  ],
+  "attempts": [
+   {
+    "attempt": 1,
+    "answer": "Your backswing angle went from 94 deg in your first session to 98 deg in your latest session. However, that total change of 4 deg is smaller than the typical measurement error of 5 deg, so it's considered noise rather than a clear trend up or down.",
+    "errors": []
+   }
+  ],
+  "model_calls": 2
+ }
+}
