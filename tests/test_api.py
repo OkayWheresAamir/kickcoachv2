@@ -190,3 +190,25 @@ def test_index_page_and_example_are_served(tmp_path):
     ex = c.get("/example").json()
     assert ex["example"]["clip_id"] and ex["quality"]["accepted"] is True
     assert set(ex["figure"]["frames"]) == {"contact", "max_backswing"}
+
+
+# -- the coach chat (Phase 9) ---------------------------------------------------------------
+def test_chat_without_a_key_answers_from_a_template(tmp_path, no_key, monkeypatch):
+    import api.app as appmod
+
+    monkeypatch.setattr(appmod, "CHAT_CACHE", tmp_path / "chat_cache")  # no cached turns
+    c = client(tmp_path)
+    analyse(c, use_llm="false")
+    r = c.post("/chat", json={"message": "How was my last kick?", "player": "ana"})
+    assert r.status_code == 200, r.text
+    d = r.json()
+    assert d["generated_by"] == "template" and "GEMINI_API_KEY" in d["fallback_reason"]
+    assert "knee_angle_contact" in d["answer"]
+    assert c.post("/chat", json={"message": ""}).status_code == 422
+    assert c.post("/chat", json={"message": "x" * 501}).status_code == 422
+
+
+def test_chat_is_off_in_public_mode(tmp_path, no_key, monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "a-key-that-must-not-be-used")
+    r = client(tmp_path, public=True).post("/chat", json={"message": "hi"})
+    assert r.status_code == 403 and "DEC-034" in r.json()["detail"]

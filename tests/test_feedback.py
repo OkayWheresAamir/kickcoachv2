@@ -154,3 +154,88 @@ def test_runs_without_an_api_key(tmp_path, monkeypatch):
     client = gemini.GeminiClient(gemini.DEV_MODEL, tmp_path / "cache")
     out = run(client)
     assert out["generated_by"] == "template" and "no GEMINI_API_KEY" in out["fallback_reason"]
+
+
+# -- checks 6 and 7, from E7's ratings (Phase 9, DEC-042) -------------------------------------
+def ctx_with(**values):
+    feats = [dict(f) for f in FEATURES]
+    for f in feats:
+        f["value"] = values.get(f["id"], f["value"])
+    feats.append({"id": "plant_foot_offset", "value": values.get("plant_foot_offset", -0.32),
+                  "unit": "leg_lengths", "status": "measured"})  # fmt: skip
+    fired = [f | {"evidence": {"trunk_lean_contact": values.get("trunk_lean_contact", -11.6)}}
+             for f in FIRED]  # fmt: skip
+    return gen.build_context(feats, fired, [], [])[0]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Your knee bend in the backswing was 98 deg.",  # E7 R13, word for word
+        "Your knee bent to 98 degrees in the backswing, which is too little bend.",  # c03 v3
+        "Your knee flexion was 98 degrees.",
+    ],
+)
+def test_a_knee_interior_angle_called_bend_is_rejected(text):
+    _, errors = validate({"items": [item(what=text)]}, ctx())
+    assert any("interior angle" in e for e in errors), errors
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Your knee angle reached 98 degrees during the backswing.",  # the wording v3 used on c20
+        "Your knee stayed too straight, reaching an angle of 98 degrees instead of bending more.",
+        "Bend your knee more as you swing back.",
+        "You leaned back 12 deg, so the bend in your knee mattered less.",  # 12 isn't a knee angle
+    ],
+)
+def test_knee_wording_with_angle_or_without_a_knee_number_passes(text):
+    _, errors = validate({"items": [item(what=text)]}, ctx())
+    assert not any("interior angle" in e for e in errors), errors
+
+
+def test_a_lean_the_kick_did_not_have_is_rejected():
+    # E7 R11: a plant-foot item on a kick whose trunk leaned 5.36 deg forward
+    why = "Landing too far back makes your body lean away from the ball and reduces your power."
+    c = ctx_with(trunk_lean_contact=5.36)
+    _, errors = validate({"items": [item(what="Your plant foot landed behind the ball.",
+                                         why_it_matters=why)]}, c)  # fmt: skip
+    assert any("'lean away'" in e and "5.36" in e for e in errors), errors
+
+
+@pytest.mark.parametrize(
+    "values, field, text, rejected",
+    [
+        ({}, "why_it_matters", "Leaning back makes the ball rise.", False),  # -11.6: agrees
+        ({}, "drill", "Wall strikes keeping your chest leaning forward.", False),  # advice
+        ({}, "what", "You leaned forward at contact.", True),
+        ({"trunk_lean_contact": 5.36}, "what", "You leaned back at contact.", True),
+        ({"plant_foot_offset": 0.14}, "what", "Your plant foot landed behind the ball.", True),
+        ({}, "what", "Your plant foot landed behind the ball.", False),  # -0.32: agrees
+        ({}, "what", "Your plant foot landed ahead of the ball.", True),
+        ({}, "why_it_matters", "Plant beside or just ahead of the ball.", False),  # advice
+    ],
+)
+def test_direction_claims_are_checked_against_the_measured_sign(values, field, text, rejected):
+    _, errors = validate({"items": [item(**{field: text})]}, ctx_with(**values))
+    assert any("this kick's measurement shows" in e for e in errors) == rejected, errors
+
+
+def test_shallow_backswing_template_passes_with_its_norm_threshold():
+    (rule,) = [r for r in faults.load_rules() if r.id == "F-SHALLOW-BACKSWING"]
+    feats = [{"id": rule.feature, "value": 100.89, "unit": "deg", "status": "measured"}]
+    fired = [{"fault_id": rule.id, "name": rule.name, "evidence": {rule.feature: 100.89},
+              "unit": "deg", "fires_when": "above", "threshold": 89.61,
+              "threshold_source": rule.threshold_source, "text_source": rule.text_source,
+              "citations": list(rule.citations)}]  # fmt: skip
+    tmpl = gen.template_feedback(fired, [rule])
+    c, _ = gen.build_context(feats, fired, [], [])
+    assert validate(tmpl.model_dump(), c)[1] == []
+
+
+def test_rag_prompt_asks_for_the_value_and_angle_wording():
+    facts = {"player_level": None, "coaching_passages": [{"id": "K-01", "text": "x"}]}
+    p = gen.build_prompt(facts)
+    assert "with the fault's measured value" in p and "never an amount of" in p
+    assert "with the fault's measured value" not in gen.build_prompt({"player_level": None})
