@@ -58,7 +58,10 @@ def main() -> None:
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         w.writerows(rows)
-    print(f"prompt {gen.PROMPT_VERSION}; wrote results/assess_summary.csv")
+    print(
+        f"prompts {gen.RAG_PROMPT_VERSION} (with passages) / {gen.PROMPT_VERSION}; wrote "
+        "results/assess_summary.csv"
+    )
 
 
 if __name__ == "__main__":
