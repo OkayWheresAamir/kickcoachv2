@@ -28,6 +28,7 @@ from typing import Annotated, Literal
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 
 from api.jobs import Busy, Job, JobError, Jobs
 from kickcoach import session
@@ -42,6 +43,9 @@ VIDEO_SUFFIXES = {".mp4", ".mov", ".m4v", ".avi", ".webm", ".mkv"}
 # heuristic: more past sessions than the page could usefully send; bounds the request.
 MAX_HISTORY = 50
 BUSY = "the demo is busy with other kicks; try again in a few minutes"
+CHAT_CACHE = ROOT / "data" / "cache" / "chat"
+# heuristic: a chat question is a sentence or two; earlier turns are context, not a transcript.
+MAX_CHAT_CHARS, MAX_CHAT_TURNS = 500, 10
 
 Analyser = Callable[..., tuple[dict, dict[str, str]]]
 
@@ -82,11 +86,24 @@ def parse_history(raw: str | None) -> list[dict[str, float]] | None:
     return out
 
 
+class ChatTurn(BaseModel):
+    role: Literal["user", "model"]
+    text: str = Field(max_length=4000)
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=MAX_CHAT_CHARS)
+    player: str = Field("me", max_length=64)
+    level: Literal["", "beginner", "intermediate", "advanced"] = ""
+    history: list[ChatTurn] = Field(default_factory=list, max_length=MAX_CHAT_TURNS)
+
+
 def create_app(
     db_path: Path = db.DB_PATH,
     sessions_dir: Path = SESSIONS_DIR,
     analyser: Analyser = session.analyse_video,
     public: bool | None = None,
+    chat_client: Callable[[], object] | None = None,
 ) -> FastAPI:
     public = public_mode() if public is None else public
     app = FastAPI(title="KickCoach", version="0.3")
@@ -250,6 +267,35 @@ def create_app(
         if public or not path.exists():
             raise HTTPException(404, f"no session {session_id}")
         return json.loads(path.read_text())
+
+    # The coach chat (Phase 9, DEC-043). Local mode only: it needs the LLM, which the public
+    # demo can't use (DEC-034). Without a key it answers with a template.
+    @app.post("/chat")
+    def chat(req: ChatRequest) -> dict:
+        if public:
+            raise HTTPException(
+                403, "the coach chat needs the LLM, which the public demo doesn't use (DEC-034)"
+            )
+        from kickcoach.chat.agent import ask
+        from kickcoach.chat.tools import Tools
+        from kickcoach.llm import GeminiClient
+        from kickcoach.llm.gemini import DEV_MODEL
+
+        client = chat_client() if chat_client else GeminiClient(DEV_MODEL, CHAT_CACHE)
+        con = db.connect(db_path)
+        try:
+            out = ask(req.message, Tools(con, req.player, level=req.level or None), client,
+                      history=[t.model_dump() for t in req.history])  # fmt: skip
+        finally:
+            con.close()
+        return {
+            "answer": out["answer"],
+            "generated_by": out["generated_by"],
+            "validator_passed": out["validator_passed"],
+            "fallback_reason": out["fallback_reason"],
+            "tool_calls": [{"name": c["name"], "args": c["args"]} for c in out["tool_calls"]],
+            "model_calls": out["model_calls"],
+        }
 
     return app
 

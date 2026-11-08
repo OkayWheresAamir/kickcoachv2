@@ -80,15 +80,17 @@ def save_session(
     result: dict,
     inputs: dict,
     artifacts: dict[str, str] | None = None,
+    created_at: str | None = None,
 ) -> int:
     """Store one analysed clip. ``result`` is the pipeline output plus ``faults`` and
-    ``feedback``; returns the session id."""
+    ``feedback``; returns the session id. ``created_at`` (ISO 8601) is for fixtures that
+    need fixed dates; the default is now."""
     with con:
         cur = con.execute(
             "INSERT INTO sessions (created_at, player, level, clip_name, accepted, quality, "
             "events, pose_model, inputs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
-                datetime.now(UTC).isoformat(timespec="seconds"),
+                created_at or datetime.now(UTC).isoformat(timespec="seconds"),
                 player,
                 level,
                 clip_name,

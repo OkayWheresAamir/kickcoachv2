@@ -46,6 +46,13 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def _semantic(content: dict) -> dict:
+    """A Content dict without thought signatures, for the cache key."""
+    parts = [{k: v for k, v in p.items() if k != "thought_signature"}
+             for p in content.get("parts") or []]  # fmt: skip
+    return {"role": content.get("role"), "parts": [p for p in parts if p]}
+
+
 class GeminiClient:
     def __init__(
         self,
@@ -159,8 +166,7 @@ class GeminiClient:
         if path.exists():
             return {**json.loads(path.read_text()), "cached": True}
 
-        import httpx
-        from google.genai import errors, types
+        from google.genai import types
 
         parts = []
         if video_bytes is not None:
@@ -181,32 +187,11 @@ class GeminiClient:
             ),
         )
         sdk = self._sdk()
-        for attempt, backoff in enumerate((*RETRY_WAITS_S, None)):
-            self._wait_turn()
-            try:
-                resp = sdk.models.generate_content(
-                    model=self.model,
-                    contents=[types.Content(role="user", parts=parts)],
-                    config=config,
-                )
-                break
-            except (errors.APIError, httpx.TimeoutException) as e:
-                # 429 = rate limit, 503 = "model is experiencing high demand", 500 = "Internal
-                # error encountered" (Gemma 4, 3 Nov), or no answer within TIMEOUT_MS: all
-                # transient.
-                code = getattr(e, "code", "timeout")
-                if code not in (429, 500, 503, "timeout"):
-                    raise
-                if code == 429 and "PerDay" in str(e):
-                    raise DailyQuotaExhausted(str(e)) from e
-                if backoff is None:
-                    raise RateLimited(str(e)) from e
-                print(
-                    f"{code} from Gemini (attempt {attempt + 1}); waiting {backoff:.0f} s",
-                    flush=True,
-                )
-                self._sleep(backoff)
-
+        resp = self._with_retries(
+            lambda: sdk.models.generate_content(
+                model=self.model, contents=[types.Content(role="user", parts=parts)], config=config
+            )
+        )
         text = resp.text or ""
         try:
             parsed = json.loads(text)
@@ -226,33 +211,126 @@ class GeminiClient:
         path.write_text(json.dumps(record, indent=1))
         return {**record, "cached": False}
 
+    def _with_retries(self, call: Callable[[], object]):
+        import httpx
+        from google.genai import errors
+
+        for attempt, backoff in enumerate((*RETRY_WAITS_S, None)):
+            self._wait_turn()
+            try:
+                return call()
+            except (errors.APIError, httpx.TimeoutException) as e:
+                # 429 = rate limit, 503 = "model is experiencing high demand", 500 = "Internal
+                # error encountered" (Gemma 4, 3 Nov), or no answer within TIMEOUT_MS: all
+                # transient.
+                code = getattr(e, "code", "timeout")
+                if code not in (429, 500, 503, "timeout"):
+                    raise
+                if code == 429 and "PerDay" in str(e):
+                    raise DailyQuotaExhausted(str(e)) from e
+                if backoff is None:
+                    raise RateLimited(str(e)) from e
+                print(
+                    f"{code} from Gemini (attempt {attempt + 1}); waiting {backoff:.0f} s",
+                    flush=True,
+                )
+                self._sleep(backoff)
+        raise AssertionError("unreachable")
+
+    def generate_turn(
+        self,
+        *,
+        system: str,
+        contents: list[dict],
+        tools: list[dict],
+        tool_mode: str | None = None,
+        temperature: float | None = None,
+        tag: str = "",
+    ) -> dict:
+        """One model turn of a manual function-calling conversation (the coach chat).
+
+        ``contents`` are SDK Content dicts, the model's turns exactly as earlier calls returned
+        them: Gemini 3 attaches thought signatures to function-call parts and expects them
+        back. ``tools`` are function declarations (name, description,
+        parameters_json_schema). ``tool_mode`` "NONE" forbids further calls. The cache key
+        leaves the signatures out (opaque bytes that differ per call), so a conversation
+        whose tool results are deterministic replays from the cache with no key.
+
+        Returns {"content", "text", "function_calls", "cached", "key", ...}."""
+        request = {"system": system, "tools": tools, "temperature": temperature,
+                   "contents": [_semantic(c) for c in contents]}  # fmt: skip
+        if tool_mode is not None:
+            request["tool_mode"] = tool_mode
+        key = self.cache_key(request)
+        path = self._cache_path(key)
+        if path.exists():
+            return {**json.loads(path.read_text()), "cached": True}
+
+        from google.genai import types
+
+        config = types.GenerateContentConfig(
+            system_instruction=system,
+            temperature=temperature,
+            tools=[types.Tool(function_declarations=[types.FunctionDeclaration(**t)
+                                                     for t in tools])],
+            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+            tool_config=types.ToolConfig(function_calling_config=types.FunctionCallingConfig(
+                mode=tool_mode)) if tool_mode else None,
+        )  # fmt: skip
+        sdk = self._sdk()
+        resp = self._with_retries(
+            lambda: sdk.models.generate_content(
+                model=self.model,
+                contents=[types.Content.model_validate(c) for c in contents],
+                config=config,
+            )
+        )
+        cand = (resp.candidates or [None])[0]
+        content = cand.content if cand is not None and cand.content is not None else None
+        parts = (content.parts or []) if content is not None else []
+        record = {
+            "key": key,
+            "tag": tag,
+            "model": self.model,
+            "request": request,
+            "content": content.model_dump(mode="json", exclude_none=True)
+            if content is not None
+            else {"role": "model", "parts": []},
+            "text": "".join(p.text for p in parts if p.text and not p.thought),
+            "function_calls": [
+                {
+                    "name": p.function_call.name,
+                    "args": p.function_call.args or {},
+                    **({"id": p.function_call.id} if p.function_call.id else {}),
+                }
+                for p in parts
+                if p.function_call
+            ],  # fmt: skip
+            "finish_reason": str(cand.finish_reason) if cand is not None else None,
+            "usage": resp.usage_metadata.model_dump(mode="json", exclude_none=True)
+            if resp.usage_metadata
+            else None,
+        }
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(record, indent=1))
+        return {**record, "cached": False}
+
     def embed_texts(self, texts: list[str], dims: int) -> list[list[float]]:
         """One vector per text, uncached (kickcoach.retrieval.embed caches them).
 
         gemini-embedding-2 merges a plain list of strings into ONE embedding (embeddings doc,
         2026-11-03), so each text goes in as its own Content, and the count is checked."""
-        from google.genai import errors, types
+        from google.genai import types
 
         sdk = self._sdk()
         contents = [types.Content(parts=[types.Part(text=t)]) for t in texts]
-        for attempt, backoff in enumerate((*RETRY_WAITS_S, None)):
-            self._wait_turn()
-            try:
-                resp = sdk.models.embed_content(
-                    model=self.model,
-                    contents=contents,
-                    config=types.EmbedContentConfig(output_dimensionality=dims),
-                )
-                break
-            except errors.APIError as e:
-                if e.code not in (429, 500, 503):
-                    raise
-                if e.code == 429 and "PerDay" in str(e):
-                    raise DailyQuotaExhausted(str(e)) from e
-                if backoff is None:
-                    raise RateLimited(str(e)) from e
-                print(f"{e.code} from Gemini (attempt {attempt + 1}); waiting {backoff:.0f} s")
-                self._sleep(backoff)
+        resp = self._with_retries(
+            lambda: sdk.models.embed_content(
+                model=self.model,
+                contents=contents,
+                config=types.EmbedContentConfig(output_dimensionality=dims),
+            )
+        )
         vectors = [list(e.values) for e in resp.embeddings or []]
         if len(vectors) != len(texts):
             raise RuntimeError(f"asked for {len(texts)} embeddings, got {len(vectors)}")

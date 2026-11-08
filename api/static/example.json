@@ -439,35 +439,32 @@
   "items": [
    {
     "fault_id": "F-LEAN-BACK",
-    "what": "Your upper body leaned backward at the moment of contact with the ball.",
-    "why_it_matters": "Leaning back causes your shots to rise too high and lose power.",
-    "cue": "Keep your head and chest over the ball.",
-    "drill": "Practice walking up and stopping with your kicking knee directly over the ball before swinging.",
+    "what": "Your trunk angle from vertical at contact was -12 deg, leaning back.",
+    "why_it_matters": "Leaning back makes it hard to keep the ball low and strike solidly.",
+    "cue": "Keep your chest over the ball.",
+    "drill": "Practice slow-motion kicks focusing on holding your upper body forward over the ball.",
     "citations": [
      "K-12"
     ]
    },
    {
     "fault_id": "F-SHALLOW-BACKSWING",
-    "what": "Your kicking leg did not bend enough during the backswing.",
-    "why_it_matters": "A shallow backswing reduces the stretch in your leg muscles, which decreases your kicking power.",
+    "what": "Your smallest interior knee angle in the backswing was 98 deg, pointing toward a shallower bend.",
+    "why_it_matters": "A shallow backswing reduces the stretch in your leg muscles, limiting your kicking power.",
     "cue": "Bend your knee more as you swing back.",
-    "drill": "Practice pulling your heel back toward your glutes during the backswing phase before every kick.",
+    "drill": "Practice pulling your heel up toward your glutes during the backswing before stepping forward to kick.",
     "citations": [
      "N-032",
-     "kellis_katis_2007",
-     "K-35"
+     "kellis_katis_2007"
     ]
    },
    {
     "fault_id": "F-PLANT-FAR-BEHIND",
-    "what": "Your plant foot landed too far behind the ball.",
-    "why_it_matters": "Placing your foot too far back makes it difficult to strike the ball cleanly and reduces your shooting power.",
-    "cue": "Plant your foot right beside the ball.",
-    "drill": "Place markers on the ground next to the ball and practice stepping evenly beside them before kicking.",
-    "citations": [
-     "K-09"
-    ]
+    "what": "Your plant ankle's horizontal distance from the ball centre was -0.32 leg lengths, behind the ball.",
+    "why_it_matters": "Planting too far back hurts your power and accuracy.",
+    "cue": "Step closer to the ball.",
+    "drill": "Stand with your non-kicking foot next to the ball and practice phantom kicks.",
+    "citations": []
    }
   ],
   "generated_by": "llm",
@@ -475,18 +472,9 @@
   "attempts": [
    {
     "attempt": 1,
-    "cache_key": "186fc475577a8eea5915a70c",
+    "cache_key": "35cd30e12b28f4d818f12d5b",
     "cached": true,
-    "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-LEAN-BACK\",\n      \"what\": \"Your upper body leaned backward at the moment of contact with the ball.\",\n      \"why_it_matters\": \"Leaning back causes your shots to rise too high and lose power.\",\n      \"cue\": \"Keep your head and chest over the ball.\",\n      \"drill\": \"Practice walking up and stopping with your kicking knee directly over the ball before swinging.\",\n      \"citations\": [\n        \"K-12\"\n      ]\n    },\n    {\n      \"fault_id\": \"F-SHALLOW-BACKSWING\",\n      \"what\": \"Your kicking leg did not bend enough during the backswing.\",\n      \"why_it_matters\": \"A shallow backswing reduces the stretch in your leg muscles, which decreases your kicking power.\",\n      \"cue\": \"Bend your knee more as you swing back.\",\n      \"drill\": \"Practice pulling your heel back toward your glutes during the backswing phase before every kick.\",\n      \"citations\": [\n        \"Kilic_2021\",\n        \"K-35\"\n      ]\n    },\n    {\n      \"fault_id\": \"F-PLANT-FAR-BEHIND\",\n      \"what\": \"Your plant foot landed too far behind the ball.\",\n      \"why_it_matters\": \"Placing your foot too far back makes it difficult to strike the ball cleanly and reduces your shooting power.\",\n      \"cue\": \"Plant your foot right beside the ball.\",\n      \"drill\": \"Place markers on the ground next to the ball and practice stepping evenly beside them before kicking.\",\n      \"citations\": [\n        \"K-09\"\n      ]\n    }\n  ]\n}",
-    "errors": [
-     "F-SHALLOW-BACKSWING: citation 'Kilic_2021' is not one of the given IDs"
-    ]
-   },
-   {
-    "attempt": 2,
-    "cache_key": "55e614ce2e8cc562f7880d1e",
-    "cached": true,
-    "text": "{\n  \"items\": [\n    {\n      \"fault_id\": \"F-LEAN-BACK\",\n      \"what\": \"Your upper body leaned backward at the moment of contact with the ball.\",\n      \"why_it_matters\": \"Leaning back causes your shots to rise too high and lose power.\",\n      \"cue\": \"Keep your head and chest over the ball.\",\n      \"drill\": \"Practice walking up and stopping with your kicking knee directly over the ball before swinging.\",\n      \"citations\": [\n        \"K-12\"\n      ]\n    },\n    {\n      \"fault_id\": \"F-SHALLOW-BACKSWING\",\n      \"what\": \"Your kicking leg did not bend enough during the backswing.\",\n      \"why_it_matters\": \"A shallow backswing reduces the stretch in your leg muscles, which decreases your kicking power.\",\n      \"cue\": \"Bend your knee more as you swing back.\",\n      \"drill\": \"Practice pulling your heel back toward your glutes during the backswing phase before every kick.\",\n      \"citations\": [\n        \"N-032\",\n        \"kellis_katis_2007\",\n        \"K-35\"\n      ]\n    },\n    {\n      \"fault_id\": \"F-PLANT-FAR-BEHIND\",\n      \"what\": \"Your plant foot landed too far behind the ball.\",\n      \"why_it_matters\": \"Placing your foot too far back makes it difficult to strike the ball cleanly and reduces your shooting power.\",\n      \"cue\": \"Plant your foot right beside the ball.\",\n      \"drill\": \"Place markers on the ground next to the ball and practice stepping evenly beside them before kicking.\",\n      \"citations\": [\n        \"K-09\"\n      ]\n    }\n  ]\n}",
+    "text": "{\n \"items\": [\n  {\n   \"fault_id\": \"F-LEAN-BACK\",\n   \"what\": \"Your trunk angle from vertical at contact was -12 deg, leaning back.\",\n   \"why_it_matters\": \"Leaning back makes it hard to keep the ball low and strike solidly.\",\n   \"cue\": \"Keep your chest over the ball.\",\n   \"drill\": \"Practice slow-motion kicks focusing on holding your upper body forward over the ball.\",\n   \"citations\": [\n    \"K-12\"\n   ]\n  },\n  {\n   \"fault_id\": \"F-SHALLOW-BACKSWING\",\n   \"what\": \"Your smallest interior knee angle in the backswing was 98 deg, pointing toward a shallower bend.\",\n   \"why_it_matters\": \"A shallow backswing reduces the stretch in your leg muscles, limiting your kicking power.\",\n   \"cue\": \"Bend your knee more as you swing back.\",\n   \"drill\": \"Practice pulling your heel up toward your glutes during the backswing before stepping forward to kick.\",\n   \"citations\": [\n    \"N-032\",\n    \"kellis_katis_2007\"\n   ]\n  },\n  {\n   \"fault_id\": \"F-PLANT-FAR-BEHIND\",\n   \"what\": \"Your plant ankle's horizontal distance from the ball centre was -0.32 leg lengths, behind the ball.\",\n   \"why_it_matters\": \"Planting too far back hurts your power and accuracy.\",\n   \"cue\": \"Step closer to the ball.\",\n   \"drill\": \"Stand with your non-kicking foot next to the ball and practice phantom kicks.\",\n   \"citations\": []\n  }\n ]\n}",
     "errors": []
    }
   ],

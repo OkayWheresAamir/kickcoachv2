@@ -15,7 +15,12 @@ from pathlib import Path
 from kickcoach.compare.faults import FaultRule, load_rules
 from kickcoach.compare.norms import NormRow
 from kickcoach.feedback.schema import RESPONSE_SCHEMA, Feedback, FeedbackItem
-from kickcoach.feedback.validate import Context, validate
+from kickcoach.feedback.validate import (
+    DIRECTION_CLAIMS,
+    KNEE_ANGLE_FEATURES,
+    Context,
+    validate,
+)
 from kickcoach.llm import GeminiClient, NoApiKey, RateLimited
 from kickcoach.llm.gemini import DEV_MODEL
 from kickcoach.retrieval import corpus as coaching
@@ -25,9 +30,12 @@ from kickcoach.retrieval.retrieve import NEEDS, retrieve
 ROOT = Path(__file__).resolve().parents[2]
 CACHE_DIR = ROOT / "data" / "cache" / "feedback"
 PROMPT_VERSION = "feedback-v2"  # v2: each measured feature comes with its definition
-# v3 = v2 plus retrieved coaching passages (Phase 8, DEC-039). Without passages the prompt is
-# v2 word for word, so v2's cached answers stay valid.
-RAG_PROMPT_VERSION = "feedback-v3"
+# With retrieved coaching passages (DEC-039). v3 (Phase 8) added the passages; v4 (Phase 9)
+# adds rules 6-8 after E7: v3 dropped the measured value from "what" in 7 of 8 rated pairs,
+# and E7 found a knee angle called "bend" and a lean the kick didn't have (DEC-042). E7's
+# items keep the v3 answers they were rated on (results/e7/items.json is frozen). Without
+# passages the prompt is v2 word for word, so v2's cached answers stay valid.
+RAG_PROMPT_VERSION = "feedback-v4"
 # heuristic: passages per need (why / cue / drill) per fault, deduplicated; E6's MRR of 0.75
 # says the first is usually relevant, the second gives the wording some choice.
 PASSAGES_PER_NEED = 2
@@ -49,6 +57,16 @@ DEFINITIONS = {
     ),
     "segment_sequence_order": "whether the thigh's speed peaked before the shank's",
     "peak_knee_ext_velocity": "fastest knee straightening speed before contact",
+}
+# Each feature's unit, as kickcoach.features.kick reports it (a test checks the committed
+# pipeline outputs). The chat states units from here and checks them (DEC-043).
+FEATURE_UNITS = {
+    "knee_angle_contact": "deg",
+    "max_knee_flexion_backswing": "deg",
+    "trunk_lean_contact": "deg",
+    "plant_foot_offset": "leg_lengths",
+    "segment_sequence_order": "order",
+    "peak_knee_ext_velocity": "deg/s",
 }
 # Decimal places when a value is shown in text (templates and the facts handed to the LLM).
 DISPLAY_DP = {"deg": 0, "deg/s": 0, "leg_lengths": 2, "ms": 0}
@@ -101,15 +119,24 @@ def build_context(
     for f in features:
         if f.get("status") == "measured" and isinstance(f.get("value"), float | int):
             ctx.allow(f["value"], f.get("unit"))
+            if f["id"] in DIRECTION_CLAIMS:
+                ctx.signed[f["id"]] = float(f["value"])
+            if f["id"] in KNEE_ANGLE_FEATURES:
+                ctx.knee_angles.append(float(f["value"]))
     for f in fired:
         if isinstance(f.get("threshold"), float | int):
             ctx.allow(f["threshold"], f.get("unit"))
+            if set(f["evidence"]) & set(KNEE_ANGLE_FEATURES):
+                ctx.knee_angles.append(float(f["threshold"]))
     for c in comparisons:
         for k in ("norm_mean", "norm_sd"):
             if c.get(k) is not None:
                 ctx.allow(c[k], c.get("unit"))
         for x in c.get("norm_band") or []:
             ctx.allow(x, c.get("unit"))
+        if c.get("feature_id") in KNEE_ANGLE_FEATURES:  # the SD is a spread, not an angle
+            ctx.knee_angles += [x for x in (c.get("norm_mean"), *(c.get("norm_band") or []))
+                                if x is not None]  # fmt: skip
     for text in cites.values():
         for y in _years(text):
             ctx.allow(y, "year")
@@ -126,18 +153,24 @@ _RULES_V2 = """
 5. "what": what happened in this kick, in plain words. "why_it_matters": why it matters for
    the kick. "cue": one short coaching cue. "drill": one practice drill, described in words.
 6. Short sentences a teenager would understand. No medical advice."""
-_RULES_V3 = """
+_RULES_V4 = """
 5. "coaching_passages" are short excerpts from coaching sources, found for each fault by a
    search; some may not fit. Use a passage only where it really supports what you write,
    say it in your own words, and add its ID to that item's citations. Copy no numbers or
    names from a passage. A field no passage supports is written without a citation.
-6. "what": what happened in this kick, in plain words. "why_it_matters": why it matters for
-   the kick. "cue": one short coaching cue. "drill": one practice drill, described in words.
-7. Short sentences a teenager would understand. No medical advice."""
+6. "what": what happened in this kick, in plain words, with the fault's measured value from
+   its "evidence" (rounded as rule 2 allows) and its unit, and which way it points, read
+   from the feature's definition. "why_it_matters": why it matters for the kick. "cue": one
+   short coaching cue. "drill": one practice drill, described in words.
+7. Knee values are interior angles between thigh and shin (180 = straight). Call a knee
+   number an angle, never an amount of "bend" or "flexion".
+8. Describe this kick only as its measurements show it: don't say the player leaned back or
+   planted behind the ball unless that feature's value says so.
+9. Short sentences a teenager would understand. No medical advice."""
 
 
 def build_prompt(facts: dict, previous: str | None = None, errors: list[str] | None = None) -> str:
-    last_rules = _RULES_V3 if facts.get("coaching_passages") else _RULES_V2
+    last_rules = _RULES_V4 if facts.get("coaching_passages") else _RULES_V2
     retry = ""
     if previous is not None:
         retry = (

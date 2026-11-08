@@ -78,6 +78,14 @@
       .primary:disabled { opacity: 0.45; cursor: not-allowed; }
       .secondary { padding: 7px 12px; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; }
       .link { padding: 0; color: var(--accent); background: none; border: 0; text-decoration: underline; text-underline-offset: 2px; }
+      .chat-form { display: flex; gap: 8px; margin-top: 12px; }
+      .chat-form input { flex: 1; min-width: 0; padding: 9px 11px; font: inherit; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; }
+      .chat-form button { flex: none; }
+      .chat-log { list-style: none; margin: 14px 0 0; padding: 0; }
+      .chat-log li { padding: 12px 0; border-top: 1px solid var(--border); }
+      .chat-q { margin: 0 0 6px; font-weight: 600; }
+      .chat-a { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+      .chat-meta { margin: 6px 0 0; }
       .or { margin-top: 12px; font-size: 14px; color: var(--muted); text-align: center; }
 
       .progress { margin-top: 16px; padding: 14px; border-radius: 8px; background: var(--sunken); }
@@ -266,6 +274,16 @@
         </div>
         <p class="muted small">Saved in this browser only. New results are compared with your last three.</p>
         <ul id="history-list"></ul>
+      </section>
+
+      <section class="panel" id="chat" hidden aria-labelledby="chat-title" style="margin-top:16px">
+        <h2 id="chat-title">Ask about your kicks</h2>
+        <p class="muted small">An LLM looks up your saved sessions, the study comparisons and the coaching passages with tools, then a checker makes sure every number it writes came from them. Local only: the public demo doesn't use an LLM.</p>
+        <form class="chat-form" id="chat-form">
+          <input id="chat-input" maxlength="500" autocomplete="off" placeholder="e.g. Is my backswing deeper?" aria-label="Your question" />
+          <button class="secondary" id="chat-go" type="submit">Ask</button>
+        </form>
+        <ol class="chat-log" id="chat-log" aria-live="polite"></ol>
       </section>
 
       <section class="panel how" id="how" style="margin-top:16px">
@@ -682,11 +700,44 @@
         }));
       }
 
+      // ---------- coach chat (local mode only, DEC-043) ----------
+      const chatTurns = []; // earlier turns, sent back as context (the server takes at most 10)
+      function toolLabel(c) {
+        const args = Object.entries(c.args || {}).map(([k, v]) => `${k}: ${v}`).join(", ");
+        return `${c.name}${args ? ` (${args})` : ""}`;
+      }
+      $("chat-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const q = $("chat-input").value.trim();
+        if (!q) return;
+        const li = document.createElement("li");
+        li.innerHTML = `<p class="chat-q">${esc(q)}</p><p class="chat-a muted">Looking it up…</p>`;
+        $("chat-log").prepend(li);
+        $("chat-input").value = "";
+        $("chat-go").disabled = true;
+        try {
+          const r = await fetch("/chat", { method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: q, history: chatTurns.slice(-10) }) });
+          const d = await r.json();
+          if (!r.ok) throw new Error(typeof d.detail === "string" ? d.detail : "the question couldn't be sent");
+          const tools = d.tool_calls.length ? `Looked up: ${d.tool_calls.map(toolLabel).join("; ")}.` : "No lookups.";
+          const note = d.generated_by === "llm" ? "Checked: every number came from a lookup." : `Template answer: ${d.fallback_reason}.`;
+          li.innerHTML = `<p class="chat-q">${esc(q)}</p><p class="chat-a">${esc(d.answer)}</p>
+            <p class="chat-meta muted small">${esc(tools)} ${esc(note)}</p>`;
+          chatTurns.push({ role: "user", text: q }, { role: "model", text: d.answer });
+        } catch (err) {
+          li.innerHTML = `<p class="chat-q">${esc(q)}</p><p class="chat-a error">${esc(err.message)}</p>`;
+        } finally {
+          $("chat-go").disabled = false;
+        }
+      });
+
       // ---------- start ----------
       renderHistory();
       fetch("/health").then((r) => r.json()).then((h) => {
         health = h;
         $("drop-hint").textContent = `or drop it here. One kick, a few seconds long, up to ${h.max_upload_mb} MB.`;
+        $("chat").hidden = !!h.public;
         $("mode-note").textContent = h.public
           ? "Results are kept in this browser only; nothing about your kick is stored on the server. Feedback on this demo comes from templates."
           : "Running locally: sessions are also saved to data/kickcoach.db.";

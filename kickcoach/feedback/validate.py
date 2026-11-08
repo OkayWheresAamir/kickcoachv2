@@ -4,7 +4,15 @@
 2. its items are exactly the detected faults, one each;
 3. every citation is an ID it was given;
 4. every number in its text matches a provided number within tolerance;
-5. it says nothing about a feature that is ``not_measured``.
+5. it says nothing about a feature that is ``not_measured``;
+6. it claims no direction a measurement contradicts, e.g. leaning back when the trunk
+   leaned forward (E7's R11);
+7. it doesn't call a knee's interior angle an amount of bend (E7's R02 and R13: "knee bend
+   was 101 degrees" for a 101 deg angle, which is 79 deg of bend).
+
+Checks 6 and 7 came from E7's ratings (Phase 9). Like 5, they match phrases, so they check
+wording, not meaning: a negated claim ("you didn't lean back") is rejected too, which costs
+a retry, not a wrong answer.
 
 The validator never edits the answer. It returns the errors, which go back to the LLM once;
 then the app falls back to the template (kickcoach.feedback.generate).
@@ -42,6 +50,28 @@ FEATURE_WORDS = {
                                "extension speed", "how fast your knee"),
 }  # fmt: skip
 
+# heuristic: phrases that claim a direction for a signed feature, the sign they claim, and the
+# fields that are checked. The fault's own direction (back, behind) is checked in "what" and
+# "why_it_matters", where R11 put "makes your body lean away" on a kick that leaned forward.
+# The corrective direction (forward, ahead) is the normal wording of advice, so it is checked
+# only in "what", which describes this kick. On the 31 cached Phase 8 answers this rejects
+# R11 and nothing else.
+_BACK = tuple(f"{verb} {way}" for verb in ("lean", "leaned", "leaning", "leans")
+              for way in ("back", "away"))  # fmt: skip
+_FORWARD = ("lean forward", "leaned forward", "leaning forward", "leans forward")
+DIRECTION_CLAIMS = {
+    "trunk_lean_contact": ((_BACK, -1, ("what", "why_it_matters")), (_FORWARD, +1, ("what",))),
+    "plant_foot_offset": ((("behind the ball",), -1, ("what", "why_it_matters")),
+                          (("ahead of the ball", "in front of the ball", "past the ball"), +1,
+                           ("what",))),
+}  # fmt: skip
+SIGN_WORDS = {-1: "negative", +1: "positive"}
+# Knee angles are interior angles (180 = straight, DEC-029). A sentence that restates one with
+# a bend word and no "angle" reads as degrees of bend, the opposite scale.
+KNEE_ANGLE_FEATURES = ("knee_angle_contact", "max_knee_flexion_backswing")
+_BEND = re.compile(r"\b(?:bend|bends|bent|bending|flex\w*)\b")
+_SENTENCE = re.compile(r"(?<=[.!?;])\s+")
+
 
 @dataclass
 class Context:
@@ -51,6 +81,8 @@ class Context:
     citation_ids: set[str]
     numbers: list[tuple[float, float]] = field(default_factory=list)  # (value, tolerance)
     not_measured: list[str] = field(default_factory=list)
+    signed: dict[str, float] = field(default_factory=dict)  # DIRECTION_CLAIMS features
+    knee_angles: list[float] = field(default_factory=list)  # interior angles given, any source
 
     def allow(self, value: float, unit: str | None) -> None:
         tol = TOLERANCE.get(unit or "", DEFAULT_TOLERANCE)
@@ -58,17 +90,23 @@ class Context:
         self.numbers.append((abs(float(value)), tol))  # "12 deg back" restates -12
 
 
+def parse_number(s: str) -> float:
+    s = s.replace("−", "-")
+    s = (
+        s.replace(",", "")
+        if re.fullmatch(r"-?\d{1,3}(,\d{3})+(\.\d+)?", s)
+        else s.replace(",", ".")
+    )
+    return float(s)
+
+
+def number_spans(text: str) -> list[tuple[float, int]]:
+    """(value, index just after it) for each number; the caller strips IDs first."""
+    return [(parse_number(m.group()), m.end()) for m in _NUMBER.finditer(text)]
+
+
 def numbers_in(text: str) -> list[float]:
-    out = []
-    for m in _NUMBER.finditer(_NORM_ID.sub("", text)):
-        s = m.group().replace("−", "-")
-        s = (
-            s.replace(",", "")
-            if re.fullmatch(r"-?\d{1,3}(,\d{3})+(\.\d+)?", s)
-            else s.replace(",", ".")
-        )
-        out.append(float(s))
-    return out
+    return [x for x, _ in number_spans(_NORM_ID.sub("", text))]
 
 
 def validate(raw: dict | None, ctx: Context) -> tuple[Feedback | None, list[str]]:
@@ -105,4 +143,36 @@ def validate(raw: dict | None, ctx: Context) -> tuple[Feedback | None, list[str]
                     errors.append(
                         f"{it.fault_id}.{name}: mentions {hits[0]!r}, but {fid} was not measured"
                     )
+            errors += direction_errors(f"{it.fault_id}.{name}", name, low, ctx)
+            errors += knee_bend_errors(f"{it.fault_id}.{name}", text, ctx)
     return fb, errors
+
+
+def direction_errors(where: str, field_name: str, low: str, ctx: Context) -> list[str]:
+    out = []
+    for fid, value in ctx.signed.items():
+        for phrases, sign, fields in DIRECTION_CLAIMS.get(fid, ()):
+            if field_name not in fields or value * sign > 0:
+                continue
+            hit = next((p for p in phrases if p in low), None)
+            if hit:
+                out.append(
+                    f"{where}: says {hit!r}, but {fid} is {value:g} (a {SIGN_WORDS[sign]} value "
+                    "would mean that); this kick's measurement shows the opposite or neither"
+                )
+    return out
+
+
+def knee_bend_errors(where: str, text: str, ctx: Context) -> list[str]:
+    out = []
+    for sentence in _SENTENCE.split(text):
+        low = sentence.lower()
+        if "angle" in low or not _BEND.search(low):
+            continue
+        for x in numbers_in(sentence):
+            if any(abs(x - v) <= TOLERANCE["deg"] for v in ctx.knee_angles):
+                out.append(
+                    f"{where}: {x:g} is the knee's interior angle (180 = straight), not an "
+                    "amount of bend; call it the knee angle"
+                )
+    return out

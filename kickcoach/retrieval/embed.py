@@ -38,13 +38,25 @@ def _key(text: str) -> str:
 
 
 class Embedder:
-    def __init__(self, cache: Path = CACHE, client: GeminiClient | None = None) -> None:
+    """``write_cache``: where new vectors go, if not ``cache``. The coach chat's free-text
+    queries are open-ended, so they go to their own file (the eval's is committed, the app's
+    is not) instead of growing the corpus file with every question."""
+
+    def __init__(
+        self, cache: Path = CACHE, client: GeminiClient | None = None,
+        write_cache: Path | None = None,
+    ) -> None:  # fmt: skip
         self.cache = Path(cache)
+        self.write_cache = Path(write_cache) if write_cache else self.cache
         self._client = client
         self._vecs: dict[str, np.ndarray] = {}
-        if self.cache.exists():
-            with np.load(self.cache) as z:
-                self._vecs = {k: z[k] for k in z.files}
+        self._new: dict[str, np.ndarray] = {}
+        for path in dict.fromkeys((self.cache, self.write_cache)):
+            if path.exists():
+                with np.load(path) as z:
+                    self._vecs |= {k: z[k] for k in z.files}
+                    if path == self.write_cache:
+                        self._new = {k: z[k] for k in z.files}
 
     def vectors(self, inputs: list[str]) -> np.ndarray:
         """Unit vectors, one row per input (already prefixed with doc_input/query_input).
@@ -55,9 +67,9 @@ class Embedder:
             for i in range(0, len(missing), BATCH):
                 batch = missing[i : i + BATCH]
                 for t, v in zip(batch, client.embed_texts(batch, DIMS), strict=True):
-                    self._vecs[_key(t)] = np.asarray(v, dtype=np.float32)
-            self.cache.parent.mkdir(parents=True, exist_ok=True)
-            np.savez_compressed(self.cache, **self._vecs)
+                    self._vecs[_key(t)] = self._new[_key(t)] = np.asarray(v, dtype=np.float32)
+            self.write_cache.parent.mkdir(parents=True, exist_ok=True)
+            np.savez_compressed(self.write_cache, **self._new)
         m = np.stack([self._vecs[_key(t)] for t in inputs]).astype(np.float64)
         return m / np.linalg.norm(m, axis=1, keepdims=True)
 
