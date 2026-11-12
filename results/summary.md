@@ -30,12 +30,12 @@ evaluation are in its own `results/e*_summary.md`.
 | LLM feedback with retrieved passages | passed the deterministic validator first try on 14 of 15 | 15 clips with a fault |
 | Feedback quality (E7) | no human rating (DEC-041). On 8 matched pairs, retrieved passages raised correctness in 7 (lower in 1) for Claude (not blind) and 6 (lower in 0) for an AI persona panel (blind); the LLM judge (gemini-3.6-flash) gave correctness 5/5 to 20 of 20 | 20 items, LLM raters only |
 | Coach chat, tool calling (E9) | right tools on 16 of 16 questions (16 with the expected arguments); 55 of 55 numbers in first drafts came from a tool; checker passed 15 of 16 first drafts; not-measured feature refused 2 of 2 | 16 scripted questions (1 added after a run), fixture players |
-| Labelling floor | not measured yet (the blind relabel hasn't been done) | – |
+| Labelling floor | not measured yet (needs a blind relabel) | – |
 
 ## Labelling repeatability (the floor)
 
 **Not measured yet.** No model error below can be compared with the labeller's own
-consistency until Aamir's blind relabel exists (`results/repeatability_summary.md`).
+consistency until a blind relabel exists (`results/repeatability_summary.md`).
 
 ## E1: pose accuracy
 
