@@ -9,7 +9,7 @@ min(playback fps, 24) frames/s (so a 30 fps clip loses 1 frame in 5),
 `media_resolution` HIGH, `thinking_level` HIGH;
 no temperature (ignored by this model). Frames = Gemini's time × playback fps.
 
-**n:** asked on 21 of 26 clips; 19 have labels to score
+**n:** asked on 26 of 26 clips; 19 have labels to score
 against.
 
 ## 1. Did it answer?
@@ -17,15 +17,17 @@ against.
 | clips | n | all 4 numbers | no numbers (cannot determine) | answers with numbers and no hedge word |
 |---|---|---|---|---|
 | scored clips | 19 | 18/19 | 1/19 | 1/18 |
-| all asked clips | 21 | 20/21 | 1/21 | 1/20 |
+| all asked clips | 26 | 23/26 | 3/26 | 1/23 |
 
 Cannot-determine reasons, verbatim:
 
 - **c01** (0 numbers): The video is completely static and consists of a single frozen frame repeated for the entire 5.00 seconds. No motion, backswing, or ball contact occurs.
+- **c20** (0 numbers): The video is a slideshow composed of three static promotional photoshoot images rather than a continuous video of a kick. Ball contact is never captured in any frame (the video transitions directly from a pre-contact pose to a follow-through pose), and there is no dynamic swing motion to identify the exact moment of maximum backswing.
+- **c28** (0 numbers): The video is filmed from a posterior (rear) view rather than side-on. Consequently, 2D sagittal-plane kinematics (knee angle at contact, trunk lean in the direction of the kick, and maximum knee flexion) cannot be determined due to out-of-plane perspective, severe foreshortening, and depth ambiguity. Precise contact timing and backswing apex along the line of sight are also compromised by the rear camera angle.
 
-Clips Aamir marked not side-on (the pipeline refuses all 2): Gemini gave numbers on 2 of 2 (c23 4, c26 4 numbers).
+Clips Aamir marked not side-on (the pipeline refuses all 4): Gemini gave numbers on 3 of 4 (c23 4, c26 4, c27 4, c28 0 numbers).
 
-Kicking leg where the prompt didn't give it: c23 right.
+Kicking leg where the prompt didn't give it: c23 right, c25 right.
 
 ## 2. Angle error: Gemini vs the pipeline
 
@@ -101,5 +103,10 @@ first, on the clips asked twice:
 | c17 | tune | 133 / 144 / 132 | 99 / 80 / 89 | -12 / 5 / -12 | 70 / 73 / 70 | 32310 / 41389 |
 | c18 | tune | 122 / 156 / 123 | 69 / 52 / 69 | -22 / -7 / -17 | 74 / 75 / 74 | 42726 / 29968 |
 | c19 | tune | 139 / 154 / 137 | 83 / 86 / 82 | -2 / 4 / -2 | 100 / 100 / 100 | 38694 / 42880 |
+| c20 | tune | – / – / 154 | – / – / 94 | – / – / -9 | – / – / 130 | 70087 / 28014 |
 | c23 | tune | – / 146 / – | – / 38 / – | – / -7 / – | – / 42 / 41 | 16240 / 30812 |
+| c24 | tune | – / 152 / 146 | – / 91 / 101 | – / -12 / -13 | – / 148 / 147 | 60582 / 19737 |
+| c25 | tune | – / 142 / 94 | – / 83 / 48 | – / -21 / -21 | – / 89 / 86 | 41584 / 21294 |
 | c26 | tune | – / 152 / – | – / 64 / – | – / -10 / – | 84 / 65 / 74 | 25926 / 32707 |
+| c27 | tune | – / 160 / – | – / 64 / – | – / -6 / – | – / 80 / 74 | 25926 / 41727 |
+| c28 | tune | – / – / – | – / – / – | – / – / – | – / – / 111 | 29118 / 31603 |

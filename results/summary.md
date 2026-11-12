@@ -82,7 +82,7 @@ Paired clip bootstrap (2,000 resamples), clips where both answered:
 
 ## E4: Gemini as the measuring instrument
 
-`gemini-3.8-flash` (free tier) was asked on 21 of 26 clips;
+`gemini-3.8-flash` (free tier) was asked on 26 of 26 clips;
 18 of the 19 labelled clips got numbers. Same clips,
 same labels as E2.
 
