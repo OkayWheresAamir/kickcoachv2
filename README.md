@@ -25,7 +25,7 @@ v2 is a rebuild of [KickCoach](https://github.com/OkayWheresAamir/kickcoach-syna
 | LLM feedback with retrieved passages | passed the deterministic validator first try on 14 of 15 | 15 clips with a fault |
 | Feedback quality (E7) | no human rating (DEC-041). On 8 matched pairs, retrieved passages raised correctness in 7 (lower in 1) for Claude (not blind) and 6 (lower in 0) for an AI persona panel (blind); the LLM judge (gemini-3.6-flash) gave correctness 5/5 to 20 of 20 | 20 items, LLM raters only |
 | Coach chat, tool calling (E9) | right tools on 16 of 16 questions (16 with the expected arguments); 55 of 55 numbers in first drafts came from a tool; checker passed 15 of 16 first drafts; not-measured feature refused 2 of 2 | 16 scripted questions (1 added after a run), fixture players |
-| Labelling floor | not measured yet (the blind relabel hasn't been done) | – |
+| Labelling floor | not measured yet (needs a blind relabel) | – |
 <!-- results:end -->
 
 All of these come from `uv run python -m eval.run_all` (see [Reproduce the results](#reproduce-the-results)); the full tables are in [results/summary.md](results/summary.md) and each evaluation's `results/e*_summary.md`. MAE = mean absolute error against the angle computed from the hand-labelled keypoints with the same geometry code. Confidence intervals resample clips (2,000 bootstrap draws).
@@ -35,7 +35,7 @@ What the numbers say:
 - **Gemini times the kick reasonably but doesn't measure angles.** Its knee angles at contact sit in a narrow, nearly straight band whatever the frame shows, so they barely track the labels. On the clips where it found contact within a frame of the label, the knee error stays as large ([E4](results/e4_summary.md), [failures](results/failures.md)). It also confabulated a "frozen video" on one clip, then "edited pauses" when asked again.
 - **The pipeline refuses rather than guesses.** A value outside a sanity bound becomes `not_measured` with a reason; velocities are shown only on the clips whose real capture rate is known; and clips filmed from the wrong angle are refused with advice on how to re-film ([E8](results/e8_summary.md)).
 - **n is small.** 19 labelled clips, 5 of them held out. The held-out rows in [results/summary.md](results/summary.md) are the ones no threshold was tuned on.
-- **The labelling floor is still to come.** The labeller (Aamir) relabels a sample of frames blind, at least 48 h later, to measure his own consistency. No model can be shown to be more accurate than that ([results/repeatability_summary.md](results/repeatability_summary.md)).
+- **The labelling floor is still to come.** A blind relabel of a sample of frames, at least 48 h after the first labels, measures the labeller's own consistency. No model can be shown to be more accurate than that ([results/repeatability_summary.md](results/repeatability_summary.md)).
 
 ## How it works
 
@@ -115,7 +115,7 @@ A clip that fails the camera-angle check is refused with the reason and how to r
 ## Limitations
 
 - **2D measurement vs 3D lab norms.** The norms come from lab motion capture; the pipeline measures a 2D projection. On most accepted clips the knee angle at contact is below the cited band (counts in [results/summary.md](results/summary.md)), although the pipeline agrees with the labels there. Camera obliquity, kick type (penalties vs maximal kicks) and population are candidate explanations; none has been tested. A comparison with a norm is a prompt to look, not a diagnosis.
-- **Small n, one labeller.** 19 labelled clips (5 held out), labelled by one person who is not a coach, and the repeatability floor isn't measured yet. Confidence intervals are wide, and the camera-angle gate's recall is in-sample (all 4 wrong-angle clips were tuning clips).
+- **Small n, one labeller.** 19 labelled clips (5 held out), labelled by one person, and the repeatability floor isn't measured yet. Confidence intervals are wide, and the camera-angle gate's recall is in-sample (all 4 wrong-angle clips were tuning clips).
 - **Heuristic thresholds.** The gate's threshold, two of the four fault rules (and the 2 SD margin of a third), the ±1 SD band and the validator's number tolerances are heuristics, marked as such in the code and the UI. Where a threshold comes from a study, its population (often elite or adult male players) may not match the user's.
 - **Internet clips.** Most are slow motion with an unknown capture rate, so velocities are withheld on all but the clips whose rate is known. The players are mostly amateurs, and the kick types vary.
 - **The validator checks facts, not meaning.** It catches invented numbers, unknown citations and talk about unmeasured features. It doesn't judge whether the advice is sound; E7 was meant to score it with a human rater and an LLM judge checked against him, but no human rated: E7 reports LLM raters only (Claude, not blind, and an AI persona panel), and the two LLM judges, which gave near-perfect correctness to items with unsupported or contradictory claims (DEC-041).
