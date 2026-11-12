@@ -1,4 +1,4 @@
-"""Labelling repeatability: how far Aamir's blind relabel lands from his first labels.
+"""Labelling repeatability: how far the labeller's blind relabel lands from the first labels.
 
 The eval plan's floor: no model can be shown to be more accurate than the labeller is
 consistent. Each confirmed task in data/labels/repeat/ (``tools/label_tool.py --repeat``,

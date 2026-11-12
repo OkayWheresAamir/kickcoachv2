@@ -1,15 +1,15 @@
 """E7: is the feedback correct, specific and actionable, and can an LLM judge stand in for
-Aamir? (eval plan E7; docs/PLAN.md Phase 8; DEC-040)
+a human rater? (eval plan E7; docs/PLAN.md Phase 8; DEC-040)
 
 Every fault item the corpus produces exists in three variants: the LLM with retrieved
 coaching passages (prompt v3, the app's default), the LLM without them (v2) and the
-template. Aamir rates a fixed 20-item sample (1-5 on correctness, specificity,
+template. A human rater scores a fixed 20-item sample (1-5 on correctness, specificity,
 actionability) without seeing which variant is which; an LLM judge rates every item with
 the same facts and rubric. The judge is trusted beyond the sample only on criteria where
-its agreement with Aamir clears the bar fixed before either rated (DEC-040).
+its agreement with the human rater clears the bar fixed before either rated (DEC-040).
 
     uv run python -m eval.e7_feedback prepare   # results/e7/items.json (frozen once built)
-    uv run python tools/rate_feedback.py         # Aamir rates the sample
+    uv run python tools/rate_feedback.py         # a human rates the sample
     uv run python -m eval.e7_feedback judge     # the judge; answers cached in results/e7/judge_raw/
     uv run python -m eval.e7_feedback           # score: results/e7.csv, results/e7_summary.md
 """
@@ -42,8 +42,8 @@ RESULTS = ROOT / "results"
 E7_DIR = RESULTS / "e7"
 ITEMS = E7_DIR / "items.json"
 RATINGS = E7_DIR / "aamir_ratings.json"
-# LLM raters of the 20-item sample, kept apart from Aamir's file (DEC-041): an AI persona
-# panel Aamir supplied (5 simulated players and a coach, one external tool, model not
+# LLM raters of the 20-item sample, kept apart from the human ratings file (DEC-041): an AI persona
+# panel supplied on 7 Nov (5 simulated players and a coach, one external tool, model not
 # recorded) and Claude's rule-based ratings (not blind). Neither is a human rating.
 PANEL = E7_DIR / "raters" / "persona_panel.csv"
 CLAUDE = E7_DIR / "raters" / "claude.json"

@@ -459,7 +459,7 @@ def collect() -> dict:
 
 def floor_text(fl: dict | None) -> str:
     if fl is None:
-        return "not measured yet (the blind relabel hasn't been done)"
+        return "not measured yet (needs a blind relabel)"
     k_all, k_moved = fl["angles"]["knee_angle"]
     t_all, t_moved = fl["angles"]["trunk_lean"]
     return (
@@ -473,7 +473,7 @@ def e7_text(e7: dict) -> str:
     if not e7["rated"]:
         pw = e7["pair_wins"]
         if not pw:
-            return "not rated yet (Aamir's 20 ratings)"
+            return "not rated yet (20 human ratings)"
         five, n = e7["flash_correctness"]
         names = {"claude": "Claude (not blind)", "panel": "an AI persona panel (blind)"}
         text = "no human rating (DEC-041). On 8 matched pairs, retrieved passages raised "
@@ -633,7 +633,7 @@ def summary(n: dict) -> str:
     if fl is None:
         L += [
             "**Not measured yet.** No model error below can be compared with the labeller's own",
-            "consistency until Aamir's blind relabel exists (`results/repeatability_summary.md`).",
+            "consistency until a blind relabel exists (`results/repeatability_summary.md`).",
         ]
     else:
         body = [
