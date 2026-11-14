@@ -33,9 +33,23 @@ knowledge/papers/
 # Coaching corpus sources (Phase 8): only short quoted chunks + URLs are committed
 knowledge/coaching_sources/
 
-# Personal
-Aamir_Hashmi_Resume*.pdf
+# Personal (kept on disk, never public)
+*Resume*.pdf
 CLAUDE.local.md
+docs/STATUS.md
+docs/RESUME_BULLETS.md
+# Reports, slides, guidelines and photos made outside the code (docs/img/ holds the
+# committed diagrams)
+docs/*.pdf
+docs/*.pptx
+docs/*.ppt
+docs/*.docx
+docs/*.doc
+docs/*.key
+docs/*.jpg
+docs/*.jpeg
+docs/*.png
+docs/*.heic
 
 # Local databases
 *.sqlite3
