@@ -95,7 +95,7 @@ def measure_video(
     from kickcoach.pose.models import MODELS
 
     # rtmlib downloads its ONNX weights with urllib; python.org's macOS Python has no CA
-    # bundle (STATUS, environment facts), so point it at certifi's.
+    # bundle, so point it at certifi's.
     os.environ.setdefault("SSL_CERT_FILE", certifi.where())
     info = probe(video)
     if not info.duration_s:
