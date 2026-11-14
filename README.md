@@ -190,5 +190,5 @@ tools/       labelling and rating tools, clip and source fetchers, pipeline and 
 knowledge/   norms.csv (verified), faults.yaml, sources.md, coaching_corpus.yaml, embeddings/
 data/        manifest.csv, labels/, per-clip meta.json and pose/ball caches (numbers only)
 results/     eval outputs, including the cached LLM responses
-docs/        PLAN, STATUS, DECISIONS, JOURNAL, V1_AUDIT, the labelling guide, the original handoff
+docs/        PLAN, DECISIONS, JOURNAL, V1_AUDIT, the labelling guide, the original handoff
 ```
